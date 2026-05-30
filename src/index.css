@@ -1,0 +1,1177 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* Global design tokens drive colors, spacing, radius, nav height, and parallax state across the DOM. */
+:root {
+  --scroll-y: 0px;
+  --bg: #05070b;
+  --bg-soft: #090f16;
+  --panel: rgba(9, 16, 25, 0.78);
+  --panel-strong: rgba(12, 22, 33, 0.94);
+  --line: rgba(137, 180, 214, 0.2);
+  --text: #f4f8fb;
+  --muted: #b7c4cf;
+  --subtle: #81909d;
+  --blue: #58a6ff;
+  --cyan: #66e3d4;
+  --green: #8df7a7;
+  --red: #ff6b70;
+  --amber: #ffd166;
+  --violet: #b78cff;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  --radius: 8px;
+  --page-x: clamp(1.25rem, 5vw, 5.75rem);
+  --nav-h: 82px;
+}
+
+/* Reset every element so layout sizing is predictable before component-specific styles apply. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth scrolling affects anchor/navigation movement within the document. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Body establishes the app-wide typography, background, and viewport bounds. */
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+}
+
+/* Links inherit surrounding text styles so components control their own visual treatment. */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Removes mobile tap flash from interactive DOM elements for a cleaner touch experience. */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Keyboard users receive a consistent visible ring across custom link and button controls. */
+a:focus-visible,
+button:focus-visible,
+.contact-link:focus-visible,
+.social-link:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+/* Main wraps routed page content above the fixed decorative background. */
+main {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 140px);
+}
+
+/* Fixed background stage spans the viewport behind every route. */
+.parallax-stage {
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(5, 7, 11, 0.2), rgba(5, 7, 11, 0.95)),
+    url("/backgrounds/background2.jpg") center / cover no-repeat;
+}
+
+/* Shared parallax layer base lets each layer paint a different visual effect without intercepting clicks. */
+.parallax-layer {
+  position: absolute;
+  inset: -12vh -8vw;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Background image layer moves slowly using the --scroll-y value written by ParallaxBackdrop. */
+.layer-bg {
+  background:
+    linear-gradient(115deg, rgba(5, 7, 11, 0.92), rgba(9, 16, 25, 0.5) 48%, rgba(5, 7, 11, 0.94)),
+    url("/backgrounds/background2.jpg") center / cover no-repeat;
+  transform: translate3d(0, calc(var(--scroll-y) * -0.08), 0) scale(1.08);
+}
+
+/* Perspective grid creates the floor-like depth effect behind the page content. */
+.layer-grid {
+  opacity: 0.5;
+  background:
+    linear-gradient(90deg, rgba(102, 227, 212, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(88, 166, 255, 0.07) 1px, transparent 1px);
+  background-size: clamp(52px, 7vw, 92px) clamp(52px, 7vw, 92px);
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 72%, transparent);
+  transform: perspective(620px) rotateX(58deg) translate3d(0, calc(var(--scroll-y) * 0.16), 0);
+  transform-origin: center bottom;
+}
+
+/* Star layer adds subtle texture and moves at a different speed for parallax separation. */
+.layer-stars {
+  opacity: 0.58;
+  background-image:
+    radial-gradient(circle, rgba(244, 248, 251, 0.72) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(102, 227, 212, 0.52) 1px, transparent 1.4px);
+  background-size: 140px 140px, 220px 220px;
+  background-position: 0 0, 44px 78px;
+  transform: translate3d(0, calc(var(--scroll-y) * -0.22), 0);
+}
+
+/* Orbit ring is a large decorative circle positioned off-center for depth. */
+.layer-orbit {
+  inset: 8vh auto auto 58vw;
+  width: clamp(360px, 42vw, 760px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(102, 227, 212, 0.18);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 clamp(32px, 5vw, 74px) rgba(88, 166, 255, 0.025),
+    inset 0 0 0 clamp(92px, 12vw, 170px) rgba(183, 140, 255, 0.02);
+  transform: translate3d(0, calc(var(--scroll-y) * -0.13), 0) rotate(18deg);
+}
+
+/* Scanline overlay gives the background a subtle monitor-like texture. */
+.parallax-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.08;
+  background: repeating-linear-gradient(180deg, transparent 0 9px, #fff 10px);
+  pointer-events: none;
+}
+
+/* Fixed site navigation stays visible above routed content. */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--nav-h);
+  padding: 16px var(--page-x);
+  border-bottom: 1px solid var(--line);
+  background: rgba(5, 8, 13, 0.82);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+}
+
+/* Brand block lays out the initials badge beside the text logo. */
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 12px;
+  font-weight: 800;
+}
+
+/* Initials badge receives a bordered cyan treatment to read like a compact logo mark. */
+.nav-brand span {
+  display: grid;
+  width: clamp(38px, 4vw, 44px);
+  height: clamp(38px, 4vw, 44px);
+  place-items: center;
+  border: 1px solid rgba(102, 227, 212, 0.42);
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgba(102, 227, 212, 0.08);
+}
+
+/* Navigation links align horizontally and keep route controls grouped. */
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(6px, 1vw, 12px);
+}
+
+/* Individual route links are padded click targets with active/hover states. */
+.nav-links a {
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: clamp(0.84rem, 1.1vw, 0.95rem);
+  font-weight: 700;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Active and hovered route links signal which page is selected. */
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text);
+  border-color: rgba(88, 166, 255, 0.32);
+  background: rgba(88, 166, 255, 0.1);
+}
+
+/* Home route uses a two-column hero layout for copy and terminal preview. */
+.home {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.42fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 4.5rem);
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + clamp(2rem, 8vh, 5rem)) var(--page-x) clamp(3.5rem, 9vh, 7rem);
+}
+
+/* Decorative divider hints that more content exists below the first viewport. */
+.home::after {
+  content: "";
+  position: absolute;
+  inset: auto var(--page-x) clamp(1.5rem, 4vh, 3rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(102, 227, 212, 0.5), transparent);
+}
+
+/* Foreground content gets a stacking context above the decorative background layers. */
+.hero-content,
+.terminal-panel,
+.page-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Eyebrow and status text styles create compact metadata labels. */
+.status-pill,
+.eyebrow {
+  color: var(--cyan);
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Status pill groups availability text with the glowing status dot. */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 9px 12px;
+  border: 1px solid rgba(102, 227, 212, 0.26);
+  border-radius: 999px;
+  background: rgba(102, 227, 212, 0.08);
+  color: var(--text);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Status dot uses color and shadow to read as an online indicator. */
+.status-pill span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 16px rgba(141, 247, 167, 0.8);
+}
+
+/* Eyebrow spacing separates small labels from their headings. */
+.eyebrow {
+  margin-bottom: 14px;
+}
+
+/* Large headings define the hero and page-title visual hierarchy. */
+.hero-content h1,
+.section-heading h1,
+.glass-panel h1 {
+  max-width: 1050px;
+  color: var(--text);
+  font-size: clamp(2.45rem, 6.8vw, 6.7rem);
+  line-height: 1.01;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* Supporting copy is constrained for readable line lengths. */
+.hero-copy,
+.section-heading p {
+  max-width: min(760px, 100%);
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  line-height: 1.75;
+}
+
+/* Action row lets buttons wrap on smaller screens without layout overflow. */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+/* Base button styles make links look and behave like primary DOM actions. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(46px, 6vh, 54px);
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-weight: 800;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Hover movement gives clickable buttons a small tactile response. */
+.button:hover {
+  transform: translateY(-2px);
+}
+
+/* Primary action uses the strongest color treatment. */
+.button.primary {
+  color: #041016;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+}
+
+/* Secondary action stays quieter while remaining visible on dark backgrounds. */
+.button.secondary {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Hero stack arranges capability tags in a responsive wrap row. */
+.hero-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 760px;
+  margin-top: clamp(1.5rem, 4vh, 3rem);
+}
+
+/* Shared tag styling keeps hero labels and project tech labels visually consistent. */
+.hero-stack span,
+.tech-tag {
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgba(88, 166, 255, 0.09);
+  font-size: clamp(0.74rem, 1vw, 0.82rem);
+  font-weight: 800;
+}
+
+/* Hero-only tag spacing sizes each text label. */
+.hero-stack span {
+  padding: 8px 10px;
+}
+
+/* Shared card surfaces create consistent framed panels throughout the site. */
+.terminal-panel,
+.glass-panel,
+.feature-card,
+.project-card,
+.scope-card,
+.process-card,
+.contact-panel,
+.timeline article,
+.proof-strip article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+/* Terminal preview card sizes the right-side hero panel. */
+.terminal-panel {
+  align-self: center;
+  width: min(100%, 460px);
+  min-height: clamp(480px, 62vh, 640px);
+  overflow: hidden;
+}
+
+/* Terminal top bar positions window dots and the mock shell title. */
+.terminal-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Window control dots are built from empty spans in the JSX. */
+.terminal-topbar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* First terminal control dot. */
+.terminal-topbar span:nth-child(1) {
+  background: #ff5f57;
+}
+
+/* Second terminal control dot. */
+.terminal-topbar span:nth-child(2) {
+  background: #ffbd2e;
+}
+
+/* Third terminal control dot. */
+.terminal-topbar span:nth-child(3) {
+  background: #28c840;
+}
+
+/* Mock shell title text sits after the control dots. */
+.terminal-topbar strong {
+  margin-left: 8px;
+  color: var(--subtle);
+  font-size: 0.82rem;
+}
+
+/* Terminal body formats command-like copy in a monospace grid. */
+.terminal-body {
+  display: grid;
+  gap: 12px;
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  color: var(--muted);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: clamp(0.85rem, 1.2vw, 0.96rem);
+  line-height: 1.7;
+}
+
+/* Prompt symbols and success status share the green terminal color. */
+.terminal-body span,
+.terminal-ok {
+  color: var(--green);
+}
+
+/* Terminal list spacing keeps capability lines easy to scan. */
+.terminal-body ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+/* Radar circle is a CSS-built visual anchored inside the terminal panel. */
+.radar {
+  position: relative;
+  display: grid;
+  width: min(74%, 290px);
+  aspect-ratio: 1;
+  place-items: center;
+  margin: clamp(0.8rem, 3vh, 1.5rem) auto 0;
+  border: 1px solid rgba(102, 227, 212, 0.34);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 49.5%, rgba(102, 227, 212, 0.28) 50%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, rgba(102, 227, 212, 0.28) 50%, transparent 50.5%);
+  overflow: hidden;
+}
+
+/* Radar pseudo-elements draw nested circular rings without extra JSX nodes. */
+.radar::before,
+.radar::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(102, 227, 212, 0.18);
+  border-radius: 50%;
+}
+
+/* Outer radar ring placement. */
+.radar::before {
+  inset: 22%;
+}
+
+/* Inner radar ring placement. */
+.radar::after {
+  inset: 38%;
+}
+
+/* Radar sweep line rotates via keyframes to imply scanning motion. */
+.radar i {
+  position: absolute;
+  inset: 50% 50% auto auto;
+  width: 48%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(102, 227, 212, 0.95), transparent);
+  transform-origin: left center;
+  animation: radarSweep 4.8s linear infinite;
+}
+
+/* Radar center label stays above the animated sweep. */
+.radar span {
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+/* Page shell gives non-home routes consistent spacing below the fixed nav. */
+.page-shell {
+  position: relative;
+  padding: calc(var(--nav-h) + clamp(2.2rem, 7vh, 5rem)) var(--page-x) clamp(4rem, 9vh, 7rem);
+}
+
+/* Page heading separates intro copy from the route's main content. */
+.section-heading {
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+/* Page headings are smaller than the home hero while keeping the same type system. */
+.section-heading h1,
+.glass-panel h1 {
+  font-size: clamp(2.05rem, 5vw, 4.8rem);
+}
+
+/* Proof strip displays three focus cards in a responsive grid. */
+.proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+/* Security focus strip creates compact identity cards for red-team, defense, analyst, and build signals. */
+.scope-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+/* Scope cards use restrained semantic accents so categories read clearly without relying on icons. */
+.scope-card {
+  position: relative;
+  min-height: 132px;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  overflow: hidden;
+}
+
+/* A small top rule gives each focus category a status-panel feel. */
+.scope-card::before,
+.process-card::before,
+.case-study-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+/* Offensive focus receives a red-team accent while preserving readable dark surfaces. */
+.scope-card.offense::before {
+  background: linear-gradient(90deg, var(--red), transparent);
+}
+
+/* Defensive focus uses the green accent already established by the radar and terminal states. */
+.scope-card.defense::before {
+  background: linear-gradient(90deg, var(--green), transparent);
+}
+
+/* Analyst focus uses amber as a restrained evidence/review signal. */
+.scope-card.analysis::before {
+  background: linear-gradient(90deg, var(--amber), transparent);
+}
+
+/* Build focus ties secure development back into the existing blue/cyan interface language. */
+.scope-card.build::before {
+  background: linear-gradient(90deg, var(--blue), transparent);
+}
+
+/* Scope numbers stay compact and technical, while labels remain readable for longer future copy. */
+.scope-card strong {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--cyan);
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+}
+
+.scope-card span {
+  color: var(--text);
+  font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+/* Individual proof cards use compact padding around number and label. */
+.proof-strip article {
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Proof numbers draw attention with the green accent. */
+.proof-strip strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--green);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+}
+
+/* Proof labels use muted text to support the number hierarchy. */
+.proof-strip span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* About layout pairs explanatory copy with the process timeline. */
+.split-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 24px;
+}
+
+/* Glass panels provide reusable padded content surfaces. */
+.glass-panel {
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+/* Panel, feature, and project titles share compact heading sizing. */
+.glass-panel h2,
+.feature-card h2,
+.project-title {
+  margin-bottom: 14px;
+  color: var(--text);
+  font-size: clamp(1.15rem, 2vw, 1.42rem);
+}
+
+/* Body text inside panels/cards uses muted color and comfortable line height. */
+.glass-panel p,
+.feature-card li,
+.project-description,
+.timeline p,
+.project-outcome {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* Consecutive paragraphs in panels get vertical rhythm. */
+.glass-panel p + p {
+  margin-top: 16px;
+}
+
+/* Panel kickers label dense security panels without forcing another heading level. */
+.panel-kicker {
+  margin-bottom: 10px;
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Method grid turns the about process into scan-friendly security workflow cards. */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Process cards are compact enough for professional density and tall enough for future copy. */
+.process-card {
+  position: relative;
+  min-height: 170px;
+  padding: clamp(1rem, 2.2vw, 1.35rem);
+  overflow: hidden;
+}
+
+.process-card span {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--green);
+  font-weight: 800;
+}
+
+.process-card h3 {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.process-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* Timeline container stacks step cards vertically. */
+.timeline {
+  display: grid;
+  gap: 16px;
+}
+
+/* Timeline cards get their own internal spacing. */
+.timeline article {
+  padding: clamp(1.15rem, 2.5vw, 1.55rem);
+}
+
+/* Timeline numbers serve as compact step markers. */
+.timeline span {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+/* Timeline headings sit close to their explanatory copy. */
+.timeline h3 {
+  margin-bottom: 8px;
+}
+
+/* Skills orbit is a circular layout surface for indexed skill labels. */
+.skill-orbit {
+  position: relative;
+  display: grid;
+  width: min(100%, 620px);
+  min-height: clamp(270px, 42vw, 390px);
+  place-items: center;
+  margin: 0 auto clamp(1.8rem, 5vh, 3rem);
+  border: 1px solid rgba(102, 227, 212, 0.18);
+  border-radius: 50%;
+  background: rgba(9, 16, 25, 0.28);
+}
+
+/* Orbit pseudo-elements draw inner guide rings without adding extra DOM. */
+.skill-orbit::before,
+.skill-orbit::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(88, 166, 255, 0.14);
+  border-radius: 50%;
+}
+
+/* Larger inner orbit ring. */
+.skill-orbit::before {
+  inset: 16%;
+}
+
+/* Smaller inner orbit ring. */
+.skill-orbit::after {
+  inset: 32%;
+}
+
+/* Center label stays above the orbit rings and surrounding skill tags. */
+.skill-orbit strong {
+  position: relative;
+  z-index: 2;
+  color: var(--text);
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  text-align: center;
+}
+
+/* Skill labels rotate around the center based on the --i index passed from JSX. */
+.skill-orbit span {
+  --angle: calc(var(--i) * 45deg);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  padding: 8px 12px;
+  border: 1px solid rgba(102, 227, 212, 0.25);
+  border-radius: 999px;
+  color: var(--cyan);
+  background: rgba(5, 8, 13, 0.88);
+  font-size: clamp(0.72rem, 1vw, 0.86rem);
+  font-weight: 800;
+  transform: rotate(var(--angle)) translateX(clamp(105px, 22vw, 245px)) rotate(calc(var(--angle) * -1));
+}
+
+/* Card grids auto-fit cards while preserving minimum readable widths. */
+.card-grid,
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(0.9rem, 2vw, 1.25rem);
+}
+
+/* Feature and project cards share height, padding, and hover motion. */
+.feature-card,
+.project-card {
+  min-height: clamp(240px, 32vh, 320px);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Card hover states lift the card and strengthen the border/background. */
+.feature-card:hover,
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(102, 227, 212, 0.42);
+  background: var(--panel-strong);
+}
+
+/* Feature icons are square badges styled through Font Awesome classes in JSX. */
+.feature-card i {
+  display: inline-grid;
+  width: clamp(42px, 5vw, 50px);
+  height: clamp(42px, 5vw, 50px);
+  margin-bottom: 18px;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgba(102, 227, 212, 0.1);
+}
+
+/* Feature lists are custom-styled, so default bullets are removed. */
+.feature-card ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+
+/* Custom list dot gives each feature item a consistent accent marker. */
+.feature-card li::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* Project info uses flex so tech tags can sit at the bottom of each card. */
+.project-info {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Case-study cards turn project scope into evidence-oriented security records. */
+.case-study-card {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+/* Project case studies need a wider minimum than simple feature cards for dense field labels. */
+.projects-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+/* Metadata block separates security area from the project name for faster scanning. */
+.case-study-meta {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.case-study-meta span,
+.case-study-field span {
+  color: var(--cyan);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.case-study-meta strong {
+  color: var(--text);
+  font-size: clamp(1.12rem, 2vw, 1.3rem);
+  line-height: 1.3;
+}
+
+/* Field rows create a consistent Objective / Scope / Signal rhythm. */
+.case-study-field {
+  display: grid;
+  gap: 7px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(137, 180, 214, 0.14);
+}
+
+.case-study-field p {
+  color: var(--muted);
+  line-height: 1.62;
+}
+
+/* Project title receives a slightly tighter card-specific size. */
+.project-title {
+  font-size: clamp(1.12rem, 2vw, 1.28rem);
+}
+
+/* Project outcome is emphasized with a left accent border. */
+.project-outcome {
+  margin-top: 16px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(141, 247, 167, 0.5);
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Tech tag row wraps labels and pushes itself below project copy. */
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+/* Individual tech tags have compact chip padding. */
+.tech-tag {
+  padding: 7px 10px;
+}
+
+/* Contact copy panel stays narrower than the full route for readability. */
+.contact-copy {
+  max-width: 920px;
+  margin-bottom: 18px;
+}
+
+/* Engagement chips summarize ideal work types before the contact actions. */
+.engagement-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.engagement-card {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid rgba(102, 227, 212, 0.22);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: rgba(102, 227, 212, 0.07);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+/* Contact panel lays out large link targets in responsive columns. */
+.contact-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+/* Contact links are touch-friendly cards with icon and label content. */
+.contact-link {
+  display: flex;
+  min-height: clamp(78px, 12vh, 96px);
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.045);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Contact link hover confirms interactivity without changing layout. */
+.contact-link:hover {
+  transform: translateY(-3px);
+  border-color: rgba(102, 227, 212, 0.42);
+}
+
+/* Contact icons keep their accent color and fixed width inside flex rows. */
+.contact-link i {
+  flex: 0 0 auto;
+  color: var(--cyan);
+  font-size: 1.25rem;
+}
+
+/* Footer stays above the background and distributes brand, social, and copyright content. */
+.footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 30px var(--page-x);
+  border-top: 1px solid var(--line);
+  background: rgba(5, 8, 13, 0.9);
+}
+
+/* Footer brand text gets a small separation from its supporting paragraph. */
+.footer strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Footer paragraphs use muted color to recede behind primary content. */
+.footer p {
+  color: var(--subtle);
+  line-height: 1.5;
+}
+
+/* Social links group icon buttons with even spacing. */
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+
+/* Social icon buttons are square DOM targets with hover affordances. */
+.social-link {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Social hover state highlights the icon and lifts the control. */
+.social-link:hover {
+  color: var(--cyan);
+  border-color: rgba(102, 227, 212, 0.42);
+  transform: translateY(-2px);
+}
+
+/* Copyright copy is intentionally smaller than the footer brand text. */
+.copyright {
+  font-size: 0.88rem;
+}
+
+/* Custom scrollbar styling keeps browser chrome aligned with the site palette. */
+html::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Scrollbar track matches the page background. */
+html::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+/* Scrollbar thumb uses the blue accent. */
+html::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: var(--blue);
+}
+
+/* Radar sweep animation rotates the scan line once per cycle. */
+@keyframes radarSweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tablet layouts collapse major two-column DOM regions into one column. */
+@media (max-width: 1080px) {
+  .home,
+  .split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .terminal-panel {
+    width: min(100%, 720px);
+    min-height: auto;
+  }
+
+  .radar {
+    width: min(54vw, 260px);
+    margin-bottom: 24px;
+  }
+}
+
+/* Narrow navigation layout stacks brand and links while preserving horizontal route scrolling. */
+@media (max-width: 860px) {
+  :root {
+    --nav-h: 128px;
+  }
+
+  .site-nav {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .proof-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .scope-strip,
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-orbit span {
+    transform: rotate(var(--angle)) translateX(clamp(98px, 32vw, 170px)) rotate(calc(var(--angle) * -1));
+  }
+
+  .layer-orbit {
+    left: 28vw;
+  }
+}
+
+/* Mobile layout reduces side padding and turns action/link rows into full-width controls. */
+@media (max-width: 620px) {
+  :root {
+    --page-x: 20px;
+  }
+
+  .nav-brand strong {
+    font-size: 0.95rem;
+  }
+
+  .nav-links a {
+    padding: 9px 11px;
+  }
+
+  .home {
+    min-height: auto;
+  }
+
+  .hero-actions,
+  .footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .button,
+  .contact-link {
+    width: 100%;
+  }
+
+  .skill-orbit {
+    min-height: 250px;
+  }
+
+  .skill-orbit span {
+    transform: rotate(var(--angle)) translateX(clamp(82px, 31vw, 120px)) rotate(calc(var(--angle) * -1));
+  }
+
+  .scope-card,
+  .process-card,
+  .case-study-card {
+    min-height: auto;
+  }
+
+  .terminal-topbar strong {
+    display: none;
+  }
+}
+
+/* Reduced-motion users keep the same DOM but receive near-instant animation/transition timing. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .parallax-layer {
+    transform: none !important;
+  }
+}
