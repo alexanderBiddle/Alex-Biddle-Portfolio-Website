@@ -1,8 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
-/* Global design tokens drive colors, spacing, radius, nav height, and parallax state across the DOM. */
+/* Global design tokens drive colors, spacing, radius, and nav height across the DOM. */
 :root {
-  --scroll-y: 0px;
   --bg: #05070b;
   --bg-soft: #090f16;
   --panel: rgba(9, 16, 25, 0.78);
@@ -73,77 +72,45 @@ main {
   min-height: calc(100vh - 140px);
 }
 
-/* Fixed background stage spans the viewport behind every route. */
-.parallax-stage {
+/* Fixed Aether Flow stage replaces the old image backdrop behind routed pages. */
+.aether-flow-backdrop {
   position: fixed;
   inset: 0;
   z-index: -5;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(5, 7, 11, 0.2), rgba(5, 7, 11, 0.95)),
-    url("/backgrounds/background2.jpg") center / cover no-repeat;
-}
-
-/* Shared parallax layer base lets each layer paint a different visual effect without intercepting clicks. */
-.parallax-layer {
-  position: absolute;
-  inset: -12vh -8vw;
-  will-change: transform;
+  background: oklch(0.13 0.02 248);
   pointer-events: none;
 }
 
-/* Background image layer moves slowly using the --scroll-y value written by ParallaxBackdrop. */
-.layer-bg {
-  background:
-    linear-gradient(115deg, rgba(5, 7, 11, 0.92), rgba(9, 16, 25, 0.5) 48%, rgba(5, 7, 11, 0.94)),
-    url("/backgrounds/background2.jpg") center / cover no-repeat;
-  transform: translate3d(0, calc(var(--scroll-y) * -0.08), 0) scale(1.08);
-}
-
-/* Perspective grid creates the floor-like depth effect behind the page content. */
-.layer-grid {
-  opacity: 0.5;
-  background:
-    linear-gradient(90deg, rgba(102, 227, 212, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(88, 166, 255, 0.07) 1px, transparent 1px);
-  background-size: clamp(52px, 7vw, 92px) clamp(52px, 7vw, 92px);
-  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 72%, transparent);
-  transform: perspective(620px) rotateX(58deg) translate3d(0, calc(var(--scroll-y) * 0.16), 0);
-  transform-origin: center bottom;
-}
-
-/* Star layer adds subtle texture and moves at a different speed for parallax separation. */
-.layer-stars {
-  opacity: 0.58;
-  background-image:
-    radial-gradient(circle, rgba(244, 248, 251, 0.72) 1px, transparent 1.6px),
-    radial-gradient(circle, rgba(102, 227, 212, 0.52) 1px, transparent 1.4px);
-  background-size: 140px 140px, 220px 220px;
-  background-position: 0 0, 44px 78px;
-  transform: translate3d(0, calc(var(--scroll-y) * -0.22), 0);
-}
-
-/* Orbit ring is a large decorative circle positioned off-center for depth. */
-.layer-orbit {
-  inset: 8vh auto auto 58vw;
-  width: clamp(360px, 42vw, 760px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(102, 227, 212, 0.18);
-  border-radius: 50%;
-  box-shadow:
-    inset 0 0 0 clamp(32px, 5vw, 74px) rgba(88, 166, 255, 0.025),
-    inset 0 0 0 clamp(92px, 12vw, 170px) rgba(183, 140, 255, 0.02);
-  transform: translate3d(0, calc(var(--scroll-y) * -0.13), 0) rotate(18deg);
-}
-
-/* Scanline overlay gives the background a subtle monitor-like texture. */
-.parallax-scanline {
+/* Canvas listens to window pointer movement while remaining transparent to foreground controls. */
+.aether-flow-canvas {
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.08;
-  background: repeating-linear-gradient(180deg, transparent 0 9px, #fff 10px);
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+}
+
+/* One shared Spline scene stays mounted across route changes beneath the particle network. */
+.aether-shared-spline {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.aether-spline.aether-shared-spline.is-loaded {
+  opacity: 1;
+}
+
+.aether-shared-fallback {
+  z-index: 0;
+  opacity: 1;
+}
+
+.aether-shared-fallback.is-hidden {
+  opacity: 0;
 }
 
 /* Fixed site navigation stays visible above routed content. */
@@ -211,6 +178,203 @@ main {
   color: var(--text);
   border-color: rgba(88, 166, 255, 0.32);
   background: rgba(88, 166, 255, 0.1);
+}
+
+/* Aether hero owns the home viewport while preserving the shared navigation above it. */
+.aether-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + clamp(3rem, 10vh, 7.5rem)) var(--page-x) clamp(5.5rem, 11vh, 8rem);
+  background: transparent;
+}
+
+/* Lazy-loaded scene fades in after Spline reports a completed load. */
+.aether-spline {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aether-spline.is-loaded {
+  opacity: 0.88;
+}
+
+/* Static fallback gives the hero a complete visual state while the remote scene loads. */
+.aether-fallback {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  background:
+    radial-gradient(circle, oklch(0.9 0.03 228 / 0.62) 0 1px, transparent 1.5px) 0 0 / 86px 86px,
+    radial-gradient(circle, oklch(0.82 0.1 209 / 0.5) 0 1px, transparent 1.4px) 31px 47px / 132px 132px,
+    oklch(0.13 0.02 248);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+}
+
+.aether-fallback.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Foreground copy ignores pointer input so unused areas still manipulate the Galaxy scene. */
+.aether-content {
+  position: relative;
+  z-index: 5;
+  max-width: min(760px, 64vw);
+  pointer-events: none;
+}
+
+.aether-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: clamp(1.5rem, 3vh, 2.25rem);
+  padding: 9px 12px;
+  border: 1px solid oklch(0.8 0.12 202 / 0.28);
+  border-radius: 999px;
+  color: oklch(0.92 0.04 210);
+  background: oklch(0.2 0.04 232 / 0.62);
+  backdrop-filter: blur(14px);
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 800;
+}
+
+.aether-status svg {
+  width: 16px;
+  height: 16px;
+  color: oklch(0.84 0.15 188);
+}
+
+.aether-kicker,
+.aether-modes p,
+.aether-scroll-cue {
+  color: oklch(0.82 0.14 193);
+  font-size: clamp(0.68rem, 0.9vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-hero h1 {
+  max-width: 820px;
+  margin-top: 14px;
+  color: oklch(0.96 0.02 220);
+  font-size: clamp(3.8rem, 9vw, 9.6rem);
+  line-height: 0.88;
+  letter-spacing: -0.09em;
+  text-wrap: balance;
+}
+
+.aether-hero h1 span {
+  display: block;
+  color: oklch(0.84 0.12 202);
+}
+
+.aether-copy {
+  max-width: 640px;
+  margin-top: clamp(1.5rem, 3vh, 2.1rem);
+  color: oklch(0.82 0.035 222);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.aether-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(1.8rem, 4vh, 2.8rem);
+  pointer-events: auto;
+}
+
+.aether-action {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 18px;
+  border: 1px solid oklch(0.78 0.11 206 / 0.26);
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-weight: 800;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.aether-action svg {
+  width: 18px;
+  height: 18px;
+}
+
+.aether-action.primary {
+  color: oklch(0.19 0.04 227);
+  border-color: transparent;
+  background: oklch(0.84 0.15 188);
+}
+
+.aether-action.primary:hover {
+  background: oklch(0.9 0.12 188);
+}
+
+.aether-action.secondary {
+  color: oklch(0.94 0.025 220);
+  background: oklch(0.2 0.03 231 / 0.62);
+  backdrop-filter: blur(14px);
+}
+
+.aether-action.secondary:hover {
+  border-color: oklch(0.82 0.13 196 / 0.56);
+  background: oklch(0.24 0.04 228 / 0.8);
+}
+
+/* Compact mode index gives the composition a technical edge without covering the scene subject. */
+.aether-modes {
+  position: absolute;
+  right: var(--page-x);
+  bottom: clamp(4.8rem, 10vh, 7rem);
+  z-index: 5;
+  width: min(260px, 24vw);
+  padding: 16px;
+  border: 1px solid oklch(0.76 0.1 211 / 0.22);
+  border-radius: var(--radius);
+  background: oklch(0.17 0.025 242 / 0.58);
+  backdrop-filter: blur(16px);
+}
+
+.aether-modes ul {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  list-style: none;
+}
+
+.aether-modes li {
+  display: flex;
+  gap: 12px;
+  color: oklch(0.84 0.035 220);
+  font-size: clamp(0.76rem, 1vw, 0.88rem);
+  font-weight: 700;
+}
+
+.aether-modes li span {
+  color: oklch(0.84 0.15 188);
+}
+
+.aether-scroll-cue {
+  position: absolute;
+  left: var(--page-x);
+  bottom: 24px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: oklch(0.72 0.07 204);
 }
 
 /* Home route uses a two-column hero layout for copy and terminal preview. */
@@ -379,9 +543,9 @@ main {
 .proof-strip article {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--panel);
+  background: rgba(9, 16, 25, 0.62);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(4px);
 }
 
 /* Terminal preview card sizes the right-side hero panel. */
@@ -1061,6 +1225,14 @@ html::-webkit-scrollbar-thumb {
     grid-template-columns: 1fr;
   }
 
+  .aether-content {
+    max-width: min(720px, 78vw);
+  }
+
+  .aether-modes {
+    display: none;
+  }
+
   .terminal-panel {
     width: min(100%, 720px);
     min-height: auto;
@@ -1104,9 +1276,6 @@ html::-webkit-scrollbar-thumb {
     transform: rotate(var(--angle)) translateX(clamp(98px, 32vw, 170px)) rotate(calc(var(--angle) * -1));
   }
 
-  .layer-orbit {
-    left: 28vw;
-  }
 }
 
 /* Mobile layout reduces side padding and turns action/link rows into full-width controls. */
@@ -1125,6 +1294,32 @@ html::-webkit-scrollbar-thumb {
 
   .home {
     min-height: auto;
+  }
+
+  .aether-hero {
+    align-items: flex-end;
+    min-height: 100svh;
+    padding-bottom: 6.5rem;
+  }
+
+  .aether-content {
+    max-width: 100%;
+  }
+
+  .aether-hero h1 {
+    font-size: clamp(4.2rem, 20vw, 6.5rem);
+  }
+
+  .aether-actions {
+    flex-direction: column;
+  }
+
+  .aether-action {
+    width: 100%;
+  }
+
+  .aether-scroll-cue {
+    display: none;
   }
 
   .hero-actions,
@@ -1171,7 +1366,7 @@ html::-webkit-scrollbar-thumb {
     transition-duration: 0.01ms !important;
   }
 
-  .parallax-layer {
-    transform: none !important;
+  .aether-spline {
+    display: none;
   }
 }

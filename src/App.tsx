@@ -2,14 +2,14 @@
 import { Outlet } from 'react-router';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
-import ParallaxBackdrop from './components/ParallaxBackdrop';
+import AetherFlowBackdrop from './components/AetherFlowBackdrop';
 
 
 export default function App() {
   return (
     <>
-      {/* Fixed decorative background sits behind all page content and updates via CSS variables. */}
-      <ParallaxBackdrop />
+      {/* Routed pages share a pointer-reactive canvas background without blocking foreground controls. */}
+      <AetherFlowBackdrop />
       {/* Persistent navigation remains mounted while the route content changes. */}
       <NavBar />
       {/* <Outlet /> is where React Router injects the active page's DOM tree. */}
