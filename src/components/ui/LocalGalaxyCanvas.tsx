@@ -184,6 +184,7 @@ const MAX_RENDER_WIDTH = 1920;
 const MAX_RENDER_HEIGHT = 1080;
 const MAX_FRAME_RATE = 48;
 const AUTO_Y_ROTATION_SPEED = 0.000037;
+const INITIAL_ORBIT_ROTATION: Rotation = { x: 27, y: 200 };
 const DRAG_SELECTOR = 'a, button, input, textarea, select, label, [role="button"]';
 const NEBULA_POINT_COUNT = 1_500_000;
 
@@ -441,8 +442,8 @@ export default function LocalGalaxyCanvas() {
     /* Renderer state remains effect-local so every listener, worker, and GPU resource has one owner. */
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const random = createSeededRandom(7311994);
-    const dragRotationTarget: Rotation = { x: 0, y: 0 };
-    const dragRotationCurrent: Rotation = { x: 0, y: 0 };
+    const dragRotationTarget: Rotation = { ...INITIAL_ORBIT_ROTATION };
+    const dragRotationCurrent: Rotation = { ...INITIAL_ORBIT_ROTATION };
     const galaxyParticles = createGalaxyParticles();
     const fieldStars: FieldStar[] = [];
     const nebulaRenderer = createNebulaRenderer(nebulaCanvas);
@@ -453,6 +454,7 @@ export default function LocalGalaxyCanvas() {
       : null;
     let activePointerId: number | null = null;
     let animationFrameId = 0;
+    let animationStartTime: number | null = null;
     let galaxyFrame = particleContext.createImageData(1, 1);
     let height = 0;
     let lastFrameTime = 0;
@@ -660,9 +662,12 @@ export default function LocalGalaxyCanvas() {
 
     /* Compose WebGL nebula points, projected CPU particles, and field stars into one visual frame. */
     const renderFrame = (time = 0) => {
-      const motionTime = reducedMotionQuery.matches ? 0 : time;
+      const motionTime =
+        reducedMotionQuery.matches || animationStartTime === null
+          ? 0
+          : Math.max(0, time - animationStartTime);
       const centerX = width * 0.53;
-      const centerY = height * 0.5;
+      const centerY = height * 0.52;
       const galaxyRadius = Math.max(width, height) * 0.45;
       const layerTransforms = createLayerTransforms(motionTime);
       const pixelData = galaxyFrame.data;
@@ -739,6 +744,10 @@ export default function LocalGalaxyCanvas() {
     const animate = (time: number) => {
       animationFrameId = window.requestAnimationFrame(animate);
 
+      if (animationStartTime === null) {
+        animationStartTime = time;
+      }
+
       if (time - lastFrameTime < 1000 / MAX_FRAME_RATE) {
         return;
       }
@@ -802,6 +811,7 @@ export default function LocalGalaxyCanvas() {
     /* Reduced-motion visitors receive a static galaxy that still responds to deliberate dragging. */
     const startAnimation = () => {
       window.cancelAnimationFrame(animationFrameId);
+      animationStartTime = null;
 
       if (reducedMotionQuery.matches) {
         renderFrame();
