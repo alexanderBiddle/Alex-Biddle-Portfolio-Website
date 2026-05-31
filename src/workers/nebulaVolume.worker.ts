@@ -21,7 +21,6 @@ type WorkerScope = {
 const workerScope = self as unknown as WorkerScope;
 const TAU = Math.PI * 2;
 const POSITION_SCALE = 32767;
-const EMISSION_KNOT_COUNT = 24;
 const LUMINOUS_NUCLEUS_FRACTION = 0.032;
 
 /* Seeded output keeps the generated nebula stable across page loads and worker restarts. */
@@ -68,21 +67,25 @@ workerScope.onmessage = ({ data: { pointCount, seed } }) => {
   };
 
   for (let index = 0; index < pointCount; index += 1) {
-    /* The final particle slice forms a small white-hot nucleus with higher opacity. */
+    /* The final particle slice forms a softly blended white-hot spherical nucleus. */
     if (index >= luminousNucleusStartIndex) {
-      const radius = Math.pow(random(), 0.72) * 0.075;
+      const nucleusRadius = 0.075;
+      const sphericalRadius = Math.pow(random(), 0.9) * nucleusRadius;
+      const polarAngle = Math.acos(2 * random() - 1);
+      const radialDistance = Math.sin(polarAngle) * sphericalRadius;
+      const radialFade = 1 - sphericalRadius / nucleusRadius;
       const angle = random() * TAU;
       const whiteHot = random() > 0.34;
 
       writeParticle(
         index,
-        Math.cos(angle) * radius,
-        (random() - 0.5) * 0.022,
-        Math.sin(angle) * radius,
+        Math.cos(angle) * radialDistance,
+        Math.cos(polarAngle) * sphericalRadius,
+        Math.sin(angle) * radialDistance,
         255,
         whiteHot ? 246 + Math.round(random() * 9) : 216 + Math.round(random() * 24),
         whiteHot ? 211 + Math.round(random() * 35) : 112 + Math.round(random() * 46),
-        86 + Math.round(random() * 92),
+        58 + Math.round(random() * 70 + radialFade * 50),
       );
       continue;
     }
@@ -113,9 +116,9 @@ workerScope.onmessage = ({ data: { pointCount, seed } }) => {
       continue;
     }
 
-    /* A tighter disk reinforces the bright center and fades toward the outer radius. */
+    /* A tighter disk fills the bright center continuously and fades toward the outer radius. */
     if (family < 0.8) {
-      const radius = 0.082 + Math.pow(random(), 2.55) * 0.918;
+      const radius = Math.pow(random(), 1.7);
       const angle = random() * TAU + radius * 5.6;
       const thickness = 0.014 + radius * 0.08;
       const whiteHot = radius < 0.23;
@@ -130,29 +133,6 @@ workerScope.onmessage = ({ data: { pointCount, seed } }) => {
         whiteHot ? 249 : yellowHot ? 210 : 164,
         whiteHot ? 224 : yellowHot ? 112 : 62,
         30 + Math.round(random() * 58),
-      );
-      continue;
-    }
-
-    /* Emission knots create small cloud-like concentrations along recurring orbital positions. */
-    if (family < 0.84) {
-      const knot = index % EMISSION_KNOT_COUNT;
-      const knotRadius = 0.2 + (knot % 12) * 0.065;
-      const knotAngle = (knot % 4) * (TAU / 4) + knotRadius * 5.8;
-      const spread = 0.035 + random() * 0.075;
-      const cloudAngle = random() * TAU;
-      const cloudRadius = Math.pow(random(), 1.8) * spread;
-      const coolAccent = random() < 0.18;
-
-      writeParticle(
-        index,
-        Math.cos(knotAngle) * knotRadius + Math.cos(cloudAngle) * cloudRadius,
-        ((knot % 3) - 1) * 0.012 + (random() - 0.5) * spread * 0.34,
-        Math.sin(knotAngle) * knotRadius + Math.sin(cloudAngle) * cloudRadius,
-        coolAccent ? 151 : 255,
-        coolAccent ? 188 : 182 + Math.round(random() * 44),
-        coolAccent ? 255 : 76 + Math.round(random() * 72),
-        10 + Math.round(random() * 28),
       );
       continue;
     }

@@ -29,8 +29,8 @@ const POINTER_RADIUS = 190;
 
 export default function AetherFlowCanvas({
   className = '',
-  density = 11000,
-  maxParticles = 500,
+  density = 11000 / 1.3,
+  maxParticles = 650,
 }: AetherFlowCanvasProps) {
   /* The ref exposes the mounted canvas to the imperative 2D drawing loop. */
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,7 +64,7 @@ export default function AetherFlowCanvas({
 
     /* Canvas area determines the particle count while lower and upper bounds limit extremes. */
     const initialize = () => {
-      const particleCount = Math.min(maxParticles, Math.max(42, Math.round((width * height) / density)));
+      const particleCount = Math.min(maxParticles, Math.max(55, Math.round((width * height) / density)));
       particles = Array.from({ length: particleCount }, createParticle);
     };
 
@@ -130,8 +130,8 @@ export default function AetherFlowCanvas({
             : Math.hypot(first.x - pointer.x, first.y - pointer.y);
 
           context.strokeStyle = pointerDistance < POINTER_RADIUS
-            ? `rgba(183, 247, 221, ${Math.min(0.78, opacity + 0.2)})`
-            : `rgba(53, 211, 154, ${opacity})`;
+            ? `rgba(174, 223, 255, ${Math.min(0.78, opacity + 0.2)})`
+            : `rgba(13, 158, 255, ${opacity})`;
           context.lineWidth = pointerDistance < POINTER_RADIUS ? 1.15 : 0.8;
           context.beginPath();
           context.moveTo(first.x, first.y);
@@ -144,7 +144,7 @@ export default function AetherFlowCanvas({
     /* Points are drawn after links so each node stays legible above the connection network. */
     const drawParticles = () => {
       for (const particle of particles) {
-        context.fillStyle = 'rgba(183, 247, 221, 0.84)';
+        context.fillStyle = 'rgba(174, 223, 255, 0.84)';
         context.beginPath();
         context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         context.fill();

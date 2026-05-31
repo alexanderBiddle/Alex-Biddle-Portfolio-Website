@@ -28,7 +28,7 @@ The site should feel like a live security operations surface with a deliberate c
 
 ## Design Principles
 
-1. **Signal, not wash.** Green is a meaningful illumination layer for status, interaction, and hierarchy. It must not tint the entire interface.
+1. **Signal, not wash.** Blue is a meaningful illumination layer for status, interaction, and hierarchy. It must not flatten the interface into one undifferentiated tint.
 2. **Evidence over spectacle.** Atmospheric effects support the security narrative, while project scope and readable content remain primary.
 3. **Operational clarity.** Visitors should scan the site like a well-structured security report: identity, capability, evidence, outcome, contact.
 4. **Range with one voice.** Offensive security, defensive engineering, analysis, and frontend development belong to one coherent professional profile.

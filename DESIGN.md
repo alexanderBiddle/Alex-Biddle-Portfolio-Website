@@ -1,16 +1,16 @@
 ---
 name: BiddleSec Portfolio
-description: Cybersecurity engineering portfolio with graphite infrastructure and emerald signal light.
+description: Cybersecurity engineering portfolio with ink-black infrastructure and electric blue signal light.
 colors:
-  void-graphite: "#05080B"
-  deep-cyber: "#0B1115"
-  grid-graphite: "#111C1E"
-  signal-deep: "#064E3B"
-  signal-muted: "#0B6B58"
-  signal: "#0A8F68"
-  signal-bright: "#35D39A"
-  signal-highlight: "#B7F7DD"
-  text-primary: "#DCEFE8"
+  void-ink: "#000407"
+  deep-cyber: "#000D16"
+  grid-blue: "#001A2B"
+  signal-deep: "#002945"
+  signal-muted: "#006CB4"
+  signal: "#0067AB"
+  signal-bright: "#0D9EFF"
+  signal-highlight: "#AEDFFF"
+  text-primary: "#ACDEFF"
 typography:
   display:
     fontFamily: "Plus Jakarta Sans, sans-serif"
@@ -50,13 +50,13 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.signal-highlight}"
-    textColor: "{colors.void-graphite}"
+    textColor: "{colors.void-ink}"
     rounded: "{rounded.framed}"
     padding: "0 18px"
     height: "52px"
   button-primary-hover:
     backgroundColor: "{colors.signal-bright}"
-    textColor: "{colors.void-graphite}"
+    textColor: "{colors.void-ink}"
   button-secondary:
     backgroundColor: "{colors.deep-cyber}"
     textColor: "{colors.signal-highlight}"
@@ -79,43 +79,43 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Emerald Signal Grid"**
+**Creative North Star: "The Abyssal Blue Signal Grid"**
 
-The interface is a graphite security surface lit by selective emerald signals. Near-black infrastructure keeps the content grounded, while cyber-green appears where the system is active: focus rings, links, status markers, tags, radar geometry, and particle connections. The effect is cyberpunk without becoming costume.
+The interface is an ink-black security surface lit by selective electric-blue signals. Near-black infrastructure keeps the content grounded, while brighter blues appear where the system is active: focus rings, links, status markers, tags, radar geometry, and particle connections. The effect is cyberpunk without becoming costume.
 
-The atmospheric backdrop uses a broader low-volume spectrum of blue, violet, muted magenta, mint, and emerald energy. This prevents a green wash while preserving the electronic signal-field identity. Content remains readable above the canvas and motion stays secondary to the portfolio narrative.
+The atmospheric galaxy keeps its existing broader low-volume spectrum of blue, violet, muted magenta, and warm energy. That local artwork is intentionally protected from interface palette changes. Content remains readable above the canvas and motion stays secondary to the portfolio narrative.
 
 **Key Characteristics:**
-- Graphite-black core surfaces with controlled depth.
-- Saturated emerald signals used for hierarchy and interaction.
-- Pale mint text highlights for readable contrast.
+- Ink-black core surfaces with controlled dark-blue depth.
+- Saturated electric-blue signals used for hierarchy and interaction.
+- Pale sky-blue text highlights for readable contrast.
 - Square-framed controls with restrained 8px corners.
 - Reactive canvas imagery that yields to content and reduced-motion settings.
 
 ## Colors
 
-The palette separates infrastructure from illumination. Graphite owns the surface area; emerald owns the signal.
+The palette separates infrastructure from illumination. Ink black and deep-space blue own the surface area; brighter Yale blue owns the signal.
 
 ### Primary
-- **Encrypted Emerald** (`signal`): Primary active-state color for status, selected states, and controlled glow.
+- **Cobalt Signal** (`signal`): Primary active-state color for status, selected states, and controlled glow.
 - **Live Trace** (`signal-bright`): High-energy border, radar, network, and hover accent.
-- **Signal Mint** (`signal-highlight`): Bright highlight for hero emphasis, focus rings, and primary controls.
+- **Signal Ice** (`signal-highlight`): Bright highlight for hero emphasis, focus rings, and primary controls.
 
 ### Secondary
-- **Deep Relay** (`signal-deep`): Dark green tint for quiet chips, framed outcomes, and subtle fills.
-- **Muted Channel** (`signal-muted`): Supporting dark teal-green for low-intensity visual layers.
+- **Deep Relay** (`signal-deep`): Dark blue tint for quiet chips, framed outcomes, and subtle fills.
+- **Muted Channel** (`signal-muted`): Supporting Yale blue for low-intensity visual layers.
 
 ### Neutral
-- **Graphite Void** (`void-graphite`): Page and canvas base.
-- **Deep Cyber Graphite** (`deep-cyber`): Default panel and secondary-button surface.
-- **Grid Graphite** (`grid-graphite`): Elevated panel surface and hover depth.
-- **Readable Mineral** (`text-primary`): Primary text color.
+- **Ink Void** (`void-ink`): Page and canvas base.
+- **Deep Cyber Blue** (`deep-cyber`): Default panel and secondary-button surface.
+- **Grid Blue** (`grid-blue`): Elevated panel surface and hover depth.
+- **Readable Sky** (`text-primary`): Primary text color.
 
 ### Named Rules
 
-**The Signal, Not Wash Rule.** Green is prohibited as an all-screen overlay. Use graphite for large surfaces and emerald for meaningful illumination.
+**The Signal, Not Wash Rule.** Bright blue is prohibited as an all-screen overlay. Use ink black and deep-space blue for large surfaces, then reserve brighter Yale blue for meaningful illumination.
 
-**The Controlled Spectrum Rule.** Blue, violet, and muted magenta may appear inside the atmospheric canvas only. Product controls stay graphite, emerald, and mint.
+**The Protected Galaxy Rule.** The local galaxy renderer keeps its existing blue, violet, muted magenta, and warm spectrum. Product controls and the connection network stay within the supplied ink-black, deep-space-blue, and Yale-blue scales.
 
 ## Typography
 
@@ -138,49 +138,49 @@ The palette separates infrastructure from illumination. Graphite owns the surfac
 
 ## Elevation
 
-Depth comes from graphite tonal layering, thin emerald-aware borders, and one ambient shadow. The system avoids decorative glass stacks. Blur is allowed only where a foreground control must remain readable over the animated canvas.
+Depth comes from ink-black and dark-blue tonal layering, thin blue-aware borders, and one ambient shadow. The system avoids decorative glass stacks. Blur is allowed only where a foreground control must remain readable over the animated canvas.
 
 ### Shadow Vocabulary
-- **Ambient Panel** (`0 24px 70px rgba(2, 6, 9, 0.62)`): Shared panel and card separation from the reactive background.
-- **Navigation Depth** (`0 16px 40px rgba(2, 6, 9, 0.54)`): Fixed navigation separation without a heavy drop shadow.
-- **Signal Glow** (`0 0 18px rgba(10, 143, 104, 0.9)`): Status dots and rare active indicators only.
+- **Ambient Panel** (`0 24px 70px rgba(0, 3, 5, 0.62)`): Shared panel and card separation from the reactive background.
+- **Navigation Depth** (`0 16px 40px rgba(0, 3, 5, 0.54)`): Fixed navigation separation without a heavy drop shadow.
+- **Signal Glow** (`0 0 18px rgba(0, 103, 171, 0.9)`): Status dots and rare active indicators only.
 
 ### Named Rules
 
-**The Dark Infrastructure Rule.** Shadows remain graphite-black. Green glow is reserved for active signals and never used as a general elevation effect.
+**The Dark Infrastructure Rule.** Shadows remain ink-black. Blue glow is reserved for active signals and never used as a general elevation effect.
 
 ## Components
 
 ### Buttons
 - **Shape:** Compact framed rectangle with gently controlled corners (`8px`).
-- **Primary:** Signal Mint background with Graphite Void text, minimum height `52px`.
-- **Hover / Focus:** Primary hover shifts to Live Trace. All keyboard focus rings use Signal Mint with a `4px` offset.
-- **Secondary:** Deep Cyber Graphite surface, Signal Mint text, and a thin mint-aware border.
+- **Primary:** Signal Ice background with Ink Void text, minimum height `52px`.
+- **Hover / Focus:** Primary hover shifts to Live Trace. All keyboard focus rings use Signal Ice with a `4px` offset.
+- **Secondary:** Deep Cyber Blue surface, Signal Ice text, and a thin blue-aware border.
 
 ### Chips
-- **Style:** Dark emerald tint, thin Live Trace border, Signal Mint text, and compact `7px 10px` spacing.
+- **Style:** Dark-blue tint, thin Live Trace border, Signal Ice text, and compact `7px 10px` spacing.
 - **State:** Chips summarize technology and work types. They remain quiet enough to support card content.
 
 ### Cards / Containers
 - **Corner Style:** Framed corners (`8px`), not soft rounded cards.
-- **Background:** Deep Cyber Graphite at rest and Grid Graphite on interactive hover.
+- **Background:** Deep Cyber Blue at rest and Grid Blue on interactive hover.
 - **Shadow Strategy:** Use Ambient Panel only.
 - **Border:** Thin, low-opacity Live Trace stroke.
 - **Internal Padding:** `clamp(1.25rem, 2.5vw, 1.75rem)` for feature and project cards.
 
 ### Navigation
-- **Style:** Fixed graphite bar with a thin signal divider and restrained blur. Active links receive a low-opacity emerald fill and a Live Trace border.
+- **Style:** Fixed ink-black bar with a thin signal divider and restrained blur. Active links receive a low-opacity blue fill and a Live Trace border.
 - **Mobile Treatment:** Stack brand and route controls below `860px`; preserve horizontal scrolling for links.
 
 ### Aether Signal Backdrop
-- **Style:** A local galaxy renderer sits beneath a mint-and-emerald particle network. The galaxy may contain controlled blue, violet, and muted magenta energy so emerald remains an accent.
+- **Style:** A protected local galaxy renderer sits beneath an electric-blue particle network. The galaxy keeps its existing controlled blue, violet, muted magenta, and warm energy.
 - **Behavior:** Pointer response never blocks foreground controls. Respect `prefers-reduced-motion`.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** use Graphite Void and Deep Cyber Graphite for most surface area.
-- **Do** reserve Encrypted Emerald and Live Trace for interactive, status, and hierarchy signals.
+- **Do** use Ink Void and Deep Cyber Blue for most surface area.
+- **Do** reserve Cobalt Signal and Live Trace for interactive, status, and hierarchy signals.
 - **Do** preserve visible keyboard focus rings and reduced-motion behavior.
 - **Do** use the atmospheric canvas as supporting imagery, with content readability taking priority.
 - **Do** keep the cyberpunk feel controlled, technical, and credible.

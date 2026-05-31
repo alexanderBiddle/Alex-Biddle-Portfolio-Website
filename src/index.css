@@ -2,29 +2,169 @@
 
 /* Global design tokens drive colors, spacing, radius, and nav height across the DOM. */
 :root {
-  --void: #05080b;
-  --deep-cyber: #0b1115;
-  --forest-grid: #111c1e;
-  --signal-deep: #064e3b;
-  --signal: #0a8f68;
-  --signal-muted: #0b6b58;
-  --signal-bright: #35d39a;
-  --signal-highlight: #b7f7dd;
+  /* ==========================================================================
+     INK BLACK SCALES
+     ========================================================================== */
+  /* ink_black (default #00111c) */
+  --ink-black-1-default: #00111c;
+  --ink-black-1-100: #000305;
+  --ink-black-1-200: #00060a;
+  --ink-black-1-300: #00090f;
+  --ink-black-1-400: #000c14;
+  --ink-black-1-500: #00111c;
+  --ink-black-1-600: #00497a;
+  --ink-black-1-700: #0084db;
+  --ink-black-1-800: #3db1ff;
+  --ink-black-1-900: #9ed8ff;
+
+  /* ink_black (default #001523) */
+  --ink-black-2-default: #001523;
+  --ink-black-2-100: #000407;
+  --ink-black-2-200: #00090e;
+  --ink-black-2-300: #000d15;
+  --ink-black-2-400: #00111d;
+  --ink-black-2-500: #001523;
+  --ink-black-2-600: #004e83;
+  --ink-black-2-700: #0087e1;
+  --ink-black-2-800: #41b3ff;
+  --ink-black-2-900: #a0d9ff;
+
+  /* ink_black (default #001a2c) */
+  --ink-black-3-default: #001a2c;
+  --ink-black-3-100: #000509;
+  --ink-black-3-200: #000b12;
+  --ink-black-3-300: #00101c;
+  --ink-black-3-400: #001525;
+  --ink-black-3-500: #001a2c;
+  --ink-black-3-600: #00518b;
+  --ink-black-3-700: #0087e8;
+  --ink-black-3-800: #45b2ff;
+  --ink-black-3-900: #a2d8ff;
+
+  /* ==========================================================================
+     DEEP SPACE BLUE SCALES
+     ========================================================================== */
+  /* deep_space_blue (default #002137) */
+  --deep-space-1-default: #002137;
+  --deep-space-1-100: #00070b;
+  --deep-space-1-200: #000d16;
+  --deep-space-1-300: #001422;
+  --deep-space-1-400: #001b2d;
+  --deep-space-1-500: #002137;
+  --deep-space-1-600: #005893;
+  --deep-space-1-700: #008fee;
+  --deep-space-1-800: #49b6ff;
+  --deep-space-1-900: #a4dbff;
+
+  /* deep_space_blue (default #00253e) */
+  --deep-space-2-default: #00253e;
+  --deep-space-2-100: #00070c;
+  --deep-space-2-200: #000f18;
+  --deep-space-2-300: #001625;
+  --deep-space-2-400: #001d31;
+  --deep-space-2-500: #00253e;
+  --deep-space-2-600: #005b97;
+  --deep-space-2-700: #0090f1;
+  --deep-space-2-800: #4bb7ff;
+  --deep-space-2-900: #a5dbff;
+
+  /* deep_space_blue (default #002945) */
+  --deep-space-3-default: #002945;
+  --deep-space-3-100: #00090e;
+  --deep-space-3-200: #00111d;
+  --deep-space-3-300: #001a2b;
+  --deep-space-3-400: #002239;
+  --deep-space-3-500: #002945;
+  --deep-space-3-600: #005f9f;
+  --deep-space-3-700: #0094f7;
+  --deep-space-3-800: #50b9ff;
+  --deep-space-3-900: #a7dcff;
+
+  /* deep_space_blue (default #002e4e) */
+  --deep-space-4-default: #002e4e;
+  --deep-space-4-100: #00090f;
+  --deep-space-4-200: #00121f;
+  --deep-space-4-300: #001b2e;
+  --deep-space-4-400: #00243d;
+  --deep-space-4-500: #002e4e;
+  --deep-space-4-600: #005fa3;
+  --deep-space-4-700: #0092fa;
+  --deep-space-4-800: #52b7ff;
+  --deep-space-4-900: #a8dbff;
+
+  /* deep_space_blue (default #003356) */
+  --deep-space-5-default: #003356;
+  --deep-space-5-100: #000a11;
+  --deep-space-5-200: #001523;
+  --deep-space-5-300: #001f34;
+  --deep-space-5-400: #002a45;
+  --deep-space-5-500: #003356;
+  --deep-space-5-600: #0067ab;
+  --deep-space-5-700: #0199ff;
+  --deep-space-5-800: #56bbff;
+  --deep-space-5-900: #aaddff;
+
+  /* ==========================================================================
+     YALE BLUE SCALES
+     ========================================================================== */
+  /* yale_blue (default #003a61) */
+  --yale-blue-1-default: #003a61;
+  --yale-blue-1-100: #000c13;
+  --yale-blue-1-200: #001727;
+  --yale-blue-1-300: #00233a;
+  --yale-blue-1-400: #002f4e;
+  --yale-blue-1-500: #003a61;
+  --yale-blue-1-600: #006cb4;
+  --yale-blue-1-700: #079cff;
+  --yale-blue-1-800: #5abdff;
+  --yale-blue-1-900: #acdeff;
+
+  /* yale_blue (default #00406c) */
+  --yale-blue-2-default: #00406c;
+  --yale-blue-2-100: #000d15;
+  --yale-blue-2-200: #001a2b;
+  --yale-blue-2-300: #002740;
+  --yale-blue-2-400: #003356;
+  --yale-blue-2-500: #00406c;
+  --yale-blue-2-600: #0071bc;
+  --yale-blue-2-700: #0d9eff;
+  --yale-blue-2-800: #5ebfff;
+  --yale-blue-2-900: #aedfff;
+
+  /* ==========================================================================
+     THEME ASSIGNMENTS (DARK BLUE INFRASTRUCTURE AND SIGNALS)
+     ========================================================================== */
+  --void: var(--ink-black-2-100);
+  --deep-cyber: var(--deep-space-1-200);
+  --forest-grid: var(--deep-space-3-300);
+  --signal-deep: var(--deep-space-3-default);
+  --signal: var(--deep-space-5-600);
+  --signal-muted: var(--yale-blue-1-600);
+  --signal-bright: var(--yale-blue-2-700);
+  --signal-highlight: var(--yale-blue-2-900);
+  --text: var(--yale-blue-1-900);
+
+  /* RGB channels let translucent UI layers stay inside the same supplied palette. */
+  --void-rgb: 0 4 7;
+  --deep-cyber-rgb: 0 13 22;
+  --forest-grid-rgb: 0 26 43;
+  --signal-deep-rgb: 0 41 69;
+  --signal-rgb: 0 103 171;
+  --signal-muted-rgb: 0 108 180;
+  --signal-bright-rgb: 13 158 255;
+  --signal-highlight-rgb: 174 223 255;
+  --shadow-rgb: 0 3 5;
+
   --bg: var(--void);
   --bg-soft: var(--deep-cyber);
-  --panel: rgba(11, 17, 21, 0.82);
-  --panel-strong: rgba(17, 28, 30, 0.94);
-  --line: rgba(53, 211, 154, 0.3);
-  --text: #dcefe8;
-  --muted: rgba(183, 247, 221, 0.78);
-  --subtle: rgba(183, 247, 221, 0.56);
-  --blue: var(--signal-bright);
+  --panel: rgb(var(--deep-cyber-rgb) / 0.85);
+  --panel-strong: rgb(var(--forest-grid-rgb) / 0.94);
+  --line: rgb(var(--signal-muted-rgb) / 0.35);
+  --muted: rgb(var(--signal-highlight-rgb) / 0.78);
+  --subtle: rgb(var(--signal-highlight-rgb) / 0.56);
+  --blue: var(--yale-blue-2-800);
   --cyan: var(--signal-highlight);
-  --green: var(--signal);
-  --red: var(--signal-deep);
-  --amber: var(--signal-bright);
-  --violet: var(--signal-muted);
-  --shadow: 0 24px 70px rgba(2, 6, 9, 0.62);
+  --shadow: 0 24px 70px rgb(var(--shadow-rgb) / 0.62);
   --radius: 8px;
   --page-x: clamp(1.25rem, 5vw, 5.75rem);
   --nav-h: 82px;
@@ -137,9 +277,9 @@ main {
   min-height: var(--nav-h);
   padding: 16px var(--page-x);
   border-bottom: 1px solid var(--line);
-  background: rgba(5, 8, 11, 0.88);
+  background: rgb(var(--void-rgb) / 0.88);
   backdrop-filter: blur(16px);
-  box-shadow: 0 16px 40px rgba(2, 6, 9, 0.54);
+  box-shadow: 0 16px 40px rgb(var(--shadow-rgb) / 0.54);
 }
 
 /* Brand block lays out the initials badge beside the text logo. */
@@ -157,10 +297,10 @@ main {
   width: clamp(38px, 4vw, 44px);
   height: clamp(38px, 4vw, 44px);
   place-items: center;
-  border: 1px solid rgba(183, 247, 221, 0.46);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.46);
   border-radius: var(--radius);
   color: var(--cyan);
-  background: rgba(10, 143, 104, 0.16);
+  background: rgb(var(--signal-rgb) / 0.16);
 }
 
 /* Navigation links align horizontally and keep route controls grouped. */
@@ -187,8 +327,8 @@ main {
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--text);
-  border-color: rgba(53, 211, 154, 0.48);
-  background: rgba(10, 143, 104, 0.18);
+  border-color: rgb(var(--signal-bright-rgb) / 0.48);
+  background: rgb(var(--signal-rgb) / 0.18);
 }
 
 /* Aether hero owns the home viewport while preserving the shared navigation above it. */
@@ -237,7 +377,7 @@ main {
 .aether-copy {
   max-width: 640px;
   margin-top: clamp(1.5rem, 3vh, 2.1rem);
-  color: rgba(183, 247, 221, 0.82);
+  color: rgb(var(--signal-highlight-rgb) / 0.82);
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   line-height: 1.75;
 }
@@ -257,7 +397,7 @@ main {
   justify-content: center;
   gap: 10px;
   padding: 0 18px;
-  border: 1px solid rgba(183, 247, 221, 0.3);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.3);
   border-radius: var(--radius);
   font-size: 0.92rem;
   font-weight: 800;
@@ -281,13 +421,13 @@ main {
 
 .aether-action.secondary {
   color: var(--signal-highlight);
-  background: rgba(11, 17, 21, 0.74);
+  background: rgb(var(--deep-cyber-rgb) / 0.74);
   backdrop-filter: blur(14px);
 }
 
 .aether-action.secondary:hover {
-  border-color: rgba(183, 247, 221, 0.58);
-  background: rgba(17, 28, 30, 0.9);
+  border-color: rgb(var(--signal-highlight-rgb) / 0.58);
+  background: rgb(var(--forest-grid-rgb) / 0.9);
 }
 
 .aether-scroll-cue {
@@ -318,7 +458,7 @@ main {
   position: absolute;
   inset: auto var(--page-x) clamp(1.5rem, 4vh, 3rem);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(183, 247, 221, 0.52), transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--signal-highlight-rgb) / 0.52), transparent);
 }
 
 /* Foreground content gets a stacking context above the decorative background layers. */
@@ -347,9 +487,9 @@ main {
   gap: 10px;
   margin-bottom: 18px;
   padding: 9px 12px;
-  border: 1px solid rgba(183, 247, 221, 0.3);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.3);
   border-radius: 999px;
-  background: rgba(10, 143, 104, 0.16);
+  background: rgb(var(--signal-rgb) / 0.16);
   color: var(--text);
   letter-spacing: 0;
   text-transform: none;
@@ -360,8 +500,8 @@ main {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 18px rgba(10, 143, 104, 0.9);
+  background: var(--signal);
+  box-shadow: 0 0 18px rgb(var(--signal-rgb) / 0.9);
 }
 
 /* Eyebrow spacing separates small labels from their headings. */
@@ -427,7 +567,7 @@ main {
 /* Secondary action stays quieter while remaining visible on dark backgrounds. */
 .button.secondary {
   color: var(--text);
-  background: rgba(183, 247, 221, 0.08);
+  background: rgb(var(--signal-highlight-rgb) / 0.08);
 }
 
 /* Hero stack arranges capability tags in a responsive wrap row. */
@@ -442,10 +582,10 @@ main {
 /* Shared tag styling keeps hero labels and project tech labels visually consistent. */
 .hero-stack span,
 .tech-tag {
-  border: 1px solid rgba(53, 211, 154, 0.34);
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.34);
   border-radius: var(--radius);
   color: var(--cyan);
-  background: rgba(10, 143, 104, 0.14);
+  background: rgb(var(--signal-rgb) / 0.14);
   font-size: clamp(0.74rem, 1vw, 0.82rem);
   font-weight: 800;
 }
@@ -467,7 +607,7 @@ main {
 .proof-strip article {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(11, 17, 21, 0.72);
+  background: rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
   backdrop-filter: blur(4px);
 }
@@ -488,7 +628,7 @@ main {
   min-height: 46px;
   padding: 0 14px;
   border-bottom: 1px solid var(--line);
-  background: rgba(183, 247, 221, 0.06);
+  background: rgb(var(--signal-highlight-rgb) / 0.06);
 }
 
 /* Window control dots are built from empty spans in the JSX. */
@@ -531,10 +671,10 @@ main {
   line-height: 1.7;
 }
 
-/* Prompt symbols and success status share the green terminal color. */
+/* Prompt symbols and success status share the primary signal blue. */
 .terminal-body span,
 .terminal-ok {
-  color: var(--green);
+  color: var(--signal);
 }
 
 /* Terminal list spacing keeps capability lines easy to scan. */
@@ -552,11 +692,11 @@ main {
   aspect-ratio: 1;
   place-items: center;
   margin: clamp(0.8rem, 3vh, 1.5rem) auto 0;
-  border: 1px solid rgba(183, 247, 221, 0.38);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.38);
   border-radius: 50%;
   background:
-    linear-gradient(90deg, transparent 49.5%, rgba(53, 211, 154, 0.34) 50%, transparent 50.5%),
-    linear-gradient(0deg, transparent 49.5%, rgba(53, 211, 154, 0.34) 50%, transparent 50.5%);
+    linear-gradient(90deg, transparent 49.5%, rgb(var(--signal-bright-rgb) / 0.34) 50%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, rgb(var(--signal-bright-rgb) / 0.34) 50%, transparent 50.5%);
   overflow: hidden;
 }
 
@@ -565,7 +705,7 @@ main {
 .radar::after {
   content: "";
   position: absolute;
-  border: 1px solid rgba(53, 211, 154, 0.28);
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.28);
   border-radius: 50%;
 }
 
@@ -585,7 +725,7 @@ main {
   inset: 50% 50% auto auto;
   width: 48%;
   height: 2px;
-  background: linear-gradient(90deg, rgba(183, 247, 221, 0.96), transparent);
+  background: linear-gradient(90deg, rgb(var(--signal-highlight-rgb) / 0.96), transparent);
   transform-origin: left center;
   animation: radarSweep 4.8s linear infinite;
 }
@@ -649,19 +789,19 @@ main {
   background: linear-gradient(90deg, var(--cyan), transparent);
 }
 
-/* Offensive focus receives a red-team accent while preserving readable dark surfaces. */
+/* Offensive focus receives the deepest signal shade while preserving readable dark surfaces. */
 .scope-card.offense::before {
-  background: linear-gradient(90deg, var(--red), transparent);
+  background: linear-gradient(90deg, var(--signal-deep), transparent);
 }
 
-/* Defensive focus uses the green accent already established by the radar and terminal states. */
+/* Defensive focus uses the primary blue signal established by the radar and terminal states. */
 .scope-card.defense::before {
-  background: linear-gradient(90deg, var(--green), transparent);
+  background: linear-gradient(90deg, var(--signal), transparent);
 }
 
-/* Analyst focus uses amber as a restrained evidence/review signal. */
+/* Analyst focus uses the brightest blue as a restrained evidence/review signal. */
 .scope-card.analysis::before {
-  background: linear-gradient(90deg, var(--amber), transparent);
+  background: linear-gradient(90deg, var(--signal-bright), transparent);
 }
 
 /* Build focus ties secure development back into the existing blue/cyan interface language. */
@@ -689,11 +829,11 @@ main {
   padding: clamp(1rem, 2vw, 1.4rem);
 }
 
-/* Proof numbers draw attention with the green accent. */
+/* Proof numbers draw attention with the primary blue signal. */
 .proof-strip strong {
   display: block;
   margin-bottom: 8px;
-  color: var(--green);
+  color: var(--signal);
   font-size: clamp(1.2rem, 2vw, 1.6rem);
 }
 
@@ -767,7 +907,7 @@ main {
 .process-card span {
   display: inline-block;
   margin-bottom: 12px;
-  color: var(--green);
+  color: var(--signal);
   font-weight: 800;
 }
 
@@ -813,9 +953,9 @@ main {
   min-height: clamp(270px, 42vw, 390px);
   place-items: center;
   margin: 0 auto clamp(1.8rem, 5vh, 3rem);
-  border: 1px solid rgba(53, 211, 154, 0.3);
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.3);
   border-radius: 50%;
-  background: rgba(11, 17, 21, 0.5);
+  background: rgb(var(--deep-cyber-rgb) / 0.5);
 }
 
 /* Orbit pseudo-elements draw inner guide rings without adding extra DOM. */
@@ -823,7 +963,7 @@ main {
 .skill-orbit::after {
   content: "";
   position: absolute;
-  border: 1px solid rgba(53, 211, 154, 0.22);
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.22);
   border-radius: 50%;
 }
 
@@ -854,10 +994,10 @@ main {
   top: 50%;
   z-index: 3;
   padding: 8px 12px;
-  border: 1px solid rgba(183, 247, 221, 0.32);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.32);
   border-radius: 999px;
   color: var(--cyan);
-  background: rgba(5, 8, 11, 0.92);
+  background: rgb(var(--void-rgb) / 0.92);
   font-size: clamp(0.72rem, 1vw, 0.86rem);
   font-weight: 800;
   transform: rotate(var(--angle)) translateX(clamp(105px, 22vw, 245px)) rotate(calc(var(--angle) * -1));
@@ -883,7 +1023,7 @@ main {
 .feature-card:hover,
 .project-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(183, 247, 221, 0.46);
+  border-color: rgb(var(--signal-highlight-rgb) / 0.46);
   background: var(--panel-strong);
 }
 
@@ -896,7 +1036,7 @@ main {
   place-items: center;
   border-radius: var(--radius);
   color: var(--cyan);
-  background: rgba(10, 143, 104, 0.18);
+  background: rgb(var(--signal-rgb) / 0.18);
 }
 
 /* Feature lists are custom-styled, so default bullets are removed. */
@@ -914,7 +1054,7 @@ main {
   height: 7px;
   margin-right: 10px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--signal);
 }
 
 /* Project info uses flex so tech tags can sit at the bottom of each card. */
@@ -963,7 +1103,7 @@ main {
   display: grid;
   gap: 7px;
   padding: 14px 0;
-  border-top: 1px solid rgba(53, 211, 154, 0.22);
+  border-top: 1px solid rgb(var(--signal-bright-rgb) / 0.22);
 }
 
 .case-study-field p {
@@ -980,10 +1120,10 @@ main {
 .project-outcome {
   margin-top: 16px;
   padding: 12px 14px;
-  border: 1px solid rgba(10, 143, 104, 0.5);
+  border: 1px solid rgb(var(--signal-rgb) / 0.5);
   border-radius: var(--radius);
   color: var(--text);
-  background: rgba(10, 143, 104, 0.12);
+  background: rgb(var(--signal-rgb) / 0.12);
   font-weight: 700;
 }
 
@@ -1020,10 +1160,10 @@ main {
   align-items: center;
   min-height: 42px;
   padding: 9px 11px;
-  border: 1px solid rgba(183, 247, 221, 0.28);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.28);
   border-radius: var(--radius);
   color: var(--text);
-  background: rgba(10, 143, 104, 0.14);
+  background: rgb(var(--signal-rgb) / 0.14);
   font-size: 0.9rem;
   font-weight: 800;
 }
@@ -1043,10 +1183,10 @@ main {
   align-items: center;
   gap: 14px;
   padding: 20px;
-  border: 1px solid rgba(183, 247, 221, 0.14);
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.14);
   border-radius: var(--radius);
   color: var(--text);
-  background: rgba(183, 247, 221, 0.07);
+  background: rgb(var(--signal-highlight-rgb) / 0.07);
   font-weight: 800;
   overflow-wrap: anywhere;
   transition: transform 0.2s ease, border-color 0.2s ease;
@@ -1055,7 +1195,7 @@ main {
 /* Contact link hover confirms interactivity without changing layout. */
 .contact-link:hover {
   transform: translateY(-3px);
-  border-color: rgba(183, 247, 221, 0.46);
+  border-color: rgb(var(--signal-highlight-rgb) / 0.46);
 }
 
 /* Contact icons keep their accent color and fixed width inside flex rows. */
@@ -1075,7 +1215,7 @@ main {
   gap: 24px;
   padding: 30px var(--page-x);
   border-top: 1px solid var(--line);
-  background: rgba(5, 8, 11, 0.94);
+  background: rgb(var(--void-rgb) / 0.94);
 }
 
 /* Footer brand text gets a small separation from its supporting paragraph. */
@@ -1105,14 +1245,14 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--muted);
-  background: rgba(183, 247, 221, 0.06);
+  background: rgb(var(--signal-highlight-rgb) / 0.06);
   transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Social hover state highlights the icon and lifts the control. */
 .social-link:hover {
   color: var(--cyan);
-  border-color: rgba(183, 247, 221, 0.46);
+  border-color: rgb(var(--signal-highlight-rgb) / 0.46);
   transform: translateY(-2px);
 }
 

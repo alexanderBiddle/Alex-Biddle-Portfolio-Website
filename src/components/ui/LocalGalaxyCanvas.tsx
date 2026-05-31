@@ -119,7 +119,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
   {
     arms: 5,
     colors: [...WARM_ARM_COLOR_INDICES, ...COOL_COLOR_INDICES],
-    count: 30000,
+    count: 100000,
     opacity: [0.2, 0.78],
     radialScale: 1.08,
     radiusPower: 0.74,
@@ -134,7 +134,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
   {
     arms: 3,
     colors: [...WARM_ARM_COLOR_INDICES, ...COOL_COLOR_INDICES],
-    count: 15000,
+    count: 100000,
     opacity: [0.14, 0.58],
     radialScale: 1.04,
     radiusPower: 0.86,
@@ -149,7 +149,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
   {
     arms: 2,
     colors: [...WARM_ARM_COLOR_INDICES, ...CORE_COLOR_INDICES],
-    count: 9000,
+    count: 100000,
     opacity: [0.12, 0.52],
     radialScale: 0.94,
     radiusPower: 0.92,
@@ -167,7 +167,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
 const CORE_POINT_COUNT = 50000;
 const NUCLEUS_POINT_COUNT = 3000;
 const ACCRETION_POINT_COUNT = CORE_POINT_COUNT - NUCLEUS_POINT_COUNT;
-const HALO_POINT_COUNT = 4000;
+const HALO_POINT_COUNT = 4400;
 const FIELD_STAR_COUNT = 650;
 const GALAXY_POINT_COUNT =
   GALAXY_BANDS.reduce((total, band) => total + band.count, 0) +
@@ -516,7 +516,7 @@ export default function LocalGalaxyCanvas() {
 
     /* Accretion points increase density near the center and reinforce the warm core structure. */
     for (let index = 0; index < ACCRETION_POINT_COUNT; index += 1) {
-      const radius = 0.1 + Math.pow(random(), 2.6) * 0.9;
+      const radius = Math.pow(random(), 2.6);
       const colors = radius < 0.24 ? ACCRETION_COLOR_INDICES : CORE_COLOR_INDICES;
 
       addGalaxyPoint(
@@ -534,22 +534,26 @@ export default function LocalGalaxyCanvas() {
       );
     }
 
-    /* Nucleus points concentrate brighter colors in the innermost region of the galaxy. */
+    /* Nucleus points form a softly blended sphere inside the denser accretion cloud. */
     for (let index = 0; index < NUCLEUS_POINT_COUNT; index += 1) {
-      const radius = Math.pow(random(), 0.72) * 0.13;
+      const nucleusRadius = 0.13;
+      const sphericalRadius = Math.pow(random(), 0.9) * nucleusRadius;
+      const polarAngle = Math.acos(2 * random() - 1);
+      const radialDistance = Math.sin(polarAngle) * sphericalRadius;
+      const radialFade = 1 - sphericalRadius / nucleusRadius;
 
       addGalaxyPoint(
         random() * Math.PI * 2,
         pickColorIndex(random, NUCLEUS_COLOR_INDICES),
         0.92 + random() * 0.38,
         CORE_LAYER_INDEX,
-        0.56 + random() * 0.34,
-        (random() - 0.5) * 0.024,
+        0.32 + radialFade * 0.38 + random() * 0.18,
+        (random() - 0.5) * 0.018,
         0.52,
-        radius,
+        radialDistance,
         0.000012 * (0.88 + random() * 0.24),
         0.32 + random() * 0.52,
-        (random() - 0.5) * 0.018,
+        (Math.cos(polarAngle) * sphericalRadius + (random() - 0.5) * 0.008) * 0.52,
       );
     }
 
@@ -659,7 +663,7 @@ export default function LocalGalaxyCanvas() {
       const motionTime = reducedMotionQuery.matches ? 0 : time;
       const centerX = width * 0.53;
       const centerY = height * 0.5;
-      const galaxyRadius = Math.max(width, height) * 0.5;
+      const galaxyRadius = Math.max(width, height) * 0.45;
       const layerTransforms = createLayerTransforms(motionTime);
       const pixelData = galaxyFrame.data;
 
@@ -774,7 +778,7 @@ export default function LocalGalaxyCanvas() {
 
       previousPointerX = event.clientX;
       previousPointerY = event.clientY;
-      dragRotationTarget.x = clamp(dragRotationTarget.x + deltaY * 0.005, -1.25, 1.25);
+      dragRotationTarget.x += deltaY * 0.005;
       dragRotationTarget.y += deltaX * 0.006;
       event.preventDefault();
 
