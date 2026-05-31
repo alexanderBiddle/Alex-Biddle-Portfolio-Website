@@ -81,6 +81,7 @@ export default function Projects() {
         {projects.map((project) => (
           <article className="project-card case-study-card" key={project.title}>
             <div className="project-info">
+              {/* Structured fields make each project read like a concise security case study. */}
               <div className="case-study-meta">
                 <span>{project.area}</span>
                 <strong>{project.title}</strong>
@@ -98,6 +99,7 @@ export default function Projects() {
                 <p>{project.signal}</p>
               </div>
               <p className="project-outcome">{project.outcome}</p>
+
               {/* Tech tags are individual spans so CSS can wrap them like compact labels. */}
               <div className="project-tech">
                 {project.tech.map((tech) => (

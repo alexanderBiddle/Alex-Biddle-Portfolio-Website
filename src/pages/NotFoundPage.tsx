@@ -1,3 +1,4 @@
+/* React Router's Link returns visitors to the configured home route without a full page reload. */
 import { Link } from 'react-router';
 
 export default function NotFoundPage() {

@@ -19,8 +19,10 @@ import NotFoundPage  from './pages/NotFoundPage.tsx';
 
 /* Router maps URL paths to the React elements that should be rendered into the page. */
 const router = createBrowserRouter([
-  { path: "/",
-    element: <App />, // wrap routes with layout
+  {
+    path: "/",
+    /* App wraps each child route with the shared background, navigation, and footer. */
+    element: <App />,
     children: [
       { path: "/",          element: <Home          /> },
       { path: "/About",     element: <About         /> },
@@ -31,7 +33,6 @@ const router = createBrowserRouter([
     ]
   }
 ]);
-
 
 /* The root div in index.html is the DOM container React controls from here down. */
 createRoot(document.getElementById('root')!).render(

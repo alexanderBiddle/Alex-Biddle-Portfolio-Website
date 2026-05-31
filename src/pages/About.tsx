@@ -1,9 +1,11 @@
+/* Focus cards use compact labels and tone hooks for the professional-summary strip. */
 type FocusArea = {
   number: string;
   label: string;
   tone: string;
 };
 
+/* Process steps provide reusable timeline copy for the operating-method grid. */
 type ProcessStep = {
   number: string;
   title: string;
@@ -11,6 +13,7 @@ type ProcessStep = {
 };
 
 export default function About() {
+  /* Focus areas become short identity cards before the more detailed method explanation. */
   const focusAreas: FocusArea[] = [
     { number: '01', label: 'Red Team Mindset', tone: 'offense' },
     { number: '02', label: 'Defensive Engineering', tone: 'defense' },
@@ -18,6 +21,7 @@ export default function About() {
     { number: '04', label: 'Secure Development', tone: 'build' },
   ];
 
+  /* Ordered steps explain how security work moves from discovery to actionable reporting. */
   const processSteps: ProcessStep[] = [
     {
       number: '01',

@@ -10,12 +10,15 @@ export default function App() {
     <>
       {/* Routed pages share a pointer-reactive canvas background without blocking foreground controls. */}
       <AetherFlowBackdrop />
+
       {/* Persistent navigation remains mounted while the route content changes. */}
       <NavBar />
+
       {/* <Outlet /> is where React Router injects the active page's DOM tree. */}
       <main>
         <Outlet />
       </main>
+
       {/* Footer closes every route with brand and social-link DOM. */}
       <Footer />
     </>

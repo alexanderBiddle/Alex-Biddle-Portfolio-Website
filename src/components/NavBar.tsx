@@ -1,5 +1,7 @@
+/* React Router provides declarative links and active-route state for the persistent navigation. */
 import { NavLink } from 'react-router';
 
+/* Each navigation entry keeps its URL and visible label together for the repeated link markup. */
 type NavigationLink = {
   to: string;
   label: string;
@@ -22,6 +24,7 @@ export default function NavBar() {
         <span>AB</span>
         <strong>BiddleSec</strong>
       </NavLink>
+
       {/* Mapping link data creates one NavLink per route and lets React Router mark the active page. */}
       <div className="nav-links">
         {links.map((link) => (

@@ -1,8 +1,10 @@
+/* Motion utilities animate the hero while respecting the visitor's reduced-motion preference. */
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
 
 export default function AetherGalaxyHero() {
+  /* Reduced-motion visitors receive the same content without staged position or opacity changes. */
   const shouldReduceMotion = useReducedMotion();
   const reveal = shouldReduceMotion
     ? {}
@@ -13,6 +15,7 @@ export default function AetherGalaxyHero() {
 
   return (
     <section className="aether-hero" aria-labelledby="aether-title">
+      {/* Foreground copy and route actions sit above the decorative canvases mounted by App. */}
       <div className="aether-content">
         <motion.h1
           {...reveal}
@@ -32,6 +35,7 @@ export default function AetherGalaxyHero() {
           development together to surface hidden paths and build systems that hold.
         </motion.p>
 
+        {/* Route links direct visitors to evidence-oriented projects or the contact page. */}
         <motion.div
           {...reveal}
           transition={{ delay: 0.52, duration: 0.74, ease: [0.16, 1, 0.3, 1] }}
@@ -48,6 +52,7 @@ export default function AetherGalaxyHero() {
         </motion.div>
       </div>
 
+      {/* Decorative cue signals that the portfolio continues below the initial viewport. */}
       <div className="aether-scroll-cue" aria-hidden="true">Scroll to inspect</div>
     </section>
   );

@@ -1,4 +1,5 @@
 export default function Contact() {
+  /* Engagement labels summarize the work types that best fit the contact route. */
   const engagementTypes = [
     'Cybersecurity engineering',
     'Red-team lab writeups',
@@ -47,4 +48,3 @@ export default function Contact() {
     </section>
   );
 };
-

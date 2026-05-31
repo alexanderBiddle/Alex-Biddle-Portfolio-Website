@@ -7,6 +7,7 @@ type SkillGroup = {
   items: string[];
 };
 
+/* The custom --i property gives CSS an index for positioning labels around the orbit. */
 type OrbitStyle = CSSProperties & {
   '--i': number;
 };

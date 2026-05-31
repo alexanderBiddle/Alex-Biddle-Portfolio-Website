@@ -1,11 +1,14 @@
+/* React lifecycle hooks keep the canvas DOM reference and own the animation setup lifecycle. */
 import { useEffect, useRef } from 'react';
 
+/* Optional tuning props let the shared particle field scale without duplicating renderer code. */
 type AetherFlowCanvasProps = {
   className?: string;
   density?: number;
   maxParticles?: number;
 };
 
+/* Every particle tracks its screen position, drift velocity, and rendered point size. */
 type Particle = {
   x: number;
   y: number;
@@ -14,22 +17,26 @@ type Particle = {
   radius: number;
 };
 
+/* Null coordinates represent an inactive pointer outside the browser window. */
 type PointerPosition = {
   x: number | null;
   y: number | null;
 };
 
+/* Shared distance limits control line linking and pointer repulsion independently. */
 const CONNECTION_DISTANCE = 138;
 const POINTER_RADIUS = 190;
 
 export default function AetherFlowCanvas({
   className = '',
-  density = 13000,
-  maxParticles = 170,
+  density = 11000,
+  maxParticles = 500,
 }: AetherFlowCanvasProps) {
+  /* The ref exposes the mounted canvas to the imperative 2D drawing loop. */
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    /* Stop early if the DOM node or 2D rendering context is unavailable. */
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
 
@@ -37,6 +44,7 @@ export default function AetherFlowCanvas({
       return;
     }
 
+    /* Mutable render state stays inside the effect so unmount cleanup can release the full loop. */
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const pointer: PointerPosition = { x: null, y: null };
     let animationFrameId = 0;
@@ -45,6 +53,7 @@ export default function AetherFlowCanvas({
     let height = 0;
     let devicePixelRatio = 1;
 
+    /* New particles start at random positions with a deliberately subtle ambient drift. */
     const createParticle = (): Particle => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -53,11 +62,13 @@ export default function AetherFlowCanvas({
       radius: Math.random() * 1.6 + 0.7,
     });
 
+    /* Canvas area determines the particle count while lower and upper bounds limit extremes. */
     const initialize = () => {
       const particleCount = Math.min(maxParticles, Math.max(42, Math.round((width * height) / density)));
       particles = Array.from({ length: particleCount }, createParticle);
     };
 
+    /* Resize the backing store for crisp rendering and rebuild particles for the new viewport. */
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
       width = bounds.width;
@@ -69,6 +80,7 @@ export default function AetherFlowCanvas({
       initialize();
     };
 
+    /* Particles bounce at canvas edges and move away from nearby pointer coordinates. */
     const moveParticles = () => {
       for (const particle of particles) {
         if (particle.x > width || particle.x < 0) {
@@ -95,6 +107,7 @@ export default function AetherFlowCanvas({
       }
     };
 
+    /* Nearby particles receive connecting lines whose opacity fades with distance. */
     const drawConnections = () => {
       const connectionDistanceSquared = CONNECTION_DISTANCE * CONNECTION_DISTANCE;
 
@@ -117,8 +130,8 @@ export default function AetherFlowCanvas({
             : Math.hypot(first.x - pointer.x, first.y - pointer.y);
 
           context.strokeStyle = pointerDistance < POINTER_RADIUS
-            ? `oklch(0.92 0.04 210 / ${Math.min(0.78, opacity + 0.2)})`
-            : `oklch(0.72 0.17 287 / ${opacity})`;
+            ? `rgba(183, 247, 221, ${Math.min(0.78, opacity + 0.2)})`
+            : `rgba(53, 211, 154, ${opacity})`;
           context.lineWidth = pointerDistance < POINTER_RADIUS ? 1.15 : 0.8;
           context.beginPath();
           context.moveTo(first.x, first.y);
@@ -128,15 +141,17 @@ export default function AetherFlowCanvas({
       }
     };
 
+    /* Points are drawn after links so each node stays legible above the connection network. */
     const drawParticles = () => {
       for (const particle of particles) {
-        context.fillStyle = 'oklch(0.82 0.16 288 / 0.84)';
+        context.fillStyle = 'rgba(183, 247, 221, 0.84)';
         context.beginPath();
         context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         context.fill();
       }
     };
 
+    /* One frame clears stale pixels, optionally updates motion, and redraws the full network. */
     const renderFrame = (shouldMove = true) => {
       context.clearRect(0, 0, width, height);
 
@@ -148,22 +163,26 @@ export default function AetherFlowCanvas({
       drawParticles();
     };
 
+    /* Standard-motion visitors receive a continuous requestAnimationFrame loop. */
     const animate = () => {
       renderFrame();
       animationFrameId = window.requestAnimationFrame(animate);
     };
 
+    /* Window pointer coordinates are translated into canvas-local coordinates for repulsion. */
     const handlePointerMove = (event: PointerEvent) => {
       const bounds = canvas.getBoundingClientRect();
       pointer.x = event.clientX - bounds.left;
       pointer.y = event.clientY - bounds.top;
     };
 
+    /* Leaving the document disables pointer influence until movement resumes inside the page. */
     const handlePointerLeave = () => {
       pointer.x = null;
       pointer.y = null;
     };
 
+    /* Reduced-motion mode renders one static frame instead of scheduling continuous movement. */
     const startAnimation = () => {
       window.cancelAnimationFrame(animationFrameId);
 
@@ -177,6 +196,7 @@ export default function AetherFlowCanvas({
 
     const handleReducedMotionChange = () => startAnimation();
 
+    /* Initial setup and listeners keep the decorative canvas synchronized with browser state. */
     resizeCanvas();
     startAnimation();
     window.addEventListener('resize', resizeCanvas);
@@ -184,6 +204,7 @@ export default function AetherFlowCanvas({
     window.addEventListener('pointerout', handlePointerLeave);
     reducedMotionQuery.addEventListener('change', handleReducedMotionChange);
 
+    /* Cleanup prevents stale animation frames and browser listeners after unmount. */
     return () => {
       window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
@@ -193,5 +214,6 @@ export default function AetherFlowCanvas({
     };
   }, [density, maxParticles]);
 
+  /* The decorative canvas stays hidden from assistive technology and page interaction. */
   return <canvas ref={canvasRef} className={`aether-flow-canvas ${className}`.trim()} aria-hidden="true" />;
 }
