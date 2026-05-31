@@ -51,9 +51,6 @@ export default function AetherGalaxyHero() {
           </Link>
         </motion.div>
       </div>
-
-      {/* Decorative cue signals that the portfolio continues below the initial viewport. */}
-      <div className="aether-scroll-cue" aria-hidden="true">Scroll to inspect</div>
     </section>
   );
 }
