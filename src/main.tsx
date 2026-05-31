@@ -1,7 +1,7 @@
 /* React and routing imports that mount the single-page app into the browser DOM. */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
 /* Global CSS defines the visual layout for every route rendered below. */
@@ -18,7 +18,7 @@ import NotFoundPage  from './pages/NotFoundPage.tsx';
 
 
 /* Router maps URL paths to the React elements that should be rendered into the page. */
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     /* App wraps each child route with the shared background, navigation, and footer. */
