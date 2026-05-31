@@ -22,8 +22,8 @@ export default function AetherGalaxyHero() {
           transition={{ delay: 0.32, duration: 0.74, ease: [0.16, 1, 0.3, 1] }}
           id="aether-title"
         >
-          Mapping risk
-          <span>across the signal.</span>
+          Alex Biddle
+          <span>Security Engineer | Developer | Analyst</span>
         </motion.h1>
 
         <motion.p

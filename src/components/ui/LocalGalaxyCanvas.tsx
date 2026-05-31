@@ -134,7 +134,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
   {
     arms: 3,
     colors: [...WARM_ARM_COLOR_INDICES, ...COOL_COLOR_INDICES],
-    count: 100000,
+    count: 125000,
     opacity: [0.14, 0.58],
     radialScale: 1.04,
     radiusPower: 0.86,
@@ -149,7 +149,7 @@ const GALAXY_BANDS: GalaxyBand[] = [
   {
     arms: 2,
     colors: [...WARM_ARM_COLOR_INDICES, ...CORE_COLOR_INDICES],
-    count: 100000,
+    count: 125000,
     opacity: [0.12, 0.52],
     radialScale: 0.94,
     radiusPower: 0.92,
