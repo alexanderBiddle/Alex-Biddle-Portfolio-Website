@@ -66,7 +66,7 @@ export default function Skills() {
       {/* Each skill object renders as a feature card with an icon, title, and list of supporting items. */}
       <div className="card-grid">
         {skills.map((skill) => (
-          <article className="feature-card" key={skill.title}>
+          <article className="feature-card spotlight-card" key={skill.title}>
             <i className={`fa-solid ${skill.icon}`}></i>
             <h2>{skill.title}</h2>
             <ul>

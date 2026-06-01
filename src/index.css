@@ -1203,6 +1203,52 @@ main {
   border-color: rgb(var(--signal-highlight-rgb) / 0.46);
 }
 
+/* Spotlight cards use one local pointer coordinate pair supplied by the delegated React controller. */
+.spotlight-card {
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  position: relative;
+  isolation: isolate;
+}
+
+/* The card interior receives a restrained signal-blue illumination beneath its readable content. */
+.spotlight-card.is-spotlit {
+  background-image: radial-gradient(
+    circle 280px at var(--spotlight-x) var(--spotlight-y),
+    rgb(var(--signal-bright-rgb) / 0.18),
+    transparent 72%
+  );
+}
+
+/* A masked border layer keeps the brightest trace confined to the card frame. */
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 190px at var(--spotlight-x) var(--spotlight-y),
+    rgb(var(--signal-highlight-rgb) / 0.96),
+    transparent 76%
+  );
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+/* Pointer and keyboard activity reveal the frame without moving or obscuring card content. */
+.spotlight-card.is-spotlit::after,
+.spotlight-card:focus-visible::after,
+.spotlight-card:focus-within::after {
+  opacity: 1;
+}
+
 /* Contact icons keep their accent color and fixed width inside flex rows. */
 .contact-link i {
   flex: 0 0 auto;
@@ -1437,6 +1483,14 @@ html::-webkit-scrollbar-thumb {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .spotlight-card.is-spotlit {
+    background-image: none;
+  }
+
+  .spotlight-card::after {
+    display: none;
   }
 
 }

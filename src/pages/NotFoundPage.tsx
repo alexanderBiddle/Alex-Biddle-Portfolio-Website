@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     /* Fallback route renders when no configured path matches the browser URL. */
     <section className="page-shell">
       {/* Reuses the glass panel and hero button styles so the error page feels integrated. */}
-      <div className="glass-panel">
+      <div className="glass-panel spotlight-card">
         <p className="eyebrow">404</p>
         <h1>Signal Lost</h1>
         <p>The route you tried to open is not mapped in this security command surface.</p>

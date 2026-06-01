@@ -64,7 +64,7 @@ export default function About() {
       {/* Focus cards summarize the professional identity before the long-form process details. */}
       <div className="scope-strip" aria-label="Cybersecurity engineering focus areas">
         {focusAreas.map((area) => (
-          <article className={`scope-card ${area.tone}`} key={area.label}>
+          <article className={`scope-card spotlight-card ${area.tone}`} key={area.label}>
             <strong>{area.number}</strong>
             <span>{area.label}</span>
           </article>
@@ -73,7 +73,7 @@ export default function About() {
 
       {/* Split layout pairs long-form process copy with a step-by-step timeline. */}
       <div className="split-layout">
-        <div className="glass-panel">
+        <div className="glass-panel spotlight-card">
           <p className="panel-kicker">Operating Method</p>
           <h2>How I Work</h2>
           <p>
@@ -87,7 +87,7 @@ export default function About() {
         {/* Process cards stay modular so future experience details can be inserted without redesigning the page. */}
         <div className="method-grid">
           {processSteps.map((step) => (
-            <article className="process-card" key={step.title}>
+            <article className="process-card spotlight-card" key={step.title}>
               <span>{step.number}</span>
               <h3>{step.title}</h3>
               <p>{step.text}</p>

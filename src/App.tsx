@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import AetherFlowBackdrop from './components/AetherFlowBackdrop';
+import SpotlightCards from './components/ui/SpotlightCards';
 
 
 export default function App() {
@@ -10,6 +11,9 @@ export default function App() {
     <>
       {/* Routed pages share a pointer-reactive canvas background without blocking foreground controls. */}
       <AetherFlowBackdrop />
+
+      {/* One delegated pointer listener illuminates opted-in card surfaces across every route. */}
+      <SpotlightCards />
 
       {/* Persistent navigation remains mounted while the route content changes. */}
       <NavBar />

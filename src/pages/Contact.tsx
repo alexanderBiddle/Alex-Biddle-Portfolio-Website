@@ -20,7 +20,7 @@ export default function Contact() {
       </div>
 
       {/* Glass panel highlights best-fit work using the same surface style as other pages. */}
-      <div className="glass-panel contact-copy">
+      <div className="glass-panel contact-copy spotlight-card">
         <p className="panel-kicker">Best Fits</p>
         <h2>Security work I want to support</h2>
         <div className="engagement-grid" aria-label="Best fit engagement types">
@@ -32,15 +32,15 @@ export default function Contact() {
 
       {/* Contact links are large touch targets; icons visually identify the destination type. */}
       <div className="contact-panel">
-        <a className="contact-link" href="mailto:alexander@example.com">
+        <a className="contact-link spotlight-card" href="mailto:alexander@example.com">
           <i className="fa-solid fa-envelope"></i>
           alexander@example.com
         </a>
-        <a className="contact-link" href="#">
+        <a className="contact-link spotlight-card" href="#">
           <i className="fa-brands fa-linkedin-in"></i>
           LinkedIn
         </a>
-        <a className="contact-link" href="#">
+        <a className="contact-link spotlight-card" href="#">
           <i className="fa-brands fa-github"></i>
           GitHub
         </a>

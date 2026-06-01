@@ -79,7 +79,7 @@ export default function Projects() {
       {/* Mapping projects creates consistent article cards for scanning and responsive wrapping. */}
       <div className="projects-grid">
         {projects.map((project) => (
-          <article className="project-card case-study-card" key={project.title}>
+          <article className="project-card case-study-card spotlight-card" key={project.title}>
             <div className="project-info">
               {/* Structured fields make each project read like a concise security case study. */}
               <div className="case-study-meta">
