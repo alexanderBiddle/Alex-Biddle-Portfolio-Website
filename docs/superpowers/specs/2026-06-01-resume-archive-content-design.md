@@ -94,7 +94,7 @@ Replace all placeholder project cards with two detailed case studies.
 Present:
 
 - Zero-knowledge encrypted vault architecture
-- Custom four-way handshake over TLS 1.3 and HTTP/3
+- Custom four-way handshake using HTTP/3 with TLS 1.3
 - RSA-2048 OAEP and RSA-PSS
 - AES-256-GCM with nonce tracking, replay detection, TTL expiration, and session key rotation
 - Dual-salt Argon2id password derivation
@@ -146,7 +146,7 @@ Avoid nested decorative cards. Use tonal grouping, headings, compact tags, and c
 - Omit degree type.
 - Do not claim unlisted coursework.
 - Do not invent new responsibilities for the current Mission Analyst role.
-- Use `HTTP/3 over TLS 1.3` language for CipherSafe where protocol details are described.
+- Use `HTTP/3 with TLS 1.3` language for CipherSafe where protocol details are described.
 
 ## Verification
 
