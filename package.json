@@ -1,5 +1,6 @@
 {
-  "name": "alex-biddle-portfolio-website-v2",
+  "name": "alex-biddle-portfolio-website",
+  "homepage": "https://alexanderbiddle.github.io/Alex-Biddle-Portfolio-Website/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^12.40.0",
