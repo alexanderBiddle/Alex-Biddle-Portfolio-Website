@@ -11,7 +11,9 @@ import './index.css'
 import App           from './App.tsx'
 import Home          from "./pages/Home.tsx"
 import About         from "./pages/About.tsx"
+import Experience    from "./pages/Experience.tsx"
 import Skills        from "./pages/Skills.tsx"
+import Education     from "./pages/Education.tsx"
 import Projects      from "./pages/Projects.tsx"
 import Contact       from "./pages/Contact.tsx"
 import NotFoundPage  from './pages/NotFoundPage.tsx';
@@ -26,6 +28,8 @@ const router = createHashRouter([
     children: [
       { path: "/",          element: <Home          /> },
       { path: "/About",     element: <About         /> },
+      { path: "/Experience", element: <Experience    /> },
+      { path: "/Education",  element: <Education     /> },
       { path: "/Contact",   element: <Contact       /> },
       { path: "/Projects",  element: <Projects      /> },
       { path: "/Skills",    element: <Skills        /> },

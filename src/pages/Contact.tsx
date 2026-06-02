@@ -32,17 +32,17 @@ export default function Contact() {
 
       {/* Contact links are large touch targets; icons visually identify the destination type. */}
       <div className="contact-panel">
-        <a className="contact-link spotlight-card" href="mailto:alexander@example.com">
+        <a className="contact-link spotlight-card" href="mailto:Alexbid2004@gmail.com">
           <i className="fa-solid fa-envelope"></i>
-          alexander@example.com
+          Alexbid2004@gmail.com
         </a>
-        <a className="contact-link spotlight-card" href="#">
+        <a className="contact-link spotlight-card" href="https://www.linkedin.com/in/alex-biddle12" target="_blank" rel="noreferrer">
           <i className="fa-brands fa-linkedin-in"></i>
-          LinkedIn
+          linkedin.com/in/alex-biddle12
         </a>
-        <a className="contact-link spotlight-card" href="#">
+        <a className="contact-link spotlight-card" href="https://github.com/AlexanderBiddle" target="_blank" rel="noreferrer">
           <i className="fa-brands fa-github"></i>
-          GitHub
+          github.com/AlexanderBiddle
         </a>
       </div>
     </section>

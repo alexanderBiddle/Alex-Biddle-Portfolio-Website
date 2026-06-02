@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --test tests/liquidGlassConfig.test.ts tests/navbarGlassScope.test.ts tests/portfolioRoutes.test.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

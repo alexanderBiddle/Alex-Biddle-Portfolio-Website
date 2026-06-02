@@ -1,106 +1,108 @@
-/* Project data is separated from JSX so the card DOM can be expanded without rewriting markup. */
+/* Project data is separated from JSX so each verified case study stays easy to scan. */
 type Project = {
   title: string;
   area: string;
-  objective: string;
-  scope: string;
-  signal: string;
-  outcome: string;
+  summary: string;
+  sections: {
+    label: string;
+    items: string[];
+  }[];
   tech: string[];
 };
 
 const projects: Project[] = [
   {
-    title: 'Red Team Lab Operations',
-    area: 'Offensive Security',
-    objective: 'Practice controlled exploitation paths and document how access can be gained, expanded, and explained responsibly.',
-    scope: 'Recon, web testing, exploit validation, privilege escalation concepts, and remediation notes in a lab environment.',
-    signal: 'Evidence-driven notes, command history, affected assumptions, and risk language a defender can act on.',
-    outcome: 'Portfolio-ready red-team narratives that show method, restraint, and useful security communication.',
-    tech: ['Red Team', 'Recon', 'Web App Testing', 'Reporting'],
+    title: 'CipherSafe',
+    area: 'Zero-Knowledge Cryptographic Vault Platform',
+    summary: 'A secure password-vault platform designed so sensitive fields, including vault metadata, remain encrypted end to end and server-side plaintext exposure is prevented even under database compromise.',
+    sections: [
+      {
+        label: 'Protocol Design',
+        items: [
+          'Engineered a custom four-way handshake protocol using HTTP/3 with TLS 1.3 to enforce explicit cryptographic state transitions, session binding, replay resistance, and authenticated key exchange.',
+          'Implemented RSA-2048 OAEP for session-key wrapping and RSA-PSS for digital signatures across handshake phases.',
+        ],
+      },
+      {
+        label: 'Session Protection',
+        items: [
+          'Built AES-256-GCM session encryption with strict nonce tracking and replay detection.',
+          'Added per-session nonce sets, TTL-based expiration, and atomic session-key rotation.',
+          'Designed dual-salt Argon2id password derivation to separate client-side and server-side salts.',
+        ],
+      },
+      {
+        label: 'Boundary Hardening',
+        items: [
+          'Rejected base64 smuggling, oversized payloads, malformed ciphertext, and deserialization abuse at cryptographic boundaries.',
+          'Implemented RSA key rotation with key identifiers, expiration enforcement, and backward-compatible active-session handling.',
+          'Centralized error normalization and auditing to prevent cryptographic oracle leaks, timing disclosures, and sensitive error propagation.',
+        ],
+      },
+    ],
+    tech: ['Python', 'Flask', 'PostgreSQL', 'JavaScript', 'HTTP/3 with TLS 1.3', 'RSA-OAEP/PSS', 'AES-256-GCM', 'Argon2id'],
   },
   {
-    title: 'Defensive Hardening Review',
-    area: 'Blue Team / Defense',
-    objective: 'Review exposed surfaces and strengthen configurations before weaknesses become incidents.',
-    scope: 'Access control checks, logging visibility, secure configuration review, and prioritized hardening actions.',
-    signal: 'Control gaps, missing telemetry, risky defaults, and quick-win changes organized by impact.',
-    outcome: 'Clear defensive roadmap for reducing attack surface and improving operational confidence.',
-    tech: ['Defense', 'Hardening', 'Access Control', 'Logs'],
-  },
-  {
-    title: 'Threat Review Workflow',
-    area: 'Cybersecurity Engineering',
-    objective: 'Turn risky assumptions into structured findings, owner-ready context, and practical remediation steps.',
-    scope: 'Threat modeling, issue framing, severity calibration, reproduction details, and fix validation.',
-    signal: 'Mapped attack paths, affected assets, likelihood notes, and recommended control changes.',
-    outcome: 'A repeatable review process that helps teams decide what to fix first and why it matters.',
-    tech: ['Threat Modeling', 'Risk', 'Documentation', 'Validation'],
-  },
-  {
-    title: 'Secure Frontend Engineering',
-    area: 'Software Development',
-    objective: 'Build polished React interfaces that communicate trust, handle content cleanly, and support security storytelling.',
-    scope: 'Responsive UI, accessible navigation, case-study layouts, motion restraint, and security-focused content structure.',
-    signal: 'Stable layouts, clear hierarchy, visible focus states, and build validation through Vite.',
-    outcome: 'A professional portfolio surface that positions development as a force multiplier for cybersecurity work.',
-    tech: ['React', 'Vite', 'Responsive CSS', 'Accessibility'],
-  },
-  {
-    title: 'Analyst Evidence Report',
-    area: 'Security Analysis',
-    objective: 'Present alerts, logs, findings, and response recommendations in a format that is easy to scan and defend.',
-    scope: 'Evidence capture, timeline summaries, impact notes, root-cause framing, and action-oriented recommendations.',
-    signal: 'Clear artifact references, concise summaries, and severity language paired with next steps.',
-    outcome: 'Security work shown through evidence, not buzzwords.',
-    tech: ['Analysis', 'Logs', 'Incident Notes', 'Reporting'],
-  },
-  {
-    title: 'Automation Toolkit',
-    area: 'Engineering Support',
-    objective: 'Reduce repetitive setup and validation work so security and development feedback loops stay fast.',
-    scope: 'Command-line helpers, build checks, documentation structure, Git workflow support, and repeatable local validation.',
-    signal: 'Consistent commands, predictable output, fewer manual steps, and easier handoff between tasks.',
-    outcome: 'Less operational friction and more time spent on actual security judgment.',
-    tech: ['Automation', 'Node', 'Git', 'Ops'],
+    title: 'Security & Defense Labs',
+    area: 'Adversarial Network Analysis',
+    summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
+    sections: [
+      {
+        label: 'Attack Modeling',
+        items: [
+          'Modeled network and system attack surfaces, protocol weaknesses, configuration weaknesses, and vulnerability impact.',
+          'Implemented and analyzed UDP floods, ICMP floods, and ICMP reflection attacks.',
+        ],
+      },
+      {
+        label: 'Evidence Collection',
+        items: [
+          'Measured resource exhaustion, packet loss, latency degradation, and service availability.',
+          'Correlated traffic volume, payload size, and system responsiveness using hping3, tcpdump, Wireshark, nmap, bmon, and ping.',
+        ],
+      },
+      {
+        label: 'Defensive Reasoning',
+        items: [
+          'Evaluated system-hardening effectiveness, spoofed source addressing, protocol misuse, and resilience against network attacks.',
+          'Documented mitigation considerations based on observed attack outcomes.',
+        ],
+      },
+    ],
+    tech: ['System Security & Defense', 'DoS Analysis', 'Wireshark', 'tcpdump', 'nmap', 'hping3', 'bmon', 'ping'],
   },
 ];
 
 export default function Projects() {
   return (
     <section className="page-shell projects" id="projects">
-      {/* Route header explains the page before the repeated project-card region begins. */}
       <div className="section-heading">
         <p className="eyebrow">Projects</p>
-        <h1>Project scope shaped like security case studies.</h1>
-        <p>Representative directions for red-team labs, defensive hardening, cybersecurity engineering, analyst reporting, and secure software work. These cards are structured so real experience can drop in later without changing the design.</p>
+        <h1>Implemented security engineering and controlled adversarial analysis.</h1>
+        <p>
+          Detailed project records for a zero-knowledge cryptographic platform and hands-on security-defense labs.
+        </p>
       </div>
 
-      {/* Mapping projects creates consistent article cards for scanning and responsive wrapping. */}
-      <div className="projects-grid">
+      <div className="projects-grid archive-projects-grid">
         {projects.map((project) => (
           <article className="project-card case-study-card spotlight-card" key={project.title}>
             <div className="project-info">
-              {/* Structured fields make each project read like a concise security case study. */}
               <div className="case-study-meta">
                 <span>{project.area}</span>
                 <strong>{project.title}</strong>
               </div>
-              <div className="case-study-field">
-                <span>Objective</span>
-                <p>{project.objective}</p>
-              </div>
-              <div className="case-study-field">
-                <span>Scope</span>
-                <p>{project.scope}</p>
-              </div>
-              <div className="case-study-field">
-                <span>Signal</span>
-                <p>{project.signal}</p>
-              </div>
-              <p className="project-outcome">{project.outcome}</p>
-
-              {/* Tech tags are individual spans so CSS can wrap them like compact labels. */}
+              <p className="project-summary">{project.summary}</p>
+              {project.sections.map((section) => (
+                <section className="case-study-section" key={section.label}>
+                  <h3>{section.label}</h3>
+                  <ul className="archive-list">
+                    {section.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
               <div className="project-tech">
                 {project.tech.map((tech) => (
                   <span className="tech-tag" key={tech}>{tech}</span>
