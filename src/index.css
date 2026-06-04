@@ -844,14 +844,6 @@ main {
   background: linear-gradient(90deg, var(--blue), transparent);
 }
 
-/* Scope numbers stay compact and technical, while labels remain readable for longer future copy. */
-.scope-card strong {
-  display: block;
-  margin-bottom: 18px;
-  color: var(--cyan);
-  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
-}
-
 .scope-card span {
   color: var(--text);
   font-size: clamp(0.95rem, 1.3vw, 1.08rem);
@@ -939,13 +931,6 @@ main {
   overflow: hidden;
 }
 
-.process-card span {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: var(--signal);
-  font-weight: 800;
-}
-
 .process-card h3 {
   margin-bottom: 8px;
   color: var(--text);
@@ -956,23 +941,18 @@ main {
   line-height: 1.65;
 }
 
-/* Timeline container stacks step cards vertically. */
+/* Timeline container stacks step cards vertically with a left rail. */
 .timeline {
   display: grid;
   gap: 16px;
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+  margin-left: 4px;
 }
 
 /* Timeline cards get their own internal spacing. */
 .timeline article {
   padding: clamp(1.15rem, 2.5vw, 1.55rem);
-}
-
-/* Timeline numbers serve as compact step markers. */
-.timeline span {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: var(--cyan);
-  font-weight: 800;
 }
 
 /* Timeline headings sit close to their explanatory copy. */
@@ -1019,9 +999,16 @@ main {
 }
 
 .archive-meta p,
-.archive-meta strong {
+.archive-meta strong,
+.archive-meta time {
   color: var(--cyan);
   line-height: 1.45;
+}
+
+.archive-meta time {
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
 }
 
 /* Dense archive lists use signal dots and readable line spacing without nested cards. */
@@ -1052,8 +1039,7 @@ main {
 }
 
 /* Credential blocks group related academic facts while preserving the shared dark surface. */
-.education-record,
-.archive-summary {
+.education-record {
   margin-bottom: 20px;
 }
 
@@ -1102,64 +1088,6 @@ main {
   margin-top: 14px;
 }
 
-/* Skills orbit is a circular layout surface for indexed skill labels. */
-.skill-orbit {
-  position: relative;
-  display: grid;
-  width: min(100%, 620px);
-  min-height: clamp(270px, 42vw, 390px);
-  place-items: center;
-  margin: 0 auto clamp(1.8rem, 5vh, 3rem);
-  border: 1px solid rgb(var(--signal-bright-rgb) / 0.3);
-  border-radius: 50%;
-  background: rgb(var(--deep-cyber-rgb) / 0.5);
-}
-
-/* Orbit pseudo-elements draw inner guide rings without adding extra DOM. */
-.skill-orbit::before,
-.skill-orbit::after {
-  content: "";
-  position: absolute;
-  border: 1px solid rgb(var(--signal-bright-rgb) / 0.22);
-  border-radius: 50%;
-}
-
-/* Larger inner orbit ring. */
-.skill-orbit::before {
-  inset: 16%;
-}
-
-/* Smaller inner orbit ring. */
-.skill-orbit::after {
-  inset: 32%;
-}
-
-/* Center label stays above the orbit rings and surrounding skill tags. */
-.skill-orbit strong {
-  position: relative;
-  z-index: 2;
-  color: var(--text);
-  font-size: clamp(1.1rem, 3vw, 1.8rem);
-  text-align: center;
-}
-
-/* Skill labels rotate around the center based on the --i index passed from JSX. */
-.skill-orbit span {
-  --angle: calc(var(--i) * 45deg);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 3;
-  padding: 8px 12px;
-  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.32);
-  border-radius: 999px;
-  color: var(--cyan);
-  background: rgb(var(--void-rgb) / 0.92);
-  font-size: clamp(0.72rem, 1vw, 0.86rem);
-  font-weight: 800;
-  transform: rotate(var(--angle)) translateX(clamp(105px, 22vw, 245px)) rotate(calc(var(--angle) * -1));
-}
-
 /* Card grids auto-fit cards while preserving minimum readable widths. */
 .card-grid,
 .projects-grid {
@@ -1199,6 +1127,7 @@ main {
 /* Feature lists are custom-styled, so default bullets are removed. */
 .feature-card ul {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   list-style: none;
 }
@@ -1308,31 +1237,28 @@ main {
   padding: 7px 10px;
 }
 
-/* Contact copy panel stays narrower than the full route for readability. */
-.contact-copy {
-  max-width: 920px;
-  margin-bottom: 18px;
-}
-
-/* Engagement chips summarize ideal work types before the contact actions. */
-.engagement-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.engagement-card {
+.honor-tag {
   display: inline-flex;
   align-items: center;
-  min-height: 42px;
-  padding: 9px 11px;
-  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.28);
+  padding: 7px 12px;
+  border: 1px solid rgb(var(--signal-highlight-rgb) / 0.52);
   border-radius: var(--radius);
   color: var(--text);
-  background: rgb(var(--signal-rgb) / 0.14);
-  font-size: 0.9rem;
-  font-weight: 800;
+  background: rgb(var(--signal-highlight-rgb) / 0.09);
+  font-size: clamp(0.74rem, 1vw, 0.82rem);
+  font-weight: 700;
+}
+
+.cert-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.52);
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgb(var(--signal-rgb) / 0.16);
+  font-size: clamp(0.74rem, 1vw, 0.82rem);
+  font-weight: 700;
 }
 
 /* Contact panel lays out large link targets in responsive columns. */
@@ -1536,8 +1462,8 @@ html::-webkit-scrollbar-thumb {
     grid-template-columns: 1fr;
   }
 
-  .skill-orbit span {
-    transform: rotate(var(--angle)) translateX(clamp(98px, 32vw, 170px)) rotate(calc(var(--angle) * -1));
+  .feature-card ul {
+    grid-template-columns: 1fr;
   }
 
 }
@@ -1597,14 +1523,6 @@ html::-webkit-scrollbar-thumb {
   .button,
   .contact-link {
     width: 100%;
-  }
-
-  .skill-orbit {
-    min-height: 250px;
-  }
-
-  .skill-orbit span {
-    transform: rotate(var(--angle)) translateX(clamp(82px, 31vw, 120px)) rotate(calc(var(--angle) * -1));
   }
 
   .scope-card,

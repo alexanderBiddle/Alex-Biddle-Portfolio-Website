@@ -1,4 +1,3 @@
-/* Project data is separated from JSX so each verified case study stays easy to scan. */
 type Project = {
   title: string;
   area: string;
@@ -84,30 +83,28 @@ export default function Projects() {
         </p>
       </div>
 
-      <div className="projects-grid archive-projects-grid">
+      <div className="projects-grid">
         {projects.map((project) => (
-          <article className="project-card case-study-card spotlight-card" key={project.title}>
-            <div className="project-info">
-              <div className="case-study-meta">
-                <span>{project.area}</span>
-                <strong>{project.title}</strong>
-              </div>
-              <p className="project-summary">{project.summary}</p>
-              {project.sections.map((section) => (
-                <section className="case-study-section" key={section.label}>
-                  <h3>{section.label}</h3>
-                  <ul className="archive-list">
-                    {section.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
+          <article className="project-card case-study-card spotlight-card project-info" key={project.title}>
+            <div className="case-study-meta">
+              <span>{project.area}</span>
+              <strong>{project.title}</strong>
+            </div>
+            <p className="project-summary">{project.summary}</p>
+            {project.sections.map((section) => (
+              <section className="case-study-section" key={section.label}>
+                <h3>{section.label}</h3>
+                <ul className="archive-list">
+                  {section.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+            <div className="project-tech">
+              {project.tech.map((tech) => (
+                <span className="tech-tag" key={tech}>{tech}</span>
               ))}
-              <div className="project-tech">
-                {project.tech.map((tech) => (
-                  <span className="tech-tag" key={tech}>{tech}</span>
-                ))}
-              </div>
             </div>
           </article>
         ))}

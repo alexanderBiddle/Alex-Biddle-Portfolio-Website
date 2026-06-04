@@ -1,6 +1,4 @@
-/* Experience entries publish the verified professional timeline without inventing role details. */
 type ExperienceEntry = {
-  number: string;
   title: string;
   organization: string;
   department?: string;
@@ -11,22 +9,20 @@ type ExperienceEntry = {
 
 const experienceEntries: ExperienceEntry[] = [
   {
-    number: '01',
     title: 'Mission Analyst',
     organization: 'Naval Surface Warfare Center Dahlgren Division',
     department: 'V Department',
-    dates: 'March 2026 - Present',
+    dates: 'March 2026 – Present',
     summary: 'Progressed from the SSEP internship program into a full-time Mission Analyst role.',
     details: [
       'Transitioned from the SSEP Mission Analyst Intern role into full-time employment in March 2026.',
     ],
   },
   {
-    number: '02',
     title: 'SSEP Mission Analyst Intern',
     organization: 'Naval Surface Warfare Center Dahlgren Division',
     department: 'M Department',
-    dates: 'June 2024 - March 2026',
+    dates: 'June 2024 – March 2026',
     summary: 'Developed simulation models and analysis scripts in support of mission analysis.',
     details: [
       'Developed simulation models in the Advanced Framework for Simulation, Integration and Modeling (AFSIM) tool to run simulated scenarios in support of mission analysis.',
@@ -36,10 +32,9 @@ const experienceEntries: ExperienceEntry[] = [
     ],
   },
   {
-    number: '03',
     title: 'IT Intern',
     organization: 'C2 - Essentials',
-    dates: 'December 2023 - January 2024',
+    dates: 'December 2023 – January 2024',
     summary: 'Supported internal staff, website content management, system maintenance, and troubleshooting.',
     details: [
       'Provided technical support to internal staff and assisted senior developers with website content management and system maintenance.',
@@ -59,37 +54,23 @@ export default function Experience() {
         </p>
       </div>
 
-      <div className="split-layout archive-layout">
-        <div className="glass-panel spotlight-card">
-          <p className="panel-kicker">Professional Timeline</p>
-          <h2>From analyst internship to full-time mission analysis</h2>
-          <p>
-            My work at Naval Surface Warfare Center Dahlgren Division began through the SSEP internship program and progressed into a full-time Mission Analyst role in March 2026.
-          </p>
-          <p>
-            That foundation combines simulation, threat-condition modeling, quantitative output analysis, teamwork, and clear technical documentation.
-          </p>
-        </div>
-
-        <div className="timeline" aria-label="Professional experience timeline">
-          {experienceEntries.map((entry) => (
-            <article className="spotlight-card" key={`${entry.title}-${entry.dates}`}>
-              <span>{entry.number}</span>
-              <div className="archive-meta">
-                <h3>{entry.title}</h3>
-                <p>{entry.organization}</p>
-                {entry.department && <p>{entry.department}</p>}
-                <strong>{entry.dates}</strong>
-              </div>
-              <p>{entry.summary}</p>
-              <ul className="archive-list">
-                {entry.details.map((detail) => (
-                  <li key={detail}>{detail}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
+      <div className="timeline" aria-label="Professional experience timeline">
+        {experienceEntries.map((entry) => (
+          <article className="spotlight-card" key={`${entry.title}-${entry.dates}`}>
+            <div className="archive-meta">
+              <h3>{entry.title}</h3>
+              <p>{entry.organization}</p>
+              {entry.department && <p>{entry.department}</p>}
+              <time>{entry.dates}</time>
+            </div>
+            <p>{entry.summary}</p>
+            <ul className="archive-list">
+              {entry.details.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
       </div>
     </section>
   );

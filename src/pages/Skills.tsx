@@ -1,4 +1,3 @@
-/* Card data drives a complete technical archive grounded in the resume and completed coursework. */
 type SkillGroup = {
   title: string;
   icon: string;
@@ -20,60 +19,60 @@ const skillGroups: SkillGroup[] = [
     title: 'Secure Software Engineering',
     icon: 'fa-user-shield',
     items: [
-      'Object-oriented design using efficient data structures and algorithms',
-      'Input validation, access control, audit logging, and defensive design',
-      'Memory-safe programming and mitigation of buffer overflows, race conditions, injection, and insecure deserialization',
-      'Static, dynamic, integration, and security-focused testing principles',
+      'Input validation & access control',
+      'Memory-safe programming',
+      'Injection & deserialization defense',
+      'Static, dynamic & security testing',
     ],
   },
   {
     title: 'Systems Programming and Operating Systems',
     icon: 'fa-microchip',
     items: [
-      'C/C++ systems programming with memory management and pointers',
-      'UNIX shells, system calls, signals, process management, interprocess communication, and concurrency',
-      'Processes, threads, scheduling, synchronization, deadlocks, and memory management',
-      'Computer organization, digital logic, memory organization, machine language, and MIPS assembly foundations',
+      'C/C++ memory management & pointers',
+      'UNIX syscalls, signals & IPC',
+      'Process scheduling, threads & synchronization',
+      'Computer organization & MIPS assembly',
     ],
   },
   {
     title: 'Network Architecture and Secure Communications',
     icon: 'fa-network-wired',
     items: [
-      'TCP/IP, UDP, HTTP/HTTPS, routing, switching, and client-server network applications',
-      'Protocol trust boundaries, spoofing risk, reflection and amplification attacks, and layered defense strategies',
-      'Confidentiality, integrity, authentication, authorization, session management, and encrypted exchange',
-      'Packet capture, traffic generation, and behavior analysis with Wireshark, tcpdump, nmap, hping3, bmon, and ping',
+      'TCP/IP, UDP, HTTP/HTTPS, routing & switching',
+      'Protocol trust boundaries & spoofing risk',
+      'Confidentiality, integrity & session management',
+      'Packet capture with Wireshark, tcpdump, nmap',
     ],
   },
   {
     title: 'Threat-Driven Security Analysis',
     icon: 'fa-shield-halved',
     items: [
-      'Attacker-behavior modeling, attack-surface identification, and failure-mode evaluation',
-      'System hardening assessment, protocol misuse analysis, and control validation',
-      'DoS analysis using UDP floods, ICMP floods, and ICMP reflection attacks',
-      'Measurement of resource exhaustion, packet loss, latency degradation, and service availability',
+      'Attack-surface identification & failure-mode modeling',
+      'System hardening & control validation',
+      'DoS analysis: UDP/ICMP floods & reflection',
+      'Resource exhaustion & latency measurement',
     ],
   },
   {
     title: 'Simulation and Mission Analysis',
     icon: 'fa-chart-line',
     items: [
-      'AFSIM scenario modeling and threat-condition behavior logic',
-      'Red vs Blue system-response modeling',
-      'MATLAB processing of Monte Carlo simulation outputs',
-      'Documented analysis for mission-oriented environments',
+      'AFSIM scenario & behavior modeling',
+      'Red vs Blue system-response logic',
+      'MATLAB Monte Carlo output processing',
+      'Mission-oriented documented analysis',
     ],
   },
   {
     title: 'Quantitative Engineering Foundations',
     icon: 'fa-calculator',
     items: [
-      'Calculus, multivariable analysis, linear algebra, and differential-equation modeling',
-      'Physics laboratory analysis, computer modeling, and context-rich problem solving',
-      'Statics, dynamics, stress, strain, deformation, and solid-material failure analysis',
-      'Geometric reasoning and mathematical-physics foundations',
+      'Calculus, linear algebra & differential equations',
+      'Physics lab analysis & computer modeling',
+      'Statics, dynamics & solid mechanics',
+      'Mathematical physics & geometric reasoning',
     ],
   },
 ];
@@ -86,14 +85,6 @@ export default function Skills() {
         <h1>Technical range across secure software, systems, networks, simulation, and analysis.</h1>
         <p>
           Capabilities are grounded in completed coursework, applied projects, controlled labs, and mission-analysis experience.
-        </p>
-      </div>
-
-      <div className="archive-summary glass-panel spotlight-card">
-        <p className="panel-kicker">Technical Archive</p>
-        <h2>Security engineering backed by systems, networking, simulation, and quantitative analysis.</h2>
-        <p>
-          The archive combines implementation skills with threat-driven reasoning: understand the system, validate its assumptions, measure its behavior, and document the result.
         </p>
       </div>
 

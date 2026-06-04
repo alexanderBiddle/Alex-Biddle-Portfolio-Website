@@ -1,4 +1,3 @@
-/* Education route data stays explicit so only completed resume-listed coursework is published. */
 const honors = ["Dean's List", 'ODAC All-Academic Award', 'ODAC All-Conference Award'];
 const certifications = ['CompTIA Security+', 'CompTIA Network+', 'CompTIA Cloud Essentials'];
 
@@ -77,7 +76,7 @@ export default function Education() {
           <h2>Academic and athletic recognition</h2>
           <div className="archive-tags">
             {honors.map((honor) => (
-              <span className="tech-tag" key={honor}>{honor}</span>
+              <span className="honor-tag" key={honor}>{honor}</span>
             ))}
           </div>
         </section>
@@ -87,7 +86,7 @@ export default function Education() {
           <h2>CompTIA credentials</h2>
           <div className="archive-tags">
             {certifications.map((certification) => (
-              <span className="tech-tag" key={certification}>{certification}</span>
+              <span className="cert-tag" key={certification}>{certification}</span>
             ))}
           </div>
         </section>
