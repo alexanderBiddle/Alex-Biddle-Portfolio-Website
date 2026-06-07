@@ -1536,6 +1536,125 @@ html::-webkit-scrollbar-thumb {
   }
 }
 
+/* Skills page — horizontal row layout */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.7rem, 1.4vw, 1rem);
+}
+
+/* Each card is a two-column strip: identity left | chips right */
+.skill-card {
+  display: grid;
+  grid-template-columns: clamp(150px, 18vw, 210px) 1fr;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgb(var(--deep-cyber-rgb) / 0.72);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(4px);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Vertical accent bar on the left edge */
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--signal-bright), transparent 80%);
+}
+
+.skill-card:hover {
+  border-color: rgb(var(--signal-highlight-rgb) / 0.46);
+  background: var(--panel-strong);
+}
+
+/* Left column: icon + title */
+.skill-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  align-self: stretch;
+  padding: clamp(0.9rem, 1.8vw, 1.2rem) clamp(1rem, 2vw, 1.4rem);
+  border-right: 1px solid rgb(var(--signal-bright-rgb) / 0.16);
+}
+
+.skill-icon-wrap {
+  display: grid;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgb(var(--signal-rgb) / 0.18);
+  font-size: 0.9rem;
+}
+
+.skill-card-title {
+  color: var(--text);
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* Right column: skill items as pill chips */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  padding: clamp(0.9rem, 1.8vw, 1.2rem) clamp(1rem, 2vw, 1.4rem);
+  list-style: none;
+}
+
+.skill-tags li span {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid rgb(var(--signal-bright-rgb) / 0.28);
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  background: rgb(var(--signal-rgb) / 0.1);
+  font-size: clamp(0.78rem, 0.95vw, 0.86rem);
+  font-weight: 600;
+  line-height: 1.5;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.skill-card:hover .skill-tags li span {
+  border-color: rgb(var(--signal-bright-rgb) / 0.42);
+  background: rgb(var(--signal-rgb) / 0.16);
+  color: var(--text);
+}
+
+/* Tablet: collapse to single column of full-width cards */
+@media (max-width: 900px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: stack identity above chips inside each card */
+@media (max-width: 700px) {
+  .skill-card {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-card::before {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--signal-bright), transparent 80%);
+  }
+
+  .skill-card-identity {
+    border-right: none;
+    border-bottom: 1px solid rgb(var(--signal-bright-rgb) / 0.16);
+  }
+}
+
 /* Reduced-motion users keep the same DOM but receive near-instant animation/transition timing. */
 @media (prefers-reduced-motion: reduce) {
   html {

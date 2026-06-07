@@ -88,14 +88,18 @@ export default function Skills() {
         </p>
       </div>
 
-      <div className="card-grid archive-card-grid">
+      <div className="skills-grid">
         {skillGroups.map((skill) => (
-          <article className="feature-card spotlight-card" key={skill.title}>
-            <i className={`fa-solid ${skill.icon}`}></i>
-            <h2>{skill.title}</h2>
-            <ul>
+          <article className="skill-card spotlight-card" key={skill.title}>
+            <div className="skill-card-identity">
+              <div className="skill-icon-wrap">
+                <i className={`fa-solid ${skill.icon}`}></i>
+              </div>
+              <h2 className="skill-card-title">{skill.title}</h2>
+            </div>
+            <ul className="skill-tags">
               {skill.items.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item}><span>{item}</span></li>
               ))}
             </ul>
           </article>
