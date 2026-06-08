@@ -31,7 +31,7 @@ const projects: Project[] = [
   {
     id: 'ciphersafe',
     navbarTitle: 'CipherSafe',
-    title: 'CipherSafe - Zero-Knowledge Cryptographic Vault Platform',
+    title: 'CipherSafe - Zero Knowledge Cryptographic Vault',
     icon: 'fa-shield-halved',
     summary: 'A zero-knowledge web-based password manager built so credentials are encrypted on the client before they ever reach the network. A split two-server design — a client view server and an isolated private API server — combined with end-to-end encryption, least privilege, and key separation keeps user plaintext unreachable even under full database compromise. Senior capstone project (CSCI 403) with Braeden Kinloch, advised by Dr. Elouni.',
     sections: [
@@ -88,7 +88,7 @@ const projects: Project[] = [
   {
     id: 'security-defense-labs',
     navbarTitle: 'RMC Security & Defense Labs',
-    title: 'RMC Security & Defense Labs - Controlled Adversarial Network Analysis',
+    title: 'RMC Security & Defense Labs - Adversarial Network Analysis',
     icon: 'fa-network-wired',
     summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
     sections: [
