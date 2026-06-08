@@ -1811,6 +1811,18 @@ html::-webkit-scrollbar-thumb {
   background: rgb(var(--signal-rgb) / 0.55);
 }
 
+/* The project title is the standout heading of each record, larger than the shared card sizing. */
+.project-record .case-study-meta strong {
+  font-size: clamp(1.36rem, 2.88vw, 2.24rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* Section labels sit 20% larger than the shared card label sizing for clearer hierarchy. */
+.project-record .case-study-section h3 {
+  font-size: 0.98rem;
+}
+
 /* The case-study section dividers carry over from the previous project cards. */
 .project-record .case-study-section:first-of-type {
   border-top: none;

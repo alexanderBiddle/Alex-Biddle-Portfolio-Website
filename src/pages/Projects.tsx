@@ -118,6 +118,9 @@ const projects: Project[] = [
   },
 ];
 
+/* Public assets are served under Vite's configured base path, so document links must be prefixed with it. */
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+
 export default function Projects() {
   /* 'home' shows the landing/overview; any project id swaps the content panel to that record. */
   const [activeTab, setActiveTab] = useState<string>('home');
@@ -210,14 +213,14 @@ export default function Projects() {
                         <div className="project-doc-actions">
                           <a
                             className="project-doc-action"
-                            href={doc.file}
+                            href={withBase(doc.file)}
                             target="_blank"
                             rel="noreferrer"
                           >
                             <i className="fa-solid fa-eye"></i>
                             <span>View</span>
                           </a>
-                          <a className="project-doc-action" href={doc.file} download>
+                          <a className="project-doc-action" href={withBase(doc.file)} download>
                             <i className="fa-solid fa-download"></i>
                             <span>Download</span>
                           </a>
