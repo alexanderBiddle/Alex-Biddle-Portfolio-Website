@@ -1655,6 +1655,290 @@ html::-webkit-scrollbar-thumb {
   }
 }
 
+/* ==========================================================================
+   PROJECTS WORKSPACE — side-nav tabs + expanded card console
+   ========================================================================== */
+
+/* Console reuses the shared card surface but expands to fill the viewport height. */
+.project-console {
+  display: grid;
+  grid-template-columns: clamp(196px, 22vw, 268px) minmax(0, 1fr);
+  height: calc((100svh - var(--nav-h) - clamp(8rem, 22vh, 13rem)) * 1.3);
+  min-height: 598px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgb(var(--deep-cyber-rgb) / 0.72);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(4px);
+}
+
+/* Left rail keeps its label and counter fixed while the tab list scrolls between them. */
+.project-sidenav {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: clamp(0.9rem, 1.8vw, 1.25rem) clamp(0.7rem, 1.4vw, 1rem);
+  border-right: 1px solid rgb(var(--signal-bright-rgb) / 0.16);
+  background: rgb(var(--void-rgb) / 0.32);
+}
+
+.project-sidenav-label,
+.project-landing-kicker,
+.project-sidenav-count {
+  color: var(--cyan);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-sidenav-label {
+  padding: 0 8px 12px;
+}
+
+/* The scrollable wheel: a vertical list that overflows internally as projects are added. */
+.project-sidenav-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--signal) transparent;
+}
+
+.project-sidenav-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-sidenav-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-sidenav-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(var(--signal-rgb) / 0.6);
+}
+
+/* Each tab is a full-width pill with icon + label, highlighting the active project. */
+.project-tab {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: transparent;
+  font-family: inherit;
+  font-size: clamp(0.82rem, 1.05vw, 0.92rem);
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.project-tab i {
+  flex: 0 0 auto;
+  width: 18px;
+  color: var(--cyan);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.project-tab span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-tab:hover {
+  color: var(--text);
+  border-color: rgb(var(--signal-bright-rgb) / 0.32);
+  background: rgb(var(--signal-rgb) / 0.12);
+}
+
+.project-tab.is-active {
+  color: var(--text);
+  border-color: rgb(var(--signal-bright-rgb) / 0.6);
+  background: rgb(var(--signal-rgb) / 0.22);
+  box-shadow: inset 2px 0 0 var(--signal-highlight);
+}
+
+.project-sidenav-count {
+  padding: 12px 8px 0;
+  margin-top: 8px;
+  border-top: 1px solid rgb(var(--signal-bright-rgb) / 0.16);
+  color: var(--subtle);
+  letter-spacing: 0.1em;
+}
+
+/* Right panel scrolls its own case-study/landing content independently of the rail. */
+.project-content {
+  min-height: 0;
+  overflow-y: auto;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue) transparent;
+}
+
+.project-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(var(--signal-rgb) / 0.55);
+}
+
+/* The case-study section dividers carry over from the previous project cards. */
+.project-record .case-study-section:first-of-type {
+  border-top: none;
+  padding-top: 4px;
+}
+
+/* Landing/overview tab documents the workspace before any project is opened. */
+.project-landing-lead {
+  max-width: 720px;
+  margin-top: 18px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.project-landing h2 {
+  max-width: 760px;
+  margin-top: 12px;
+  color: var(--text);
+  font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+  line-height: 1.12;
+}
+
+.project-landing-kicker {
+  display: block;
+  margin: clamp(1.8rem, 4vh, 2.6rem) 0 14px;
+}
+
+/* Directory cards give the landing tab quick jump-in shortcuts to each project. */
+.project-directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 14px;
+}
+
+.project-directory-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgb(var(--deep-cyber-rgb) / 0.5);
+  color: var(--text);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.project-directory-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(var(--signal-highlight-rgb) / 0.46);
+  background: var(--panel-strong);
+}
+
+.project-directory-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--cyan);
+  background: rgb(var(--signal-rgb) / 0.18);
+  font-size: 1.05rem;
+}
+
+.project-directory-body {
+  min-width: 0;
+}
+
+.project-directory-body span {
+  display: block;
+  color: var(--cyan);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-directory-body strong {
+  display: block;
+  margin: 6px 0 8px;
+  color: var(--text);
+  font-size: clamp(1.05rem, 1.8vw, 1.22rem);
+}
+
+.project-directory-body p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.project-directory-go {
+  color: var(--signal-bright);
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.project-directory-card:hover .project-directory-go {
+  transform: translateX(4px);
+}
+
+/* Tablet + mobile: stack the rail above the content and let the console grow naturally. */
+@media (max-width: 860px) {
+  .project-console {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+  }
+
+  .project-sidenav {
+    border-right: none;
+    border-bottom: 1px solid rgb(var(--signal-bright-rgb) / 0.16);
+  }
+
+  .project-sidenav-scroll {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 8px;
+  }
+
+  .project-tab {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .project-tab.is-active {
+    box-shadow: inset 0 -2px 0 var(--signal-highlight);
+  }
+
+  .project-content {
+    overflow-y: visible;
+  }
+}
+
 /* Reduced-motion users keep the same DOM but receive near-instant animation/transition timing. */
 @media (prefers-reduced-motion: reduce) {
   html {
