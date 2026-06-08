@@ -8,12 +8,12 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Programming Languages',
     icon: 'fa-code',
-    items: ['Python', 'C', 'C++', 'Rust', 'Java', 'JavaScript', 'MIPS'],
+    items: ['Python', 'C', 'C++', 'AFSIM', 'Java', 'JavaScript', 'MIPS', 'MATLAB', 'LaTeX'],
   },
   {
     title: 'Tools and Environments',
     icon: 'fa-terminal',
-    items: ['Windows', 'Linux', 'SSH', 'Apache', 'MATLAB', 'AFSIM', 'Git', 'Overleaf', 'Wireshark', 'nmap', 'tcpdump'],
+    items: ['Windows', 'Linux', 'SSH', 'Apache',  'Git', 'Overleaf', 'Wireshark', 'nmap', 'tcpdump'],
   },
   {
     title: 'Secure Software Engineering',
@@ -32,6 +32,7 @@ const skillGroups: SkillGroup[] = [
       'C/C++ memory management & pointers',
       'UNIX syscalls, signals & IPC',
       'Process scheduling, threads & synchronization',
+      'Multi threaded programming & performance optimization',
       'Computer organization & MIPS assembly',
     ],
   },
@@ -42,7 +43,7 @@ const skillGroups: SkillGroup[] = [
       'TCP/IP, UDP, HTTP/HTTPS, routing & switching',
       'Protocol trust boundaries & spoofing risk',
       'Confidentiality, integrity & session management',
-      'Packet capture with Wireshark, tcpdump, nmap',
+      'Packet capture and analysis with Wireshark, tcpdump, nmap',
     ],
   },
   {
@@ -53,6 +54,7 @@ const skillGroups: SkillGroup[] = [
       'System hardening & control validation',
       'DoS analysis: UDP/ICMP floods & reflection',
       'Resource exhaustion & latency measurement',
+      'Rate limiting, filtering & access control strategies',
     ],
   },
   {
@@ -61,7 +63,7 @@ const skillGroups: SkillGroup[] = [
     items: [
       'AFSIM scenario & behavior modeling',
       'Red vs Blue system-response logic',
-      'MATLAB Monte Carlo output processing',
+      'Monte Carlo output processing',
       'Mission-oriented documented analysis',
     ],
   },

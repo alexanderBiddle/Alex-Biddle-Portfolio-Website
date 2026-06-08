@@ -11,15 +11,14 @@ const experienceEntries: ExperienceEntry[] = [
   {
     title: 'Mission Analyst',
     organization: 'Naval Surface Warfare Center Dahlgren Division',
-    department: 'M Department → V Department',
     dates: 'June 2024 – Present',
     summary:
       'Joined through the SSEP internship program as a Mission Analyst Intern and progressed into a full-time Mission Analyst role, building simulation models and analysis tooling in support of mission analysis.',
     details: [
-      'Started as an SSEP Mission Analyst Intern in M Department (June 2024) and converted to a full-time Mission Analyst in V Department in March 2026.',
+      'Started as an SSEP Mission Analyst Intern and converted to a full-time Mission Analyst in March 2026.',
       'Developed simulation models in the Advanced Framework for Simulation, Integration and Modeling (AFSIM) tool to run simulated scenarios in support of mission analysis.',
       'Built behavior logic and interfaces to model system responses to threat conditions for Red vs Blue scenarios in AFSIM.',
-      'Created MATLAB analysis scripts to process Monte Carlo outputs from AFSIM, turning raw simulation runs into usable mission-analysis results.',
+      'Created MATLAB, Python and Excel analysis scripts to process Monte Carlo outputs from AFSIM, turning raw simulation runs into usable mission-analysis results.',
       'Supported collaborative projects involving strategy concepts and task management across the analysis team.',
     ],
   },
@@ -30,7 +29,8 @@ const experienceEntries: ExperienceEntry[] = [
     summary: 'Supported internal staff, website content management, system maintenance, and troubleshooting.',
     details: [
       'Provided technical support to internal staff and assisted senior developers with website content management and system maintenance.',
-      'Performed maintenance and performance optimization while troubleshooting hardware and software issues.',
+      'Conducted maintenance, performance optimization and addressing computer-related issues',
+      'Troubleshot hardware and software problems, ensuring smooth operation of IT systems.',
     ],
   },
 ];
