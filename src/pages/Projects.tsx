@@ -6,56 +6,87 @@ type ProjectSection = {
   items: string[];
 };
 
+/* A downloadable/viewable paper stored under public/documents and linked by absolute path. */
+type ProjectDocument = {
+  label: string;
+  description: string;
+  meta: string;
+  file: string;
+};
+
 /* Each project becomes one side-nav tab plus its documented case-study content. */
 type Project = {
   id: string;
   title: string;
-  area: string;
   icon: string;
   summary: string;
   sections: ProjectSection[];
   tech: string[];
+  documents?: ProjectDocument[];
 };
 
 /* Adding a new entry here automatically renders a new scrollable side-nav tab. */
 const projects: Project[] = [
   {
     id: 'ciphersafe',
-    title: 'CipherSafe',
-    area: 'Zero-Knowledge Cryptographic Vault Platform',
+    title: 'CipherSafe - Zero-Knowledge Cryptographic Vault Platform',
+
     icon: 'fa-shield-halved',
-    summary: 'A secure password-vault platform designed so sensitive fields, including vault metadata, remain encrypted end to end and server-side plaintext exposure is prevented even under database compromise.',
+    summary: 'A zero-knowledge web-based password manager built so credentials are encrypted on the client before they ever reach the network. A split two-server design — a client view server and an isolated private API server — combined with end-to-end encryption, least privilege, and key separation keeps user plaintext unreachable even under full database compromise. Senior capstone project (CSCI 403) with Braeden Kinloch, advised by Dr. Elouni.',
     sections: [
       {
-        label: 'Protocol Design',
+        label: 'Four-Way Handshake Protocol',
         items: [
-          'Engineered a custom four-way handshake protocol using HTTP/3 with TLS 1.3 to enforce explicit cryptographic state transitions, session binding, replay resistance, and authenticated key exchange.',
-          'Implemented RSA-2048 OAEP for session-key wrapping and RSA-PSS for digital signatures across handshake phases.',
+          'Designed a custom four-way handshake — Client Hello, Server Hello, Client Encrypted Request, Server Encrypted Response — running entirely over TLS 1.3 and HTTP/3 to authenticate both parties, exchange keys, and establish an encrypted session.',
+          'Client Hello transmits the client RSA-2048 public key, username, and ISO-8601 timestamp in the clear so the server can authenticate the message format and wrap a session key to that key.',
+          'Server Hello generates a fresh 32-byte AES-256 session key, wraps it with RSA-OAEP (SHA-256) under the client public key, and returns an RSA-PSS signature over the session key, key identifier, and timestamp.',
+          'After unwrapping the session key, all further payloads move to AES-256-GCM, ending RSA use for bulk data; every server response is RSA-PSS signed and verified before processing.',
         ],
       },
       {
-        label: 'Session Protection',
+        label: 'Zero-Knowledge Authentication',
         items: [
-          'Built AES-256-GCM session encryption with strict nonce tracking and replay detection.',
-          'Added per-session nonce sets, TTL-based expiration, and atomic session-key rotation.',
-          'Designed dual-salt Argon2id password derivation to separate client-side and server-side salts.',
+          'Implemented two-stage Argon2id derivation: the client hashes the master password with a client salt before transmission, and the server re-hashes that value with a separate server salt for storage.',
+          'The plaintext master password never touches the server, and only the final server hash plus the two salts are persisted — preserving a true zero-knowledge model.',
+          'Separated the salt-storage table from the master-user table so neither table alone can reconstruct a password if exposed.',
         ],
       },
       {
-        label: 'Boundary Hardening',
+        label: 'Session & Key Management',
         items: [
-          'Rejected base64 smuggling, oversized payloads, malformed ciphertext, and deserialization abuse at cryptographic boundaries.',
-          'Implemented RSA key rotation with key identifiers, expiration enforcement, and backward-compatible active-session handling.',
-          'Centralized error normalization and auditing to prevent cryptographic oracle leaks, timing disclosures, and sensitive error propagation.',
+          'AES-256-GCM authenticated encryption with a unique 12-byte nonce and 16-byte tag per ciphertext, with associated data binding timestamps and usernames to each message.',
+          'Automatic RSA-2048 key-pair rotation every 24 hours; the private key is stored on disk under AES file encryption with restricted permissions while the public key is derived dynamically.',
+          'Enforced a ±5-second timestamp drift window, per-session nonce tracking, and 15-minute session TTLs, with a cleanup thread destroying expired sessions every 60 seconds.',
+        ],
+      },
+      {
+        label: 'Database & Defensive Controls',
+        items: [
+          'PostgreSQL storage with per-user vault tables referenced by non-guessable UUIDs and AES-encrypted account entries; no plaintext credential is ever written to disk.',
+          'BLAKE2b-256 message checksums validated before any decryption or signature verification to detect tampering across transit.',
+          'Rate limiting to three login attempts per minute per IP, plus audit logging of request metadata, outcomes, key identifiers, and checksums; all server errors normalize through a single handler to prevent cryptographic oracle and timing leaks.',
         ],
       },
     ],
-    tech: ['Python', 'Flask', 'PostgreSQL', 'JavaScript', 'HTTP/3 with TLS 1.3', 'RSA-OAEP/PSS', 'AES-256-GCM', 'Argon2id'],
+    tech: ['Python', 'Flask', 'PostgreSQL', 'JavaScript', 'TLS 1.3 / HTTP/3', 'RSA-2048 OAEP/PSS', 'AES-256-GCM', 'Argon2id', 'BLAKE2b-256'],
+    documents: [
+      {
+        label: 'CipherSafe Capstone Paper',
+        description: 'Full senior capstone write-up: system design, two-server zero-knowledge architecture, database schema, security practices, and future work.',
+        meta: 'PDF · 14 pages',
+        file: '/documents/CipherSafe-Capstone-Paper.pdf',
+      },
+      {
+        label: 'Four-Way Handshake Specification',
+        description: 'Protocol deep-dive: per-step JSON packet fields, HTTP interfaces, the encryption process, and the cryptographic properties of each handshake phase.',
+        meta: 'PDF · 6 pages',
+        file: '/documents/CipherSafe-Four-Way-Handshake.pdf',
+      },
+    ],
   },
   {
     id: 'security-defense-labs',
-    title: 'Security & Defense Labs',
-    area: 'Adversarial Network Analysis',
+    title: 'Security & Defense Labs - Controlled Adversarial Network Analysis',
     icon: 'fa-network-wired',
     summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
     sections: [
@@ -141,7 +172,6 @@ export default function Projects() {
           {activeProject ? (
             <article className="project-record">
               <div className="case-study-meta">
-                <span>{activeProject.area}</span>
                 <strong>{activeProject.title}</strong>
               </div>
               <p className="project-summary">{activeProject.summary}</p>
@@ -160,6 +190,41 @@ export default function Projects() {
                   <span className="tech-tag" key={tech}>{tech}</span>
                 ))}
               </div>
+
+              {activeProject.documents && activeProject.documents.length > 0 && (
+                <section className="case-study-section project-docs">
+                  <h3>Documentation</h3>
+                  <div className="project-doc-list">
+                    {activeProject.documents.map((doc) => (
+                      <article className="project-doc" key={doc.file}>
+                        <div className="project-doc-icon">
+                          <i className="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div className="project-doc-body">
+                          <strong>{doc.label}</strong>
+                          <span className="project-doc-meta">{doc.meta}</span>
+                          <p>{doc.description}</p>
+                        </div>
+                        <div className="project-doc-actions">
+                          <a
+                            className="project-doc-action"
+                            href={doc.file}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <i className="fa-solid fa-eye"></i>
+                            <span>View</span>
+                          </a>
+                          <a className="project-doc-action" href={doc.file} download>
+                            <i className="fa-solid fa-download"></i>
+                            <span>Download</span>
+                          </a>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
             </article>
           ) : (
             <div className="project-landing">
@@ -184,7 +249,6 @@ export default function Projects() {
                       <i className={`fa-solid ${project.icon}`}></i>
                     </div>
                     <div className="project-directory-body">
-                      <span>{project.area}</span>
                       <strong>{project.title}</strong>
                       <p>{project.summary}</p>
                     </div>
