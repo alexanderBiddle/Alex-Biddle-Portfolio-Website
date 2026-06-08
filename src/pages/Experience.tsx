@@ -11,24 +11,16 @@ const experienceEntries: ExperienceEntry[] = [
   {
     title: 'Mission Analyst',
     organization: 'Naval Surface Warfare Center Dahlgren Division',
-    department: 'V Department',
-    dates: 'March 2026 – Present',
-    summary: 'Progressed from the SSEP internship program into a full-time Mission Analyst role.',
+    department: 'M Department → V Department',
+    dates: 'June 2024 – Present',
+    summary:
+      'Joined through the SSEP internship program as a Mission Analyst Intern and progressed into a full-time Mission Analyst role, building simulation models and analysis tooling in support of mission analysis.',
     details: [
-      'Transitioned from the SSEP Mission Analyst Intern role into full-time employment in March 2026.',
-    ],
-  },
-  {
-    title: 'SSEP Mission Analyst Intern',
-    organization: 'Naval Surface Warfare Center Dahlgren Division',
-    department: 'M Department',
-    dates: 'June 2024 – March 2026',
-    summary: 'Developed simulation models and analysis scripts in support of mission analysis.',
-    details: [
+      'Started as an SSEP Mission Analyst Intern in M Department (June 2024) and converted to a full-time Mission Analyst in V Department in March 2026.',
       'Developed simulation models in the Advanced Framework for Simulation, Integration and Modeling (AFSIM) tool to run simulated scenarios in support of mission analysis.',
-      'Developed behavior logic and interfaces to model system responses to threat conditions for Red vs Blue scenarios in AFSIM.',
-      'Supported collaborative projects involving strategy concepts and task management.',
-      'Created MATLAB analysis scripts to process Monte Carlo outputs from AFSIM.',
+      'Built behavior logic and interfaces to model system responses to threat conditions for Red vs Blue scenarios in AFSIM.',
+      'Created MATLAB analysis scripts to process Monte Carlo outputs from AFSIM, turning raw simulation runs into usable mission-analysis results.',
+      'Supported collaborative projects involving strategy concepts and task management across the analysis team.',
     ],
   },
   {

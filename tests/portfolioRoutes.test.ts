@@ -41,11 +41,10 @@ test('experience page publishes the verified employment timeline', () => {
   const source = readFileSync(new URL('../src/pages/Experience.tsx', import.meta.url), 'utf8');
 
   assert.match(source, /Mission Analyst/);
-  assert.match(source, /V Department/);
-  assert.match(source, /March 2026 - Present/);
+  assert.match(source, /M Department → V Department/);
+  assert.match(source, /June 2024 – Present/);
   assert.match(source, /SSEP Mission Analyst Intern/);
-  assert.match(source, /M Department/);
-  assert.match(source, /June 2024 - March 2026/);
+  assert.match(source, /converted to a full-time Mission Analyst in V Department in March 2026/);
   assert.match(source, /C2 - Essentials/);
   assert.doesNotMatch(source, /Verified role names, organizations, and dates can be added/);
 });
