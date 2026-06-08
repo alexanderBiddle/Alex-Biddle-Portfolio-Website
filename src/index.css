@@ -1817,6 +1817,11 @@ html::-webkit-scrollbar-thumb {
   padding-top: 4px;
 }
 
+/* Extra breathing room separates the tech-tag chips from the documentation divider. */
+.project-docs {
+  margin-top: clamp(1.4rem, 3vh, 2.2rem);
+}
+
 /* Documentation block lists downloadable/viewable papers attached to a project. */
 .project-doc-list {
   display: grid;

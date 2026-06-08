@@ -17,6 +17,7 @@ type ProjectDocument = {
 /* Each project becomes one side-nav tab plus its documented case-study content. */
 type Project = {
   id: string;
+  navbarTitle: string;
   title: string;
   icon: string;
   summary: string;
@@ -29,8 +30,8 @@ type Project = {
 const projects: Project[] = [
   {
     id: 'ciphersafe',
+    navbarTitle: 'CipherSafe',
     title: 'CipherSafe - Zero-Knowledge Cryptographic Vault Platform',
-
     icon: 'fa-shield-halved',
     summary: 'A zero-knowledge web-based password manager built so credentials are encrypted on the client before they ever reach the network. A split two-server design — a client view server and an isolated private API server — combined with end-to-end encryption, least privilege, and key separation keeps user plaintext unreachable even under full database compromise. Senior capstone project (CSCI 403) with Braeden Kinloch, advised by Dr. Elouni.',
     sections: [
@@ -68,7 +69,7 @@ const projects: Project[] = [
         ],
       },
     ],
-    tech: ['Python', 'Flask', 'PostgreSQL', 'JavaScript', 'TLS 1.3 / HTTP/3', 'RSA-2048 OAEP/PSS', 'AES-256-GCM', 'Argon2id', 'BLAKE2b-256'],
+    tech: ['Python', 'Flask', 'Apache','PostgreSQL', 'JavaScript', 'TLS 1.3 / HTTP/3', 'RSA-2048 OAEP/PSS', 'AES-256-GCM', 'Argon2id', 'BLAKE2b-256'],
     documents: [
       {
         label: 'CipherSafe Capstone Paper',
@@ -86,7 +87,8 @@ const projects: Project[] = [
   },
   {
     id: 'security-defense-labs',
-    title: 'Security & Defense Labs - Controlled Adversarial Network Analysis',
+    navbarTitle: 'RMC Security & Defense Labs',
+    title: 'RMC Security & Defense Labs - Controlled Adversarial Network Analysis',
     icon: 'fa-network-wired',
     summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
     sections: [
@@ -160,7 +162,7 @@ export default function Projects() {
                 onClick={() => setActiveTab(project.id)}
               >
                 <i className={`fa-solid ${project.icon}`}></i>
-                <span>{project.title}</span>
+                <span>{project.navbarTitle}</span>
               </button>
             ))}
           </div>
