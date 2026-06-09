@@ -1,5 +1,6 @@
 /* React lifecycle hooks connect the layered canvas renderer to the mounted page. */
 import { useEffect, useRef } from 'react';
+import { isGalaxyQuietTarget } from './galaxyInteraction';
 
 /* Galaxy bands define the density, shape, color palette, and orientation of each spiral layer. */
 type GalaxyBand = {
@@ -185,7 +186,6 @@ const MAX_RENDER_HEIGHT = 1080;
 const MAX_FRAME_RATE = 48;
 const AUTO_Y_ROTATION_SPEED = 0.000037;
 const INITIAL_ORBIT_ROTATION: Rotation = { x: 27, y: 200 };
-const DRAG_SELECTOR = 'a, button, input, textarea, select, label, [role="button"]';
 const NEBULA_POINT_COUNT = 1_500_000;
 
 /* A deterministic random stream keeps the galaxy layout stable across route changes and reloads. */
@@ -758,14 +758,12 @@ export default function LocalGalaxyCanvas() {
       renderFrame(time);
     };
 
-    /* Start drag rotation only from open page areas so foreground controls keep normal behavior. */
+    /* Start drag rotation only from open page areas so cards, text selection, and controls behave normally. */
     const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target;
-
       if (
         event.button !== 0 ||
         (event.pointerType !== 'mouse' && event.pointerType !== 'pen') ||
-        (target instanceof Element && target.closest(DRAG_SELECTOR))
+        isGalaxyQuietTarget(event.target)
       ) {
         return;
       }

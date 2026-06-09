@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /* A single documented field section inside a project record. */
 type ProjectSection = {
@@ -19,6 +19,7 @@ type Project = {
   id: string;
   navbarTitle: string;
   title: string;
+  authors: string[];
   icon: string;
   summary: string;
   sections: ProjectSection[];
@@ -32,6 +33,7 @@ const projects: Project[] = [
     id: 'ciphersafe',
     navbarTitle: 'CipherSafe',
     title: 'CipherSafe - Zero Knowledge Cryptographic Vault',
+    authors: ['Alex Biddle', 'Braeden Kinloch'],
     icon: 'fa-shield-halved',
     summary: 'A zero-knowledge web-based password manager built so credentials are encrypted on the client before they ever reach the network. A split two-server design — a client view server and an isolated private API server — combined with end-to-end encryption, least privilege, and key separation keeps user plaintext unreachable even under full database compromise. Senior capstone project (CSCI 403) with Braeden Kinloch, advised by Dr. Elouni.',
     sections: [
@@ -89,32 +91,39 @@ const projects: Project[] = [
     id: 'security-defense-labs',
     navbarTitle: 'RMC Security & Defense Labs',
     title: 'RMC Security & Defense Labs - Adversarial Network Analysis',
+    authors: ['Alex Biddle'],
     icon: 'fa-network-wired',
     summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
     sections: [
       {
         label: 'Attack Modeling',
         items: [
-          'Modeled network and system attack surfaces, protocol weaknesses, configuration weaknesses, and vulnerability impact.',
-          'Implemented and analyzed UDP floods, ICMP floods, and ICMP reflection attacks.',
+          'Mapped attack surfaces across a controlled lab range with assigned target and attacker hosts, identifying protocol and configuration weaknesses to drive each exercise.',
+          'Executed UDP flood attacks with hping3 from parallel spoofed-source SSH sessions, sweeping payloads from 64 to 5000 bytes across multiple ports (80, 123) to maximize resource consumption.',
+          'Carried out ICMP flood and ICMP reflection attacks using spoofed source and reflector addresses, escalating payloads up to 5120 bytes to compare direct flooding against amplification through a misconfigured reflector.',
+          'Built an ARP cache poisoning tool (poisonarp.py) that forges spoofed ARP replies binding a victim IP to the attacker MAC, continuously re-poisoning the cache to hold a man-in-the-middle position and intercept redirected traffic.',
         ],
       },
       {
         label: 'Evidence Collection',
         items: [
-          'Measured resource exhaustion, packet loss, latency degradation, and service availability.',
-          'Correlated traffic volume, payload size, and system responsiveness using hping3, tcpdump, Wireshark, nmap, bmon, and ping.',
+          'Established per-host baselines with bmon (~200–400 bytes/sec at rest) and ping round-trip times (~0.7–0.9 ms) before each attack to quantify impact.',
+          'Captured and correlated traffic volume, payload size, packet loss, and latency using bmon, tcpdump, Wireshark, nmap, hping3, and ping across attacker, target, and reflector nodes.',
+          'Measured DoS effectiveness directly: floods drove the target from a ~400 byte/sec baseline to 11–12 MiB/sec, degrading echo-reply latency from under 1 ms to 8–9 ms and forcing packet-queue drops.',
+          'Verified ARP poisoning by diffing the victim ARP table before and after and confirming through tcpdump that traffic for the spoofed host was rerouted to the attacker, with normal routing restored once the attack stopped.',
         ],
       },
       {
         label: 'Defensive Reasoning',
         items: [
-          'Evaluated system-hardening effectiveness, spoofed source addressing, protocol misuse, and resilience against network attacks.',
-          'Documented mitigation considerations based on observed attack outcomes.',
+          'Evaluated host-hardening effectiveness and spoofing behavior — including why a correctly configured Linux host drops unsolicited ICMP reflection requests while a misconfigured reflector amplifies them.',
+          'Analyzed defense-in-depth across the network stack: OSI versus Internet-model layering, tunneling, and VPNs for confidentiality and integrity over untrusted networks.',
+          'Documented mitigations — rate limiting, ingress/egress filtering, and anti-spoofing — from observed outcomes and residual availability, noting SSH and other TCP services surviving an ICMP flood.',
+          'Implemented defensive countermeasures in practice by building an end-to-end encrypted chat server in C, using Diffie-Hellman (ffdhe2048) key exchange, SHA-256 key derivation, and AES-256-CTR over OpenSSL 3.0 so a relay server never sees plaintext, then flagged its MITM exposure from unauthenticated public keys.',
         ],
       },
     ],
-    tech: ['System Security & Defense', 'DoS Analysis', 'Wireshark', 'tcpdump', 'nmap', 'hping3', 'bmon', 'ping'],
+    tech: ['System Security & Defense', 'DoS Analysis', 'ARP Poisoning', 'Diffie-Hellman', 'AES-256-CTR', 'OpenSSL', 'Wireshark', 'tcpdump', 'nmap', 'hping3', 'bmon', 'ping'],
   },
 ];
 
@@ -125,7 +134,22 @@ export default function Projects() {
   /* 'home' shows the landing/overview; any project id swaps the content panel to that record. */
   const [activeTab, setActiveTab] = useState<string>('home');
 
+  /* The scroll panel is reset to its top whenever the active record changes. */
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const activeProject = projects.find((project) => project.id === activeTab) ?? null;
+
+  /* Switching tabs eases the panel back to the top instead of jumping, keeping scroll motion continuous. */
+  useEffect(() => {
+    const panel = contentRef.current;
+
+    if (!panel) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    panel.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  }, [activeTab]);
 
   return (
     <section className="page-shell projects-workspace" id="projects">
@@ -173,11 +197,19 @@ export default function Projects() {
           <p className="project-sidenav-count">{projects.length} documented projects</p>
         </aside>
 
-        <div className="project-content" role="tabpanel">
+        <div className="project-content" role="tabpanel" ref={contentRef}>
           {activeProject ? (
             <article className="project-record">
               <div className="case-study-meta">
                 <strong>{activeProject.title}</strong>
+                {activeProject.authors.length > 0 && (
+                  <div className="project-authors">
+                    <span className="project-authors-label">
+                      {activeProject.authors.length > 1 ? 'Authors' : 'Author'}
+                    </span>
+                    <p>{activeProject.authors.join(', ')}</p>
+                  </div>
+                )}
               </div>
               <p className="project-summary">{activeProject.summary}</p>
               {activeProject.sections.map((section) => (

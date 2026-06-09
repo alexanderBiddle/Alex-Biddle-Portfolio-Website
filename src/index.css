@@ -1719,6 +1719,9 @@ html::-webkit-scrollbar-thumb {
   padding: 2px;
   scrollbar-width: thin;
   scrollbar-color: var(--signal) transparent;
+  /* Tab rail eases its own scroll and chains into the page once it reaches the ends. */
+  scroll-behavior: smooth;
+  overscroll-behavior-y: auto;
 }
 
 .project-sidenav-scroll::-webkit-scrollbar {
@@ -1796,6 +1799,9 @@ html::-webkit-scrollbar-thumb {
   padding: clamp(1.4rem, 3vw, 2.4rem);
   scrollbar-width: thin;
   scrollbar-color: var(--blue) transparent;
+  /* Eased scrolling plus boundary hand-off so the panel flows into the page scroll instead of stopping dead. */
+  scroll-behavior: smooth;
+  overscroll-behavior-y: auto;
 }
 
 .project-content::-webkit-scrollbar {
@@ -1821,6 +1827,41 @@ html::-webkit-scrollbar-thumb {
 /* Section labels sit 20% larger than the shared card label sizing for clearer hierarchy. */
 .project-record .case-study-section h3 {
   font-size: 0.98rem;
+}
+
+/* Authors and summary are indented ("tabbed in") beneath the flush-left title. */
+.project-record .project-authors,
+.project-record .project-summary {
+  margin-left: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* Extra space sets the summary apart from the first documented section below it. */
+.project-record .project-summary {
+  margin-bottom: clamp(1rem, 3vh, 2.4rem);
+}
+
+/* Authors sit directly under the title with breathing room before the summary copy. */
+.project-authors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: clamp(0.16rem, 0.04vh, 0.32rem);
+}
+
+.project-authors-label {
+  color: var(--cyan);
+  font-size: clamp(2.6rem, 3.3vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-authors p {
+  color: var(--text);
+  font-size: clamp(0.92rem, 1.3vw, 1.02rem);
+  font-weight: 600;
 }
 
 /* The case-study section dividers carry over from the previous project cards. */
