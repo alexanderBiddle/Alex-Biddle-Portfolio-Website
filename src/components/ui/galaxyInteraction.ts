@@ -1,5 +1,6 @@
-/* Shared rule for both galaxy layers: the pointer drives the galaxy only over open background,
-   never while a visitor is reading or selecting text inside a card surface. */
+/* Rule for galaxy drag-to-orbit: a drag may begin only over open background, never while a visitor
+   is reading or selecting text inside a card surface. The ambient AetherFlow particle field stays
+   pointer-reactive everywhere and intentionally does not use this gate. */
 
 /* Card surfaces plus the text/controls that live inside them — anywhere the pointer should belong
    to the page (reading, selecting, clicking) instead of repelling particles or orbiting the galaxy. */

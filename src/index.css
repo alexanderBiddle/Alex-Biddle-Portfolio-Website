@@ -190,7 +190,9 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif;
   color: var(--text);
   background: var(--bg);
-  overflow-x: hidden;
+  /* `clip` (not `hidden`) prevents body from becoming a scroll container, which would otherwise
+     force overflow-y to `auto` and break `position: sticky` on the projects console. */
+  overflow-x: clip;
 }
 
 /* Dragging open page areas temporarily turns the decorative galaxy into an orbit control. */
@@ -1670,12 +1672,21 @@ html::-webkit-scrollbar-thumb {
    PROJECTS WORKSPACE — side-nav tabs + expanded card console
    ========================================================================== */
 
-/* Console reuses the shared card surface but expands to fill the viewport height. */
+/* The pin track is a plain spacer; its height is set in JS so the sticky console stays pinned for
+   exactly the distance the inner content needs to scroll. */
+.project-pin-track {
+  position: relative;
+}
+
+/* Console reuses the shared card surface, fills the viewport below the nav, and pins while its
+   content scrolls past via CSS sticky — the whole hand-off stays on the browser's native scroll. */
 .project-console {
+  position: sticky;
+  top: calc(var(--nav-h) + 12px);
   display: grid;
   grid-template-columns: clamp(196px, 22vw, 268px) minmax(0, 1fr);
-  height: calc((100svh - var(--nav-h) - clamp(8rem, 22vh, 13rem)) * 1.3);
-  min-height: 598px;
+  height: calc(100svh - var(--nav-h) - clamp(1.5rem, 5vh, 3rem));
+  min-height: 520px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1792,29 +1803,18 @@ html::-webkit-scrollbar-thumb {
   letter-spacing: 0.1em;
 }
 
-/* Right panel scrolls its own case-study/landing content independently of the rail. */
+/* Right panel is the fixed clip window; its inner wrapper is translated to reveal lower content,
+   so the panel itself never scrolls — the page scroll drives everything. */
 .project-content {
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
+}
+
+/* The translated content layer. Padding lives here (not on the clip window) so the transform reveals
+   content cleanly, and will-change keeps the translate on the GPU. */
+.project-content-scroll {
   padding: clamp(1.4rem, 3vw, 2.4rem);
-  scrollbar-width: thin;
-  scrollbar-color: var(--blue) transparent;
-  /* Eased scrolling plus boundary hand-off so the panel flows into the page scroll instead of stopping dead. */
-  scroll-behavior: smooth;
-  overscroll-behavior-y: auto;
-}
-
-.project-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.project-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.project-content::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgb(var(--signal-rgb) / 0.55);
+  will-change: transform;
 }
 
 /* The project title is the standout heading of each record, larger than the shared card sizing. */
@@ -1862,6 +1862,28 @@ html::-webkit-scrollbar-thumb {
   color: var(--text);
   font-size: clamp(0.92rem, 1.3vw, 1.02rem);
   font-weight: 600;
+}
+
+/* A co-author with an email renders as an inline mailto link tinted to the signal palette. */
+.project-author-link {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(var(--signal-bright-rgb) / 0.4);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.project-author-link:hover {
+  color: var(--signal-highlight);
+  border-bottom-color: rgb(var(--signal-highlight-rgb) / 0.7);
+}
+
+/* Source / external links sit just below the byline, indented to match the authors and summary. */
+.project-record .project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(0.6rem, 1.4vh, 1rem);
+  margin-left: clamp(1rem, 2.5vw, 2rem);
 }
 
 /* The case-study section dividers carry over from the previous project cards. */
@@ -2086,10 +2108,20 @@ html::-webkit-scrollbar-thumb {
 
 /* Tablet + mobile: stack the rail above the content and let the console grow naturally. */
 @media (max-width: 860px) {
+  /* No pinning on small screens — the record flows in the normal page scroll. */
+  .project-pin-track {
+    height: auto !important;
+  }
+
   .project-console {
+    position: static;
     grid-template-columns: 1fr;
     height: auto;
     min-height: 0;
+  }
+
+  .project-content-scroll {
+    transform: none !important;
   }
 
   .project-sidenav {
@@ -2115,7 +2147,7 @@ html::-webkit-scrollbar-thumb {
   }
 
   .project-content {
-    overflow-y: visible;
+    overflow: visible;
   }
 }
 

@@ -1,6 +1,5 @@
 /* React lifecycle hooks keep the canvas DOM reference and own the animation setup lifecycle. */
 import { useEffect, useRef } from 'react';
-import { isGalaxyQuietTarget } from './galaxyInteraction';
 
 /* Optional tuning props let the shared particle field scale without duplicating renderer code. */
 type AetherFlowCanvasProps = {
@@ -172,13 +171,6 @@ export default function AetherFlowCanvas({
 
     /* Window pointer coordinates are translated into canvas-local coordinates for repulsion. */
     const handlePointerMove = (event: PointerEvent) => {
-      /* Over a card or text the pointer belongs to the page, so let the particle field relax. */
-      if (isGalaxyQuietTarget(event.target)) {
-        pointer.x = null;
-        pointer.y = null;
-        return;
-      }
-
       const bounds = canvas.getBoundingClientRect();
       pointer.x = event.clientX - bounds.left;
       pointer.y = event.clientY - bounds.top;

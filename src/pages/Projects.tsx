@@ -6,6 +6,12 @@ type ProjectSection = {
   items: string[];
 };
 
+/* A credited author; an optional email renders the name as a mailto link (used for co-authors). */
+type ProjectAuthor = {
+  name: string;
+  email?: string;
+};
+
 /* A downloadable/viewable paper stored under public/documents and linked by absolute path. */
 type ProjectDocument = {
   label: string;
@@ -19,7 +25,8 @@ type Project = {
   id: string;
   navbarTitle: string;
   title: string;
-  authors: string[];
+  authors: ProjectAuthor[];
+  github?: string;
   icon: string;
   summary: string;
   sections: ProjectSection[];
@@ -33,7 +40,13 @@ const projects: Project[] = [
     id: 'ciphersafe',
     navbarTitle: 'CipherSafe',
     title: 'CipherSafe - Zero Knowledge Cryptographic Vault',
-    authors: ['Alex Biddle', 'Braeden Kinloch'],
+    authors: [
+      { name: 'Alex Biddle' },
+      /* Co-author: fill in Braeden's email to turn his name into a mailto link. */
+      { name: 'Braeden Kinloch', email: 'kinlochbraeden@gmail.com' },
+    ],
+    /* Public repository link; leave empty to hide the source button. */
+    github: 'https://github.com/alexanderBiddle/CipherSafe---Senior-Capstone-Password-Manager',
     icon: 'fa-shield-halved',
     summary: 'A zero-knowledge web-based password manager built so credentials are encrypted on the client before they ever reach the network. A split two-server design — a client view server and an isolated private API server — combined with end-to-end encryption, least privilege, and key separation keeps user plaintext unreachable even under full database compromise. Senior capstone project (CSCI 403) with Braeden Kinloch, advised by Dr. Elouni.',
     sections: [
@@ -91,7 +104,9 @@ const projects: Project[] = [
     id: 'security-defense-labs',
     navbarTitle: 'RMC Security & Defense Labs',
     title: 'RMC Security & Defense Labs - Adversarial Network Analysis',
-    authors: ['Alex Biddle'],
+    authors: [{ name: 'Alex Biddle' }],
+    /* Public repository link; leave empty to hide the source button. */
+    github: '',
     icon: 'fa-network-wired',
     summary: 'Controlled security exercises used to evaluate system behavior, resilience, and service availability under realistic network-based attack conditions.',
     sections: [
@@ -134,22 +149,121 @@ export default function Projects() {
   /* 'home' shows the landing/overview; any project id swaps the content panel to that record. */
   const [activeTab, setActiveTab] = useState<string>('home');
 
-  /* The scroll panel is reset to its top whenever the active record changes. */
+  /* trackRef = the tall pin spacer · consoleRef = the sticky card · contentRef = the clip window ·
+     innerRef = the content that translates up as the pinned console is scrolled through. */
+  const trackRef = useRef<HTMLDivElement>(null);
+  const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
   const activeProject = projects.find((project) => project.id === activeTab) ?? null;
 
-  /* Switching tabs eases the panel back to the top instead of jumping, keeping scroll motion continuous. */
+  /* Switching tabs resets the record to its top. If the console is already pinned (or scrolled past),
+     bring the page to the pin line so the new record reads from its first line. */
   useEffect(() => {
-    const panel = contentRef.current;
+    const track = trackRef.current;
+    const inner = innerRef.current;
+    const nav = document.querySelector('.site-nav');
 
-    if (!panel) {
+    if (!inner) {
       return;
     }
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    panel.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    inner.style.transform = 'translate3d(0, 0, 0)';
+
+    if (!track || window.innerWidth <= 860) {
+      return;
+    }
+
+    const navOffset = (nav instanceof HTMLElement ? nav.offsetHeight : 82) + 12;
+    const pinStart = track.getBoundingClientRect().top + window.scrollY - navOffset;
+
+    if (window.scrollY > pinStart) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: pinStart, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    }
   }, [activeTab]);
+
+  /* Native sticky hand-off: the browser scrolls the page normally (stays on the compositor, so it is
+     always smooth), the console is pinned with CSS `position: sticky`, and a passive scroll listener
+     translates the inner content up as the page scrolls through the pin zone. The flow reads as one
+     continuous motion — page scroll → pinned console reveals its content → page scroll — with no wheel
+     interception and nothing to "jump", because control is never wrested from the browser. */
+  useEffect(() => {
+    const track = trackRef.current;
+    const consoleEl = consoleRef.current;
+    const viewport = contentRef.current;
+    const inner = innerRef.current;
+
+    if (!track || !consoleEl || !viewport || !inner) {
+      return;
+    }
+
+    const nav = document.querySelector('.site-nav');
+    const pinGap = 12;
+    const clampValue = (value: number, min: number, max: number) =>
+      Math.min(Math.max(value, min), max);
+
+    /* reel = how far the content overflows the clip window · pinStart = the page scroll position at
+       which the console becomes pinned. Both are cached and only recomputed on layout changes. */
+    let reel = 0;
+    let pinStart = 0;
+    let frame = 0;
+
+    const render = () => {
+      frame = 0;
+      if (reel <= 0) {
+        inner.style.transform = 'translate3d(0, 0, 0)';
+        return;
+      }
+      const progress = clampValue(window.scrollY - pinStart, 0, reel);
+      inner.style.transform = `translate3d(0, ${-progress}px, 0)`;
+    };
+
+    const measure = () => {
+      /* The stacked mobile layout flows naturally — clear the pin spacer and any transform. */
+      if (window.innerWidth <= 860) {
+        reel = 0;
+        track.style.height = '';
+        inner.style.transform = '';
+        return;
+      }
+
+      const navOffset = (nav instanceof HTMLElement ? nav.offsetHeight : 82) + pinGap;
+      reel = Math.max(0, inner.scrollHeight - viewport.clientHeight);
+      pinStart = track.getBoundingClientRect().top + window.scrollY - navOffset;
+      /* Give the sticky console exactly `reel` worth of extra scroll distance to stay pinned. */
+      track.style.height = `${consoleEl.offsetHeight + reel}px`;
+      render();
+    };
+
+    /* Coalesce scroll events into one transform write per frame. */
+    const onScroll = () => {
+      if (frame === 0) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measure);
+
+    /* Re-measure when the record's height changes (tab switches, font/layout shifts). */
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(inner);
+    resizeObserver.observe(viewport);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
+      resizeObserver.disconnect();
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+      track.style.height = '';
+      inner.style.transform = '';
+    };
+  }, []);
 
   return (
     <section className="page-shell projects-workspace" id="projects">
@@ -161,8 +275,11 @@ export default function Projects() {
         </p>
       </div>
 
+      {/* The pin track is a tall spacer that gives the sticky console room to stay pinned while its
+          inner content is scrolled through; its height is set in JS to match the content overflow. */}
+      <div className="project-pin-track" ref={trackRef}>
       {/* The console is the expanded card surface: scrollable tab rail on the left, case study on the right. */}
-      <div className="project-console spotlight-card">
+      <div className="project-console spotlight-card" ref={consoleRef}>
         <aside className="project-sidenav" aria-label="Project navigation">
           <p className="project-sidenav-label">Directory</p>
 
@@ -198,6 +315,8 @@ export default function Projects() {
         </aside>
 
         <div className="project-content" role="tabpanel" ref={contentRef}>
+          {/* This inner wrapper is translated up by the scroll listener to reveal lower content. */}
+          <div className="project-content-scroll" ref={innerRef}>
           {activeProject ? (
             <article className="project-record">
               <div className="case-study-meta">
@@ -207,7 +326,33 @@ export default function Projects() {
                     <span className="project-authors-label">
                       {activeProject.authors.length > 1 ? 'Authors' : 'Author'}
                     </span>
-                    <p>{activeProject.authors.join(', ')}</p>
+                    <p>
+                      {activeProject.authors.map((author, index) => (
+                        <span key={author.name}>
+                          {index > 0 && ', '}
+                          {author.email ? (
+                            <a className="project-author-link" href={`mailto:${author.email}`}>
+                              {author.name}
+                            </a>
+                          ) : (
+                            author.name
+                          )}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                )}
+                {activeProject.github && (
+                  <div className="project-links">
+                    <a
+                      className="project-doc-action"
+                      href={activeProject.github}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                      <span>View Source</span>
+                    </a>
                   </div>
                 )}
               </div>
@@ -295,7 +440,9 @@ export default function Projects() {
               </div>
             </div>
           )}
+          </div>
         </div>
+      </div>
       </div>
     </section>
   );
