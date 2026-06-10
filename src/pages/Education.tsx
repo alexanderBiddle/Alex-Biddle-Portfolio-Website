@@ -44,10 +44,7 @@ export default function Education() {
     <section className="page-shell education" id="education">
       <div className="section-heading">
         <p className="eyebrow">Education</p>
-        <h1>Cybersecurity and computer science supported by engineering physics and mathematics.</h1>
-        <p>
-          Completed coursework connects secure software, systems, networking, attack defense, quantitative modeling, and physical-system analysis.
-        </p>
+        <h1>Cybersecurity and<br />computer science,<br />supported by<br />engineering physics<br />and mathematics.</h1>
       </div>
 
       <div className="education-record glass-panel spotlight-card">

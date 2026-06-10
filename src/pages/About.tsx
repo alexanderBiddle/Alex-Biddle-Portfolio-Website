@@ -139,10 +139,7 @@ export default function About() {
     <section className="page-shell about" id="about">
       <div className="section-heading">
         <p className="eyebrow">About</p>
-        <h1>Cybersecurity engineering with red-team range and defensive discipline.</h1>
-        <p>
-          I'm Alex Biddle — a Mission Analyst at the Naval Surface Warfare Center Dahlgren Division and a Randolph-Macon College graduate with dual majors in Cybersecurity and Computer Science. I build simulation models, analysis tooling, and secure software, and I approach all of it by asking how systems can fail and how to make them harder to break.
-        </p>
+        <h1>Security engineering with secure software development and mission analysis.</h1>
       </div>
 
       <div className="proof-strip" aria-label="Profile snapshot">

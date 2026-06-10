@@ -41,10 +41,7 @@ export default function Experience() {
     <section className="page-shell experience" id="experience">
       <div className="section-heading">
         <p className="eyebrow">Experience</p>
-        <h1>Mission analysis, simulation modeling, and technical support experience.</h1>
-        <p>
-          A professional record shaped by mission-oriented analysis, AFSIM scenario modeling, MATLAB output processing, collaborative strategy work, and hands-on IT support.
-        </p>
+        <h1>Mission analysis, <br />simulation modeling, <br />and technical support experience.</h1>
       </div>
 
       <div className="timeline" aria-label="Professional experience timeline">

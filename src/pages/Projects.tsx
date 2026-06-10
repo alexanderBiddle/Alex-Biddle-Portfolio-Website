@@ -270,9 +270,6 @@ export default function Projects() {
       <div className="section-heading">
         <p className="eyebrow">Projects</p>
         <h1>Implemented security engineering and controlled adversarial analysis.</h1>
-        <p>
-          Browse documented project records from the side navigation. Each tab opens a full case study.
-        </p>
       </div>
 
       {/* The pin track is a tall spacer that gives the sticky console room to stay pinned while its

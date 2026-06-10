@@ -47,10 +47,7 @@ export default function Contact() {
     <section className="page-shell contact" id="contact">
       <div className="section-heading">
         <p className="eyebrow">Contact</p>
-        <h1>Let's work on security that is clear, defensible, and useful.</h1>
-        <p>
-          Reach out for cybersecurity engineering, red-team practice, defensive review, analyst-style documentation, secure frontend work, or technical problem solving where evidence and execution both matter.
-        </p>
+        <h1>Let&rsquo;s work on security<br />that is clear, defensible<br />and applicable.</h1>
       </div>
 
       <div className="contact-hub">

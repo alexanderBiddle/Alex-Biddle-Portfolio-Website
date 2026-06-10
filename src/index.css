@@ -823,13 +823,24 @@ main {
 
 /* Page heading separates intro copy from the route's main content. */
 .section-heading {
-  margin-bottom: clamp(2rem, 5vh, 3rem);
+  margin-bottom: clamp(3rem, 9vh, 5rem);
 }
 
 /* Page headings are smaller than the home hero while keeping the same type system. */
 .section-heading h1,
 .glass-panel h1 {
   font-size: clamp(2.05rem, 5vw, 4.8rem);
+}
+
+/* Section heading — card-framed subtext paragraph */
+.section-heading > p:not(.eyebrow) {
+  margin-top: 32px;
+  padding: clamp(0.85rem, 1.8vw, 1.1rem) clamp(1.1rem, 2.5vw, 1.6rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgb(var(--deep-cyber-rgb) / 0.62);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 24px rgb(var(--shadow-rgb) / 0.36);
 }
 
 /* Proof strip displays three focus cards in a responsive grid. */
@@ -1465,10 +1476,10 @@ main {
   font-size: 0.9rem;
 }
 
-/* Right column: channel cards stacked at natural height, centered beside the taller intro panel. */
+/* Right column: channel cards stacked at natural height, top-aligned beside the intro panel. */
 .contact-channels {
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: clamp(12px, 1.6vw, 16px);
 }
 

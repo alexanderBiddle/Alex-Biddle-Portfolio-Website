@@ -84,10 +84,7 @@ export default function Skills() {
     <section className="page-shell skills" id="skills">
       <div className="section-heading">
         <p className="eyebrow">Skills</p>
-        <h1>Technical range across secure software, systems, networks, simulation, and analysis.</h1>
-        <p>
-          Capabilities are grounded in completed coursework, applied projects, controlled labs, and mission-analysis experience.
-        </p>
+        <h1>Technical range across<br />secure software,<br />systems, networks,<br />simulation analysis.</h1>
       </div>
 
       <div className="skills-grid">
