@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>  
+  <head>
+    <!-- GitHub Pages SPA shim: 404.html redirects a deep link here with the route encoded in the query
+         string; this restores the real path before React Router boots so clean URLs survive a refresh. -->
+    <script>
+      (function () {
+        var l = window.location;
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) { return s.replace(/~and~/g, '&'); })
+            .join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })();
+    </script>
+
     <!-- Viewport metadata keeps the React-rendered DOM responsive on mobile and desktop. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     

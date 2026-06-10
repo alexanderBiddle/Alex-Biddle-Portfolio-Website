@@ -321,38 +321,42 @@ export default function Projects() {
             <article className="project-record">
               <div className="case-study-meta">
                 <strong>{activeProject.title}</strong>
-                {activeProject.authors.length > 0 && (
-                  <div className="project-authors">
-                    <span className="project-authors-label">
-                      {activeProject.authors.length > 1 ? 'Authors' : 'Author'}
-                    </span>
-                    <p>
-                      {activeProject.authors.map((author, index) => (
-                        <span key={author.name}>
-                          {index > 0 && ', '}
-                          {author.email ? (
-                            <a className="project-author-link" href={`mailto:${author.email}`}>
-                              {author.name}
-                            </a>
-                          ) : (
-                            author.name
-                          )}
+                {(activeProject.authors.length > 0 || activeProject.github) && (
+                  <div className="project-byline">
+                    {activeProject.authors.length > 0 && (
+                      <div className="project-authors">
+                        <span className="project-authors-label">
+                          {activeProject.authors.length > 1 ? 'Authors' : 'Author'}
                         </span>
-                      ))}
-                    </p>
-                  </div>
-                )}
-                {activeProject.github && (
-                  <div className="project-links">
-                    <a
-                      className="project-doc-action"
-                      href={activeProject.github}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <i className="fa-brands fa-github"></i>
-                      <span>View Source</span>
-                    </a>
+                        <p>
+                          {activeProject.authors.map((author, index) => (
+                            <span key={author.name}>
+                              {index > 0 && ', '}
+                              {author.email ? (
+                                <a className="project-author-link" href={`mailto:${author.email}`}>
+                                  {author.name}
+                                </a>
+                              ) : (
+                                author.name
+                              )}
+                            </span>
+                          ))}
+                        </p>
+                      </div>
+                    )}
+                    {activeProject.github && (
+                      <div className="project-links">
+                        <a
+                          className="project-doc-action"
+                          href={activeProject.github}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <i className="fa-brands fa-github"></i>
+                          <span>View Source</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
