@@ -68,6 +68,26 @@ type NebulaVolumeResponse = {
   positionsBuffer: ArrayBuffer;
 };
 
+/* Worker output is validated before GPU upload: both buffers must exist and their byte lengths
+   must match the declared point count exactly (3 × Int16 positions, 4 × Uint8 colors per point). */
+const isNebulaVolumeResponse = (data: unknown): data is NebulaVolumeResponse => {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const { colorsBuffer, pointCount, positionsBuffer } = data as Partial<NebulaVolumeResponse>;
+
+  return (
+    typeof pointCount === 'number' &&
+    Number.isSafeInteger(pointCount) &&
+    pointCount > 0 &&
+    positionsBuffer instanceof ArrayBuffer &&
+    colorsBuffer instanceof ArrayBuffer &&
+    positionsBuffer.byteLength === pointCount * 3 * Int16Array.BYTES_PER_ELEMENT &&
+    colorsBuffer.byteLength === pointCount * 4 * Uint8Array.BYTES_PER_ELEMENT
+  );
+};
+
 /* The WebGL renderer exposes only the operations needed by the React-owned lifecycle. */
 type NebulaRenderer = {
   dispose: () => void;
@@ -198,8 +218,10 @@ const createSeededRandom = (seed: number) => () => {
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(Math.max(value, minimum), maximum);
 
+/* The random index is always in range, but the fallback keeps the helper total under
+   noUncheckedIndexedAccess and guarantees a valid palette index for downstream lookups. */
 const pickColorIndex = (random: () => number, colors: number[]) =>
-  colors[Math.floor(random() * colors.length)];
+  colors[Math.floor(random() * colors.length)] ?? 0;
 
 /* Allocate property-specific typed arrays once before writing the CPU particle population. */
 const createGalaxyParticles = (): GalaxyParticles => ({
@@ -581,7 +603,7 @@ export default function LocalGalaxyCanvas() {
 
     /* Field stars use viewport-relative coordinates so they remain distributed after resize. */
     for (let index = 0; index < FIELD_STAR_COUNT; index += 1) {
-      const color = PARTICLE_COLORS[pickColorIndex(random, ALL_COLOR_INDICES)];
+      const color = PARTICLE_COLORS[pickColorIndex(random, ALL_COLOR_INDICES)] ?? PARTICLE_COLORS[0];
 
       fieldStars.push({
         color: `${color[0]}, ${color[1]}, ${color[2]}`,
@@ -640,12 +662,18 @@ export default function LocalGalaxyCanvas() {
       alpha: number,
     ) => {
       const color = PARTICLE_COLORS[colorIndex];
+
+      /* Skip silently if the palette index or pixel offset ever falls outside valid bounds. */
+      if (!color || pixelOffset < 0 || pixelOffset + 3 >= pixelData.length) {
+        return;
+      }
+
       const inverseAlpha = 1 - alpha;
 
-      pixelData[pixelOffset] = color[0] * alpha + pixelData[pixelOffset] * inverseAlpha;
-      pixelData[pixelOffset + 1] = color[1] * alpha + pixelData[pixelOffset + 1] * inverseAlpha;
-      pixelData[pixelOffset + 2] = color[2] * alpha + pixelData[pixelOffset + 2] * inverseAlpha;
-      pixelData[pixelOffset + 3] = Math.min(255, pixelData[pixelOffset + 3] + alpha * 255);
+      pixelData[pixelOffset] = color[0] * alpha + (pixelData[pixelOffset] ?? 0) * inverseAlpha;
+      pixelData[pixelOffset + 1] = color[1] * alpha + (pixelData[pixelOffset + 1] ?? 0) * inverseAlpha;
+      pixelData[pixelOffset + 2] = color[2] * alpha + (pixelData[pixelOffset + 2] ?? 0) * inverseAlpha;
+      pixelData[pixelOffset + 3] = Math.min(255, (pixelData[pixelOffset + 3] ?? 0) + alpha * 255);
     };
 
     /* Field stars render after the galaxy image so their subtle twinkle remains visible. */
@@ -685,16 +713,24 @@ export default function LocalGalaxyCanvas() {
       pixelData.fill(0);
 
       for (let index = 0; index < GALAXY_POINT_COUNT; index += 1) {
+        /* Typed-array reads carry an undefined branch under noUncheckedIndexedAccess; the loop
+           bound guarantees in-range access, so zero fallbacks keep the hot path total and safe. */
+        const transform = layerTransforms[galaxyParticles.layerIndices[index] ?? 0];
+
+        if (!transform) {
+          continue;
+        }
+
         const angle =
-          galaxyParticles.angles[index] + motionTime * galaxyParticles.rotationSpeeds[index];
+          (galaxyParticles.angles[index] ?? 0) +
+          motionTime * (galaxyParticles.rotationSpeeds[index] ?? 0);
         const orbitRadius =
-          galaxyParticles.radii[index] *
-          galaxyParticles.radialScales[index] *
+          (galaxyParticles.radii[index] ?? 0) *
+          (galaxyParticles.radialScales[index] ?? 0) *
           galaxyRadius;
-        const transform = layerTransforms[galaxyParticles.layerIndices[index]];
         let x = Math.cos(angle) * orbitRadius;
-        let y = galaxyParticles.verticalOffsets[index] * galaxyRadius;
-        let z = (Math.sin(angle) + galaxyParticles.planeOffsets[index]) * orbitRadius;
+        let y = (galaxyParticles.verticalOffsets[index] ?? 0) * galaxyRadius;
+        let z = (Math.sin(angle) + (galaxyParticles.planeOffsets[index] ?? 0)) * orbitRadius;
         const rotatedY = y * transform.cosX - z * transform.sinX;
         const rotatedZ = y * transform.sinX + z * transform.cosX;
         const rotatedX = x * transform.cosY + rotatedZ * transform.sinY;
@@ -717,8 +753,8 @@ export default function LocalGalaxyCanvas() {
         }
 
         const alpha = clamp(
-          galaxyParticles.opacities[index] *
-            (0.66 + galaxyParticles.sizes[index] * 0.5) *
+          (galaxyParticles.opacities[index] ?? 0) *
+            (0.66 + (galaxyParticles.sizes[index] ?? 0) * 0.5) *
             perspective,
           0.04,
           0.94,
@@ -727,7 +763,7 @@ export default function LocalGalaxyCanvas() {
         blendPixel(
           pixelData,
           (pixelY * width + pixelX) * 4,
-          galaxyParticles.colorIndices[index],
+          galaxyParticles.colorIndices[index] ?? 0,
           alpha,
         );
       }
@@ -824,8 +860,9 @@ export default function LocalGalaxyCanvas() {
 
     /* Generate the expensive nebula volume off the main thread, then upload its transferable buffers. */
     if (nebulaWorker) {
-      nebulaWorker.onmessage = ({ data }: MessageEvent<NebulaVolumeResponse>) => {
-        if (data.pointCount !== NEBULA_POINT_COUNT) {
+      nebulaWorker.onmessage = ({ data }: MessageEvent<unknown>) => {
+        /* Reject structurally invalid or unexpectedly sized payloads before touching the GPU. */
+        if (!isNebulaVolumeResponse(data) || data.pointCount !== NEBULA_POINT_COUNT) {
           return;
         }
 
@@ -835,6 +872,16 @@ export default function LocalGalaxyCanvas() {
           renderFrame();
         }
       };
+
+      /* A crashed or undeliverable worker only costs the decorative nebula layer; release it and
+         let the galaxy, field stars, and the rest of the page continue rendering normally. */
+      nebulaWorker.onerror = () => {
+        nebulaWorker.terminate();
+      };
+      nebulaWorker.onmessageerror = () => {
+        nebulaWorker.terminate();
+      };
+
       nebulaWorker.postMessage({
         pointCount: NEBULA_POINT_COUNT,
         seed: 19770503,

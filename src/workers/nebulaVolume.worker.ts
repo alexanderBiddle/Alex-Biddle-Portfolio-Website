@@ -11,9 +11,10 @@ type NebulaVolumeResponse = {
   positionsBuffer: ArrayBuffer;
 };
 
-/* A narrow worker scope documents the message contract without depending on DOM-specific globals. */
+/* A narrow worker scope documents the message contract without depending on DOM-specific globals.
+   Incoming messages are typed as unknown because the worker cannot trust the sender's shape. */
 type WorkerScope = {
-  onmessage: ((event: MessageEvent<NebulaVolumeRequest>) => void) | null;
+  onmessage: ((event: MessageEvent<unknown>) => void) | null;
   postMessage: (message: NebulaVolumeResponse, transfer: Transferable[]) => void;
 };
 
@@ -22,6 +23,27 @@ const workerScope = self as unknown as WorkerScope;
 const TAU = Math.PI * 2;
 const POSITION_SCALE = 32767;
 const LUMINOUS_NUCLEUS_FRACTION = 0.032;
+
+/* Upper bound stops a malformed message from requesting a multi-gigabyte typed-array allocation. */
+const MAX_POINT_COUNT = 4_000_000;
+
+/* Validate the message at the trust boundary before any allocation sized from its values. */
+const isNebulaVolumeRequest = (data: unknown): data is NebulaVolumeRequest => {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const { pointCount, seed } = data as Partial<NebulaVolumeRequest>;
+
+  return (
+    typeof pointCount === 'number' &&
+    Number.isSafeInteger(pointCount) &&
+    pointCount > 0 &&
+    pointCount <= MAX_POINT_COUNT &&
+    typeof seed === 'number' &&
+    Number.isFinite(seed)
+  );
+};
 
 /* Seeded output keeps the generated nebula stable across page loads and worker restarts. */
 const createSeededRandom = (seed: number) => () => {
@@ -37,7 +59,12 @@ const quantizePosition = (value: number) =>
   Math.round(clamp(value, -1, 1) * POSITION_SCALE);
 
 /* Each request builds a complete volume off the main thread before transferring its buffers. */
-workerScope.onmessage = ({ data: { pointCount, seed } }) => {
+workerScope.onmessage = ({ data }) => {
+  if (!isNebulaVolumeRequest(data)) {
+    return;
+  }
+
+  const { pointCount, seed } = data;
   const random = createSeededRandom(seed);
   const positions = new Int16Array(pointCount * 3);
   const colors = new Uint8Array(pointCount * 4);

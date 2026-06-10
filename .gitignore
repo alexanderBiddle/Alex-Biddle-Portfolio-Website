@@ -25,5 +25,7 @@ dist-ssr
 *.sw?
 
 # Local tooling
+# (gitignore patterns use forward slashes; a backslash escapes the next character and matches nothing)
 .impeccable/
-docs\superpowers
+.claude/
+docs/superpowers/

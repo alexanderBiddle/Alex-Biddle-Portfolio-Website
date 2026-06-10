@@ -8,15 +8,16 @@ import { RouterProvider } from "react-router/dom";
 import './index.css'
 
 /* Page components become the route-specific DOM inserted inside App's <Outlet />. */
-import App           from './App.tsx'
-import Home          from "./pages/Home.tsx"
-import About         from "./pages/About.tsx"
-import Experience    from "./pages/Experience.tsx"
-import Skills        from "./pages/Skills.tsx"
-import Education     from "./pages/Education.tsx"
-import Projects      from "./pages/Projects.tsx"
-import Contact       from "./pages/Contact.tsx"
-import NotFoundPage  from './pages/NotFoundPage.tsx';
+import App            from './App.tsx'
+import Home           from "./pages/Home.tsx"
+import About          from "./pages/About.tsx"
+import Experience     from "./pages/Experience.tsx"
+import Skills         from "./pages/Skills.tsx"
+import Education      from "./pages/Education.tsx"
+import Projects       from "./pages/Projects.tsx"
+import Contact        from "./pages/Contact.tsx"
+import NotFoundPage   from './pages/NotFoundPage.tsx';
+import RouteErrorPage from './pages/RouteErrorPage.tsx';
 
 
 /* The app is served from a sub-path (GitHub Pages project site), so the router's basename must match
@@ -30,6 +31,9 @@ const router = createBrowserRouter(
       path: "/",
       /* App wraps each child route with the shared background, navigation, and footer. */
       element: <App />,
+      /* Rendering errors anywhere in the routed tree land on a styled boundary page instead of
+         unmounting React and leaving a blank document. */
+      errorElement: <RouteErrorPage />,
       children: [
         { path: "/",          element: <Home          /> },
         { path: "/About",     element: <About         /> },

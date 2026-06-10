@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  /* .claude holds local tooling state (including temporary git worktrees with their own tsconfigs)
+     that must never be linted or treated as a TypeScript project root. */
+  globalIgnores(['dist', '.claude']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -17,6 +19,10 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        /* Pin the project root so stray tsconfigs elsewhere on disk cannot break parsing. */
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
 ])

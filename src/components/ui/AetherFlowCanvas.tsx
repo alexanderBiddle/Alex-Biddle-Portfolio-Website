@@ -112,9 +112,19 @@ export default function AetherFlowCanvas({
       const connectionDistanceSquared = CONNECTION_DISTANCE * CONNECTION_DISTANCE;
 
       for (let firstIndex = 0; firstIndex < particles.length; firstIndex += 1) {
+        const first = particles[firstIndex];
+
+        if (!first) {
+          continue;
+        }
+
         for (let secondIndex = firstIndex + 1; secondIndex < particles.length; secondIndex += 1) {
-          const first = particles[firstIndex];
           const second = particles[secondIndex];
+
+          if (!second) {
+            continue;
+          }
+
           const offsetX = first.x - second.x;
           const offsetY = first.y - second.y;
           const distanceSquared = offsetX * offsetX + offsetY * offsetY;

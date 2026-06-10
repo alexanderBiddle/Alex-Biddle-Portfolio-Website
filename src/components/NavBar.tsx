@@ -8,18 +8,18 @@ type NavigationLink = {
   label: string;
 };
 
-export default function NavBar() {
-  /* Central link data keeps the repeated navigation anchors consistent across the DOM. */
-  const links: NavigationLink[] = [
-    { to: '/', label: 'Home' },
-    { to: '/About', label: 'About' },
-    { to: '/Experience', label: 'Experience' },
-    { to: '/Skills', label: 'Skills' },
-    { to: '/Education', label: 'Education' },
-    { to: '/Projects', label: 'Projects' },
-    { to: '/Contact', label: 'Contact' },
-  ];
+/* Central link data lives at module scope, matching how the page components define their data. */
+const links: NavigationLink[] = [
+  { to: '/', label: 'Home' },
+  { to: '/About', label: 'About' },
+  { to: '/Experience', label: 'Experience' },
+  { to: '/Skills', label: 'Skills' },
+  { to: '/Education', label: 'Education' },
+  { to: '/Projects', label: 'Projects' },
+  { to: '/Contact', label: 'Contact' },
+];
 
+export default function NavBar() {
   return (
     <nav className="site-nav">
       {/* Mapping link data creates one NavLink per route and lets React Router mark the active page. */}

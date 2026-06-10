@@ -4,6 +4,7 @@ import test from 'node:test';
 
 const navbarSource = readFileSync(new URL('../src/components/NavBar.tsx', import.meta.url), 'utf8');
 const routerSource = readFileSync(new URL('../src/main.tsx', import.meta.url), 'utf8');
+const stylesSource = readFileSync(new URL('../src/index.css', import.meta.url), 'utf8');
 
 test('navbar places Experience after About and Education after Skills', () => {
   const labels = [...navbarSource.matchAll(/label: '([^']+)'/g)].map((match) => match[1]);
@@ -41,10 +42,10 @@ test('experience page publishes the verified employment timeline', () => {
   const source = readFileSync(new URL('../src/pages/Experience.tsx', import.meta.url), 'utf8');
 
   assert.match(source, /Mission Analyst/);
-  assert.match(source, /M Department → V Department/);
+  assert.match(source, /Naval Surface Warfare Center Dahlgren Division/);
   assert.match(source, /June 2024 – Present/);
   assert.match(source, /SSEP Mission Analyst Intern/);
-  assert.match(source, /converted to a full-time Mission Analyst in V Department in March 2026/);
+  assert.match(source, /converted to a full-time Mission Analyst in March 2026/);
   assert.match(source, /C2 - Essentials/);
   assert.doesNotMatch(source, /Verified role names, organizations, and dates can be added/);
 });
@@ -59,7 +60,7 @@ test('education page publishes verified Randolph-Macon credentials and completed
   assert.match(source, /Engineering Physics/);
   assert.match(source, /Mathematics/);
   assert.match(source, /CS & Cybersecurity GPA: 4\.0/);
-  assert.match(source, /CompTIA Security\+/);
+  assert.match(source, /ODAC All-Academic Award/);
   assert.match(source, /System Security & Defense/);
   assert.match(source, /Higher Geometry/);
   assert.doesNotMatch(source, /Bachelor of (Arts|Science)/);
@@ -68,7 +69,7 @@ test('education page publishes verified Randolph-Macon credentials and completed
 test('skills page publishes the resume technical archive', () => {
   const source = readFileSync(new URL('../src/pages/Skills.tsx', import.meta.url), 'utf8');
 
-  assert.match(source, /Rust/);
+  assert.match(source, /TypeScript/);
   assert.match(source, /MIPS/);
   assert.match(source, /AFSIM/);
   assert.match(source, /Wireshark/);
@@ -81,7 +82,7 @@ test('projects page publishes verified case studies with corrected protocol word
 
   assert.match(source, /CipherSafe/);
   assert.match(source, /Security & Defense Labs/);
-  assert.match(source, /HTTP\/3 with TLS 1\.3/);
+  assert.match(source, /TLS 1\.3 and HTTP\/3/);
   assert.match(source, /RSA-2048 OAEP/);
   assert.match(source, /AES-256-GCM/);
   assert.match(source, /Argon2id/);
@@ -98,4 +99,9 @@ test('contact page uses the verified external destinations', () => {
   assert.match(source, /https:\/\/github\.com\/AlexanderBiddle/);
   assert.doesNotMatch(source, /alexander@example\.com/);
   assert.doesNotMatch(source, /href="#"/);
+});
+
+test('footer pins the copyright copy to the right column', () => {
+  assert.match(stylesSource, /\.footer\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto\s+minmax\(0,\s*1fr\);/s);
+  assert.match(stylesSource, /\.copyright\s*\{[^}]*justify-self:\s*end;[^}]*text-align:\s*right;/s);
 });
