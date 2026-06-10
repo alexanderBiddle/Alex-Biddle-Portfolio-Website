@@ -16,9 +16,10 @@ const experienceEntries: ExperienceEntry[] = [
       'Joined through the SSEP internship program as a Mission Analyst Intern and progressed into a full-time Mission Analyst role, building simulation models and analysis tooling in support of mission analysis.',
     details: [
       'Started as an SSEP Mission Analyst Intern and converted to a full-time Mission Analyst in March 2026.',
-      'Developed simulation models in the Advanced Framework for Simulation, Integration and Modeling (AFSIM) tool to run simulated scenarios in support of mission analysis.',
+      'Led development of simulation models in the Advanced Framework for Simulation, Integration and Modeling (AFSIM) tool, driving scenario design and model architecture decisions in support of mission analysis.',
       'Built behavior logic and interfaces to model system responses to threat conditions for Red vs Blue scenarios in AFSIM.',
       'Created MATLAB, Python and Excel analysis scripts to process Monte Carlo outputs from AFSIM, turning raw simulation runs into usable mission-analysis results.',
+      'Handled cross-team communication and task coordination, managing action items, tracking deliverables, and keeping collaborative projects aligned across the analysis team.',
       'Supported collaborative projects involving strategy concepts and task management across the analysis team.',
     ],
   },

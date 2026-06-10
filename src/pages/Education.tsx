@@ -1,5 +1,5 @@
 const honors = ["Dean's List", 'ODAC All-Academic Award', 'ODAC All-Conference Award'];
-const certifications = ['CompTIA Security+', 'CompTIA Network+', 'CompTIA Cloud Essentials'];
+const certifications: string[] = [];
 
 const courseGroups = [
   {
@@ -81,15 +81,17 @@ export default function Education() {
           </div>
         </section>
 
-        <section className="glass-panel spotlight-card">
-          <p className="panel-kicker">Certifications</p>
-          <h2>CompTIA credentials</h2>
-          <div className="archive-tags">
-            {certifications.map((certification) => (
-              <span className="cert-tag" key={certification}>{certification}</span>
-            ))}
-          </div>
-        </section>
+        {certifications.length > 0 && (
+          <section className="glass-panel spotlight-card">
+            <p className="panel-kicker">Certifications</p>
+            <h2>CompTIA credentials</h2>
+            <div className="archive-tags">
+              {certifications.map((certification) => (
+                <span className="cert-tag" key={certification}>{certification}</span>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       <section className="glass-panel spotlight-card coursework-panel">

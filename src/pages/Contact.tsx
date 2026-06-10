@@ -33,10 +33,13 @@ const channels: Channel[] = [
 /* Focus areas reused from the page intro so the chips stay grounded in the same offering. */
 const focusAreas = [
   'Cybersecurity engineering',
-  'Red-team practice',
-  'Defensive review',
-  'Secure frontend',
-  'Analyst documentation',
+  'Red-teaming',
+  'Security reviews and audits',
+  'Secure frontend design',
+  'Analyst reports',
+  'Requirements documentation',
+  'System design',
+  'Secure software development',
 ];
 
 export default function Contact() {

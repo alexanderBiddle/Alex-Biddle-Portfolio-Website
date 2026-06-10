@@ -26,15 +26,6 @@ export default function AetherGalaxyHero() {
           <span>Security Engineer | Developer | Analyst</span>
         </motion.h1>
 
-        <motion.p
-          {...reveal}
-          transition={{ delay: 0.42, duration: 0.74, ease: [0.16, 1, 0.3, 1] }}
-          className="aether-copy"
-        >
-          I bring red-team curiosity, defensive engineering, analyst discipline, and software
-          development together to surface hidden paths and build systems that hold.
-        </motion.p>
-
         {/* Route links direct visitors to evidence-oriented projects or the contact page. */}
         <motion.div
           {...reveal}

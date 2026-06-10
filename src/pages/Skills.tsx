@@ -8,7 +8,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: 'Programming Languages',
     icon: 'fa-code',
-    items: ['Python', 'C', 'C++', 'AFSIM', 'Java', 'JavaScript', 'MIPS', 'MATLAB', 'LaTeX'],
+    items: ['Python', 'C', 'C++', 'AFSIM', 'Java', 'JavaScript', 'TypeScript', 'MIPS', 'MATLAB', 'LaTeX'],
   },
   {
     title: 'Tools and Environments',
