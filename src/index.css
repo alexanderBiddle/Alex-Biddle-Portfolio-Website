@@ -1813,11 +1813,6 @@ html::-webkit-scrollbar-thumb {
     min-width: 0;
   }
 
-  /* Tighter padding inside the record panel on narrow phones. */
-  .project-content-scroll {
-    padding: clamp(0.9rem, 4vw, 1.4rem);
-  }
-
   /* Remove the decorative hanging indent — not enough horizontal room on narrow phones. */
   .project-record .project-byline,
   .project-record .project-summary {
@@ -1932,6 +1927,15 @@ html::-webkit-scrollbar-thumb {
   transform: translateX(4px);
 }
 
+/* Desktop: only the active panel occupies layout space; others are pulled out of flow. */
+.project-panel {
+  display: none;
+}
+
+.project-panel.is-active {
+  display: block;
+}
+
 /* Tablet + mobile: stack the rail above the content and let the console grow naturally. */
 @media (max-width: 860px) {
   /* No pinning on small screens — the record flows in the normal page scroll. */
@@ -1980,6 +1984,35 @@ html::-webkit-scrollbar-thumb {
   .project-authors-label {
     font-size: 0.76rem;
     letter-spacing: 0.14em;
+  }
+
+  /* Move padding from the scroll container to each panel so snap boundaries are edge-to-edge. */
+  .project-content-scroll {
+    padding: 0;
+  }
+
+  /* Horizontal swipe track: all panels sit side by side, snapping to each in turn. */
+  .project-panels-track {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .project-panels-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Every panel is visible and claims exactly one track-width of horizontal space. */
+  .project-panel,
+  .project-panel.is-active {
+    display: block;
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    padding: clamp(1rem, 3.5vw, 1.4rem);
   }
 }
 

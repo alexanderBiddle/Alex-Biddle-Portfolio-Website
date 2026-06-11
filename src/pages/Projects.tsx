@@ -142,6 +142,9 @@ const projects: Project[] = [
   },
 ];
 
+/* Ordered panel ids: home first, then each project in declaration order. */
+const ALL_PANEL_IDS = ['home', ...projects.map((p) => p.id)];
+
 /* Public assets are served under Vite's configured base path, so document links must be prefixed with it. */
 const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 
@@ -150,13 +153,21 @@ export default function Projects() {
   const [activeTab, setActiveTab] = useState<string>('home');
 
   /* trackRef = the tall pin spacer · consoleRef = the sticky card · contentRef = the clip window ·
-     innerRef = the content that translates up as the pinned console is scrolled through. */
+     innerRef = the content that translates up as the pinned console is scrolled through.
+     panelTrackRef = the horizontal-scroll container used on mobile. */
   const trackRef = useRef<HTMLDivElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const panelTrackRef = useRef<HTMLDivElement>(null);
+  /* Flag set by tab-click so the activeTab effect knows to animate the panel track. */
+  const isTabClickRef = useRef(false);
 
-  const activeProject = projects.find((project) => project.id === activeTab) ?? null;
+  /* Marks the next tab change as user-initiated so the scroll effect drives the panel track. */
+  const selectTab = (id: string) => {
+    isTabClickRef.current = true;
+    setActiveTab(id);
+  };
 
   /* Switching tabs resets the record to its top. If the console is already pinned (or scrolled past),
      bring the page to the pin line so the new record reads from its first line. */
@@ -171,7 +182,22 @@ export default function Projects() {
 
     inner.style.transform = 'translate3d(0, 0, 0)';
 
-    if (!track || window.innerWidth <= 860) {
+    if (window.innerWidth <= 860) {
+      /* On mobile scroll the horizontal panels track to the selected panel. */
+      if (isTabClickRef.current && panelTrackRef.current) {
+        const index = ALL_PANEL_IDS.indexOf(activeTab);
+        if (index >= 0) {
+          const trackWidth = panelTrackRef.current.clientWidth;
+          panelTrackRef.current.scrollTo({ left: index * trackWidth, behavior: 'smooth' });
+        }
+      }
+      isTabClickRef.current = false;
+      return;
+    }
+
+    isTabClickRef.current = false;
+
+    if (!track) {
       return;
     }
 
@@ -265,6 +291,24 @@ export default function Projects() {
     };
   }, []);
 
+  /* Sync the active tab highlight when the user swipes the panel track on mobile. */
+  useEffect(() => {
+    const panelTrack = panelTrackRef.current;
+    if (!panelTrack) return;
+
+    const handleScroll = () => {
+      if (window.innerWidth > 860) return;
+      const trackWidth = panelTrack.clientWidth;
+      if (trackWidth === 0) return;
+      const index = Math.round(panelTrack.scrollLeft / trackWidth);
+      const id = ALL_PANEL_IDS[index];
+      if (id) setActiveTab((prev) => (prev === id ? prev : id));
+    };
+
+    panelTrack.addEventListener('scroll', handleScroll, { passive: true });
+    return () => panelTrack.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section className="page-shell projects-workspace" id="projects">
       <div className="section-heading">
@@ -287,7 +331,7 @@ export default function Projects() {
               role="tab"
               aria-selected={activeTab === 'home'}
               className={`project-tab${activeTab === 'home' ? ' is-active' : ''}`}
-              onClick={() => setActiveTab('home')}
+              onClick={() => selectTab('home')}
             >
               <i className="fa-solid fa-house"></i>
               <span>Home</span>
@@ -300,7 +344,7 @@ export default function Projects() {
                 role="tab"
                 aria-selected={activeTab === project.id}
                 className={`project-tab${activeTab === project.id ? ' is-active' : ''}`}
-                onClick={() => setActiveTab(project.id)}
+                onClick={() => selectTab(project.id)}
               >
                 <i className={`fa-solid ${project.icon}`}></i>
                 <span>{project.navbarTitle}</span>
@@ -314,137 +358,152 @@ export default function Projects() {
         <div className="project-content" role="tabpanel" ref={contentRef}>
           {/* This inner wrapper is translated up by the scroll listener to reveal lower content. */}
           <div className="project-content-scroll" ref={innerRef}>
-          {activeProject ? (
-            <article className="project-record">
-              <div className="case-study-meta">
-                <strong>{activeProject.title}</strong>
-                {(activeProject.authors.length > 0 || activeProject.github) && (
-                  <div className="project-byline">
-                    {activeProject.authors.length > 0 && (
-                      <div className="project-authors">
-                        <span className="project-authors-label">
-                          {activeProject.authors.length > 1 ? 'Authors' : 'Author'}
-                        </span>
-                        <p>
-                          {activeProject.authors.map((author, index) => (
-                            <span key={author.name}>
-                              {index > 0 && ', '}
-                              {author.email ? (
-                                <a className="project-author-link" href={`mailto:${author.email}`}>
-                                  {author.name}
-                                </a>
-                              ) : (
-                                author.name
-                              )}
-                            </span>
-                          ))}
-                        </p>
-                      </div>
-                    )}
-                    {activeProject.github && (
-                      <div className="project-links">
-                        <a
-                          className="project-doc-action"
-                          href={activeProject.github}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <i className="fa-brands fa-github"></i>
-                          <span>View Source</span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              <p className="project-summary">{activeProject.summary}</p>
-              {activeProject.sections.map((section) => (
-                <section className="case-study-section" key={section.label}>
-                  <h3>{section.label}</h3>
-                  <ul className="archive-list">
-                    {section.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-              <div className="project-tech">
-                {activeProject.tech.map((tech) => (
-                  <span className="tech-tag" key={tech}>{tech}</span>
-                ))}
-              </div>
+            {/* Panels track: on desktop only the active panel occupies layout space (others
+                display:none); on mobile all panels sit side by side for touch-swipe navigation. */}
+            <div className="project-panels-track" ref={panelTrackRef}>
 
-              {activeProject.documents && activeProject.documents.length > 0 && (
-                <section className="case-study-section project-docs">
-                  <h3>Documentation</h3>
-                  <div className="project-doc-list">
-                    {activeProject.documents.map((doc) => (
-                      <article className="project-doc" key={doc.file}>
-                        <div className="project-doc-icon">
-                          <i className="fa-solid fa-file-pdf"></i>
+              {/* ── Home / landing panel ─────────────────────────────────────── */}
+              <div className={`project-panel${activeTab === 'home' ? ' is-active' : ''}`}>
+                <div className="project-landing">
+                  <p className="eyebrow">Project Archive</p>
+                  <h2>Documented security engineering work, organized as a reference.</h2>
+                  <p className="project-landing-lead">
+                    This space collects detailed records of implemented security projects and controlled adversarial
+                    analysis. Select a project from the directory to open its full case study, including design decisions,
+                    evidence collected, and the technologies involved.
+                  </p>
+
+                  <p className="project-landing-kicker">Open a project</p>
+                  <div className="project-directory">
+                    {projects.map((project) => (
+                      <button
+                        key={project.id}
+                        type="button"
+                        className="project-directory-card"
+                        onClick={() => selectTab(project.id)}
+                      >
+                        <div className="project-directory-icon">
+                          <i className={`fa-solid ${project.icon}`}></i>
                         </div>
-                        <div className="project-doc-body">
-                          <strong>{doc.label}</strong>
-                          <span className="project-doc-meta">{doc.meta}</span>
-                          <p>{doc.description}</p>
+                        <div className="project-directory-body">
+                          <strong>{project.title}</strong>
+                          <p>{project.summary}</p>
                         </div>
-                        <div className="project-doc-actions">
-                          <a
-                            className="project-doc-action"
-                            href={withBase(doc.file)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-solid fa-eye"></i>
-                            <span>View</span>
-                          </a>
-                          <a className="project-doc-action" href={withBase(doc.file)} download>
-                            <i className="fa-solid fa-download"></i>
-                            <span>Download</span>
-                          </a>
-                        </div>
-                      </article>
+                        <i className="fa-solid fa-arrow-right project-directory-go"></i>
+                      </button>
                     ))}
                   </div>
-                </section>
-              )}
-            </article>
-          ) : (
-            <div className="project-landing">
-              <p className="eyebrow">Project Archive</p>
-              <h2>Documented security engineering work, organized as a reference.</h2>
-              <p className="project-landing-lead">
-                This space collects detailed records of implemented security projects and controlled adversarial
-                analysis. Select a project from the directory to open its full case study, including design decisions,
-                evidence collected, and the technologies involved.
-              </p>
+                </div>
+              </div>
 
-              <p className="project-landing-kicker">Open a project</p>
-              <div className="project-directory">
-                {projects.map((project) => (
-                  <button
-                    key={project.id}
-                    type="button"
-                    className="project-directory-card"
-                    onClick={() => setActiveTab(project.id)}
-                  >
-                    <div className="project-directory-icon">
-                      <i className={`fa-solid ${project.icon}`}></i>
-                    </div>
-                    <div className="project-directory-body">
+              {/* ── Project record panels (always rendered for swipe track) ──── */}
+              {projects.map((project) => (
+                <div
+                  key={project.id}
+                  className={`project-panel${activeTab === project.id ? ' is-active' : ''}`}
+                >
+                  <article className="project-record">
+                    <div className="case-study-meta">
                       <strong>{project.title}</strong>
-                      <p>{project.summary}</p>
+                      {(project.authors.length > 0 || project.github) && (
+                        <div className="project-byline">
+                          {project.authors.length > 0 && (
+                            <div className="project-authors">
+                              <span className="project-authors-label">
+                                {project.authors.length > 1 ? 'Authors' : 'Author'}
+                              </span>
+                              <p>
+                                {project.authors.map((author, index) => (
+                                  <span key={author.name}>
+                                    {index > 0 && ', '}
+                                    {author.email ? (
+                                      <a className="project-author-link" href={`mailto:${author.email}`}>
+                                        {author.name}
+                                      </a>
+                                    ) : (
+                                      author.name
+                                    )}
+                                  </span>
+                                ))}
+                              </p>
+                            </div>
+                          )}
+                          {project.github && (
+                            <div className="project-links">
+                              <a
+                                className="project-doc-action"
+                                href={project.github}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <i className="fa-brands fa-github"></i>
+                                <span>View Source</span>
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <i className="fa-solid fa-arrow-right project-directory-go"></i>
-                  </button>
-                ))}
-              </div>
+                    <p className="project-summary">{project.summary}</p>
+                    {project.sections.map((section) => (
+                      <section className="case-study-section" key={section.label}>
+                        <h3>{section.label}</h3>
+                        <ul className="archive-list">
+                          {section.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </section>
+                    ))}
+                    <div className="project-tech">
+                      {project.tech.map((tech) => (
+                        <span className="tech-tag" key={tech}>{tech}</span>
+                      ))}
+                    </div>
+
+                    {project.documents && project.documents.length > 0 && (
+                      <section className="case-study-section project-docs">
+                        <h3>Documentation</h3>
+                        <div className="project-doc-list">
+                          {project.documents.map((doc) => (
+                            <article className="project-doc" key={doc.file}>
+                              <div className="project-doc-icon">
+                                <i className="fa-solid fa-file-pdf"></i>
+                              </div>
+                              <div className="project-doc-body">
+                                <strong>{doc.label}</strong>
+                                <span className="project-doc-meta">{doc.meta}</span>
+                                <p>{doc.description}</p>
+                              </div>
+                              <div className="project-doc-actions">
+                                <a
+                                  className="project-doc-action"
+                                  href={withBase(doc.file)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <i className="fa-solid fa-eye"></i>
+                                  <span>View</span>
+                                </a>
+                                <a className="project-doc-action" href={withBase(doc.file)} download>
+                                  <i className="fa-solid fa-download"></i>
+                                  <span>Download</span>
+                                </a>
+                              </div>
+                            </article>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                  </article>
+                </div>
+              ))}
+
             </div>
-          )}
           </div>
         </div>
       </div>
       </div>
     </section>
   );
-};
+}
