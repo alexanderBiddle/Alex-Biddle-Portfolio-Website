@@ -463,6 +463,7 @@ export default function LocalGalaxyCanvas() {
 
     /* Renderer state remains effect-local so every listener, worker, and GPU resource has one owner. */
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mobileQuery = window.matchMedia('(max-width: 620px)');
     const random = createSeededRandom(7311994);
     const dragRotationTarget: Rotation = { ...INITIAL_ORBIT_ROTATION };
     const dragRotationCurrent: Rotation = { ...INITIAL_ORBIT_ROTATION };
@@ -696,7 +697,7 @@ export default function LocalGalaxyCanvas() {
           : Math.max(0, time - animationStartTime);
       const centerX = width * 0.53;
       const centerY = height * 0.52;
-      const galaxyRadius = Math.max(width, height) * 0.45;
+      const galaxyRadius = Math.max(width, height) * (mobileQuery.matches ? 0.315 : 0.45);
       const layerTransforms = createLayerTransforms(motionTime);
       const pixelData = galaxyFrame.data;
 
