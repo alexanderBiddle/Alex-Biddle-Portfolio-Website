@@ -1812,6 +1812,24 @@ html::-webkit-scrollbar-thumb {
     flex: 1;
     min-width: 0;
   }
+
+  /* Tighter padding inside the record panel on narrow phones. */
+  .project-content-scroll {
+    padding: clamp(0.9rem, 4vw, 1.4rem);
+  }
+
+  /* Remove the decorative hanging indent — not enough horizontal room on narrow phones. */
+  .project-record .project-byline,
+  .project-record .project-summary {
+    margin-left: 0;
+  }
+
+  /* Stack the authors label above the names so the byline reads cleanly. */
+  .project-authors {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
 }
 
 /* Landing/overview tab documents the workspace before any project is opened. */
@@ -1956,6 +1974,12 @@ html::-webkit-scrollbar-thumb {
 
   .project-content {
     overflow: visible;
+  }
+
+  /* 2.6rem is an intentional editorial size on desktop but breaks the byline layout on mobile. */
+  .project-authors-label {
+    font-size: 0.76rem;
+    letter-spacing: 0.14em;
   }
 }
 
