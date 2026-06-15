@@ -8,6 +8,7 @@ import { RouterProvider } from "react-router/dom";
 import './index.css'
 
 /* Page components become the route-specific DOM inserted inside App's <Outlet />. */
+import ErrorBoundary  from './components/ErrorBoundary.tsx'
 import App            from './App.tsx'
 import Home           from "./pages/Home.tsx"
 import About          from "./pages/About.tsx"
@@ -52,6 +53,10 @@ const router = createBrowserRouter(
 /* The root div in index.html is the DOM container React controls from here down. */
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    {/* Last-resort net for errors that originate outside the routed tree, where the per-route
+        errorElement cannot reach. Route-level render errors still land on RouteErrorPage. */}
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
   </StrictMode>,
 );

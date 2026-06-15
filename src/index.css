@@ -198,6 +198,7 @@ body {
 /* Dragging open page areas temporarily turns the decorative galaxy into an orbit control. */
 body.is-galaxy-dragging {
   cursor: grabbing;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -308,6 +309,7 @@ main {
   padding: 16px var(--page-x);
   border-bottom: 1px solid var(--line);
   background: rgb(var(--void-rgb) / 0.88);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   box-shadow: 0 16px 40px rgb(var(--shadow-rgb) / 0.54);
 }
@@ -336,6 +338,7 @@ main {
   border: 1px solid rgb(var(--signal-muted-rgb) / 0.2);
   border-radius: var(--radius-pill);
   background: rgb(var(--deep-cyber-rgb) / 0.94);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   transition: border-color 0.2s ease-out, background 0.2s ease-out, box-shadow 0.2s ease-out;
 }
@@ -453,6 +456,7 @@ main {
 .aether-action.secondary {
   color: var(--signal-highlight);
   background: rgb(var(--deep-cyber-rgb) / 0.74);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
 
@@ -556,6 +560,7 @@ main {
   border-radius: var(--radius);
   background: rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -915,6 +920,7 @@ main {
     radial-gradient(120% 80% at 0% 0%, rgb(var(--signal-rgb) / 0.16), transparent 60%),
     rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   overflow: hidden;
 }
@@ -1049,6 +1055,7 @@ main {
   color: var(--text);
   background: rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   overflow-wrap: anywhere;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -1264,6 +1271,12 @@ html::-webkit-scrollbar-thumb {
 
 /* Narrow navigation preserves a single horizontally scrollable row of route buttons. */
 @media (max-width: 860px) {
+  /* Mobile browsers drop backdrop-filter during momentum scroll, letting the galaxy's bright
+     streaks bleed through the translucent bar. A fully opaque base keeps the nav solid while scrolling. */
+  .site-nav {
+    background: rgb(var(--void-rgb));
+  }
+
   .nav-links {
     justify-content: flex-start;
     overflow-x: auto;
@@ -1351,6 +1364,7 @@ html::-webkit-scrollbar-thumb {
   border-radius: var(--radius);
   background: rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
@@ -1480,6 +1494,7 @@ html::-webkit-scrollbar-thumb {
   border-radius: var(--radius);
   background: rgb(var(--deep-cyber-rgb) / 0.72);
   box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -1950,6 +1965,14 @@ html::-webkit-scrollbar-thumb {
     min-height: 0;
   }
 
+  /* Grid items default to min-width:auto, so the single 1fr column would otherwise blow out to the
+     sidenav tab row's intrinsic width and clip the record. min-width:0 lets the column track the
+     console width so the case-study text wraps to the viewport. */
+  .project-sidenav,
+  .project-content {
+    min-width: 0;
+  }
+
   .project-content-scroll {
     transform: none !important;
   }
@@ -1986,32 +2009,25 @@ html::-webkit-scrollbar-thumb {
     letter-spacing: 0.14em;
   }
 
-  /* Move padding from the scroll container to each panel so snap boundaries are edge-to-edge. */
+  /* Move padding from the scroll container to each panel. */
   .project-content-scroll {
     padding: 0;
   }
 
-  /* Horizontal swipe track: all panels sit side by side, snapping to each in turn. */
+  /* Show only the active panel and let it flow down the page. A horizontal scroll-snap track
+     captured near-vertical swipes and jumped to the next project; flowing vertically lets the
+     full case study fit and read in the normal page scroll. Tab buttons switch projects. */
   .project-panels-track {
-    display: flex;
-    align-items: flex-start;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: block;
+    overflow: visible;
   }
 
-  .project-panels-track::-webkit-scrollbar {
+  .project-panel {
     display: none;
   }
 
-  /* Every panel is visible and claims exactly one track-width of horizontal space. */
-  .project-panel,
   .project-panel.is-active {
     display: block;
-    flex: 0 0 100%;
-    min-width: 0;
-    scroll-snap-align: start;
     padding: clamp(1rem, 3.5vw, 1.4rem);
   }
 }
