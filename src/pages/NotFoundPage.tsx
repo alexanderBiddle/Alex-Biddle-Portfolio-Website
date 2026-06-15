@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default function NotFoundPage() {
   return (
     /* Fallback route renders when no configured path matches the browser URL. */
-    <section className="page-shell">
+    <section className="page-shell error-page">
       {/* Reuses the glass panel and hero button styles so the error page feels integrated. */}
       <div className="glass-panel spotlight-card">
         <p className="eyebrow">404</p>

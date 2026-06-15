@@ -19,7 +19,7 @@ export default function RouteErrorPage() {
 
   return (
     /* The boundary replaces the routed tree, so it carries its own page shell and glass styling. */
-    <section className="page-shell">
+    <section className="page-shell error-page">
       <div className="glass-panel spotlight-card">
         <p className="eyebrow">Error</p>
         <h1>Something Broke</h1>

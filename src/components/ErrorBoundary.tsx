@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     return (
       /* The boundary renders outside the router, so it carries its own page shell and uses a plain
          anchor (no React Router <Link>) for recovery. A full navigation reloads a clean app tree. */
-      <section className="page-shell">
+      <section className="page-shell error-page">
         <div className="glass-panel spotlight-card">
           <p className="eyebrow">Error</p>
           <h1>Something Broke</h1>

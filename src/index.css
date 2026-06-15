@@ -594,6 +594,41 @@ main {
   padding: calc(var(--nav-h) + clamp(2.2rem, 7vh, 5rem)) var(--page-x) clamp(4rem, 9vh, 7rem);
 }
 
+/* Standalone error and 404 routes hold a single card. Center it in the space below the nav and
+   constrain its width, rather than letting the shared full-width glass panel strand its copy in the
+   top-left corner. Scoped to these routes so content pages keep their full-width panels. */
+.error-page {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-page .glass-panel {
+  width: 100%;
+  max-width: 620px;
+}
+
+/* Separate the large "Signal Lost" / "Something Broke" heading from the supporting line below it. */
+.error-page .glass-panel h1 {
+  margin-bottom: clamp(0.75rem, 2vh, 1.25rem);
+}
+
+/* The shared `main` min-height is tuned for full content pages, so on a short error page the footer
+   stops short of the viewport bottom and leaves a band of backdrop beneath it. A scoped sticky-footer
+   column pins the footer flush. :has() limits this to error routes; where unsupported it harmlessly
+   falls back to the existing layout. */
+#root:has(.error-page) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+#root:has(.error-page) main {
+  display: flex;
+  flex: 1;
+}
+
 /* Page heading separates intro copy from the route's main content. */
 .section-heading {
   margin-bottom: clamp(3rem, 9vh, 5rem);
