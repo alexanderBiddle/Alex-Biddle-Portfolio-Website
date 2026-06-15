@@ -29,3 +29,7 @@ dist-ssr
 .impeccable/
 .claude/
 docs/superpowers/
+
+# Local project planning docs (kept out of the public repo)
+DESIGN.md
+PRODUCT.md
