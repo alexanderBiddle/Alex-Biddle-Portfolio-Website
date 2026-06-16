@@ -1,6 +1,6 @@
 /* Motion utilities animate the hero while respecting the visitor's reduced-motion preference. */
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, FileText, ShieldCheck } from 'lucide-react';
+import { ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router';
 
 /* The resume PDF lives in public/documents and is served under Vite's configured base path. */
@@ -42,8 +42,8 @@ export default function AetherGalaxyHero() {
               <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="aether-action secondary" to="/Contact">
-              <ShieldCheck aria-hidden="true" />
               Discuss security work
+              <ArrowRight aria-hidden="true" />
             </Link>
           </div>
 
