@@ -418,10 +418,21 @@ main {
 
 .aether-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
+  /* Hug the two-button row so the full-width Resume button below spans exactly their combined length. */
+  width: fit-content;
+  max-width: 100%;
   margin-top: clamp(1.8rem, 4vh, 2.8rem);
   pointer-events: auto;
+}
+
+/* The two primary actions sit side by side; this row sets the width the Resume button matches. */
+.aether-action-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .aether-action {
@@ -443,26 +454,26 @@ main {
   height: 18px;
 }
 
-.aether-action.primary {
-  color: var(--void);
-  border-color: transparent;
-  background: var(--signal-highlight);
-}
-
-.aether-action.primary:hover {
-  background: var(--signal-bright);
-}
-
-.aether-action.secondary {
+/* All three hero actions share one frosted dark-glass treatment. */
+.aether-action.primary,
+.aether-action.secondary,
+.aether-action.resume {
   color: var(--signal-highlight);
   background: rgb(var(--deep-cyber-rgb) / 0.74);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
 
-.aether-action.secondary:hover {
+.aether-action.primary:hover,
+.aether-action.secondary:hover,
+.aether-action.resume:hover {
   border-color: rgb(var(--signal-highlight-rgb) / 0.58);
   background: rgb(var(--forest-grid-rgb) / 0.9);
+}
+
+/* Tertiary Resume action stretches to the full width of the action group (= the two-button row). */
+.aether-action.resume {
+  width: 100%;
 }
 
 /* Foreground content gets a stacking context above the decorative background layers. */
@@ -1359,7 +1370,14 @@ html::-webkit-scrollbar-thumb {
   }
 
   .aether-actions {
+    /* Override the desktop fit-content so stacked buttons fill the mobile content width. */
+    width: 100%;
+  }
+
+  /* Stack the two primary actions and let them fill the column on mobile. */
+  .aether-action-pair {
     flex-direction: column;
+    width: 100%;
   }
 
   .aether-action {

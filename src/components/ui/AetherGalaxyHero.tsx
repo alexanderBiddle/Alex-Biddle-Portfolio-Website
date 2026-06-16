@@ -1,7 +1,10 @@
 /* Motion utilities animate the hero while respecting the visitor's reduced-motion preference. */
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowRight, FileText, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
+
+/* The resume PDF lives in public/documents and is served under Vite's configured base path. */
+const resumeUrl = `${import.meta.env.BASE_URL}documents/Resume.pdf`;
 
 export default function AetherGalaxyHero() {
   /* Reduced-motion visitors receive the same content without staged position or opacity changes. */
@@ -32,14 +35,28 @@ export default function AetherGalaxyHero() {
           transition={{ delay: 0.52, duration: 0.74, ease: [0.16, 1, 0.3, 1] }}
           className="aether-actions"
         >
-          <Link className="aether-action primary" to="/Projects">
-            Review project scope
-            <ArrowRight aria-hidden="true" />
-          </Link>
-          <Link className="aether-action secondary" to="/Contact">
-            <ShieldCheck aria-hidden="true" />
-            Discuss security work
-          </Link>
+          {/* The two primary actions share a row; the Resume button below spans their combined width. */}
+          <div className="aether-action-pair">
+            <Link className="aether-action primary" to="/Projects">
+              Review project scope
+              <ArrowRight aria-hidden="true" />
+            </Link>
+            <Link className="aether-action secondary" to="/Contact">
+              <ShieldCheck aria-hidden="true" />
+              Discuss security work
+            </Link>
+          </div>
+
+          {/* Full-width tertiary action spanning both buttons; opens the resume PDF in a new tab. */}
+          <a
+            className="aether-action resume"
+            href={resumeUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FileText aria-hidden="true" />
+            Resume
+          </a>
         </motion.div>
       </div>
     </section>
